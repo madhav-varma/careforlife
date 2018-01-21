@@ -1,6 +1,13 @@
 .dataTables_paginate .pagination{
     margin:0;
 }
+.modal-header {
+    color: white;
+    background-color: #2A3F54;
+}
+.close{
+    color:white;
+}
 .paging_full_numbers {
     width: auto !important;
     height: auto !important;

@@ -4,7 +4,7 @@
         var index = $("div.locations-div").length;
 
         if (index > 0)
-            index = parseInt($($("div.locations-div")[index -1]).data("index")) + 1
+            index = parseInt($($("div.locations-div")[index - 1]).data("index")) + 1
 
         var loctmpl = $("#locationsTemplate");
         var location = {
@@ -25,7 +25,7 @@
 
         var ser = $("#servicesTemplate");
         var service = {
-            index: index,            
+            index: index,
             service: ""
         }
         $("#services_rep").append($(ser).tmpl(service));
@@ -34,11 +34,11 @@
     addBlankServices();
 
     $(document).on("click", ".del-loc", function () {
-        $(this).parent().parent().parent().remove();         
+        $(this).parent().parent().parent().remove();
     });
 
     $(document).on("click", ".del-services", function () {
-        $(this).parent().parent().parent().parent().remove();        
+        $(this).parent().parent().parent().parent().remove();
     });
 
     $(document).on("click", "#addloc", function () {
@@ -48,7 +48,7 @@
     $(document).on("click", "#addservices", function () {
         addBlankServices();
     });
-    
+
 
 
     Dropzone.autoDiscover = false;
@@ -80,15 +80,15 @@
             },
 
         },
-        "order": [[0, "desc"]],
+        //"order": [[0, "desc"]],
         "columns": [
-            { "data": "Name", "autoWidth": true },
-            { "data": "Tagline", "autoWidth": true },
-            { "data": "Degree", "autoWidth": true },
-            { "data": "Experience", "autoWidth": true },
-            { "data": "Mobile", "autoWidth": true },
-            { "data": "SpecialityName", "autoWidth": true },
-            { "data": "CityName", "autoWidth": true },
+            { "data": "Name", "autoWidth": true, "orderable": true, "searchable": true },
+            { "data": "Tagline", "autoWidth": true, "orderable": true, "searchable": true },
+            { "data": "Degree", "autoWidth": true, "orderable": true, "searchable": true },
+            { "data": "Experience", "autoWidth": true, "orderable": true, "searchable": true },
+            { "data": "Mobile", "autoWidth": true, "orderable": true, "searchable": true },
+            { "data": "SpecialityName", "autoWidth": true, "orderable": true, "searchable": true },
+            { "data": "CityName", "autoWidth": true, "orderable": true, "searchable": true },
             { "data": "Link", "autoWidth": true, "orderable": false, "searchable": false }
         ],
         responsive: true,
@@ -101,7 +101,7 @@
         }
     });
 
-    var table = $('#doclist_table').DataTable();
+    var table = $('#doclist_table').DataTable();   
 
     $(document).on('click', '.edit-doc', function () {
         var id = $(this).data('id');
@@ -113,6 +113,16 @@
             "dataType": "JSON",
             "success": function (data) {
                 var doc = data.d;
+
+                $("#MainContent_doctor_id").val(doc.Id);
+                $("#MainContent_name").val(doc.Name);
+                $("#MainContent_tagline").val(doc.Tagline);
+                $("#MainContent_degree").val(doc.Degree);
+                $("#MainContent_experience").val(doc.Experience);
+                $("#MainContent_email").val(doc.Email);
+                $("#MainContent_mobile").val(doc.Mobile);
+                $("#MainContent_speciality").val(doc.Speciality);
+                $("#MainContent_city").val(doc.City);
 
                 var timings = JSON.parse(doc.Timing);
                 var t = [];
@@ -128,16 +138,22 @@
                             timingTo: tt[1],
                             timingFrom: tt[0],
                         });
-                    });                    
+                    });
+                    var loctmpl = $("#locationsTemplate");
+                    $("#timings_rep").empty().append($(loctmpl).tmpl(t));
                 }
-                var loctmpl = $("#locationsTemplate");
-                $("#timings_rep").empty().append($(loctmpl).tmpl(t));
 
+                var s = [];
+                var ser = $("#servicesTemplate");
                 var services = doc.Services ? doc.Services.split('\n') : [];
                 if (services.length > 0) {
                     $.each(services, function (i, service) {
-
+                        s.push({
+                            index: i,
+                            service: service
+                        });
                     });
+                    $("#services_rep").empty().append($(ser).tmpl(s));
                 }
             }
         });
@@ -150,64 +166,97 @@
 
     $(document).on('click', '.add-doc-images', function () {
         var id = $(this).data('id');
+        $("#doc_id").val(id);
 
         $.ajax({
             "url": "Doctor.aspx/GetImagesById?id=" + id,
             "contentType": "application/json",
             "type": "GET",
             "dataType": "JSON",
-            "success": function (data) {
-
-                var files = data.d;
-
-                var myDropzone = new Dropzone("#my-dropzone", {
-                    autoProcessQueue: false,
-                    url: "Doctor.aspx/UploadImagesById?id=" + id,
-                    addRemoveLinks: true,
-                    paramName: "file", // The name that will be used to transfer the file
-                    maxFilesize: 2, // MB
-                    accept: function (file, done) {
-                        if (file.name == "justinbieber.jpg") {
-                            done("Naha, you don't.");
+            "success": function (data) {               
+                if (data.d.IsSuccess) {
+                    var files = data.d.Data;
+                    var myDropzone = new Dropzone("#my-dropzone", {
+                        autoProcessQueue: false,
+                        url: "Handlers/DoctorImageUploader.ashx",
+                        addRemoveLinks: true,
+                        uploadMultiple: true,
+                        maxFiles: 5,
+                        parallelUploads: 5,
+                        paramName: "file", // The name that will be used to transfer the file
+                        maxFilesize: 2, // MB
+                        success: function (file, data) {
+                            var response = JSON.parse(data);
+                            if (!response.IsSuccess) {
+                                alert(response.Message);
+                            }
+                            else {
+                                this.defaultOptions.error(file, response.Message);
+                            }
+                        },
+                        error: function (file, error) {
+                            debugger
+                            var msgEl = $(file.previewElement).find('.dz-error-message');
+                            msgEl.text("File not uploaded");
+                            msgEl.show();
+                            msgEl.css("opacity", 1);
+                        },
+                        accept: function (file, done) {
+                            if (file.name === "justinbieber.jpg") {
+                                done("Naha, you don't.");
+                            }
+                            else { done(); }
+                        },
+                        init: function () {
+                            this.on("sending", function (file, xhr, data) {
+                                var docid = $("#doc_id").val();
+                                data.append("id", docid);
+                                var files = this.getAcceptedFiles();
+                                var fnames = [];
+                                $.each(files, function (i, file) {
+                                    fnames.push(docid + "_" + file.name.replace(/\s+/g, ""));
+                                });
+                                if (fnames.length > 0) {
+                                    data.append("fnames", fnames.join(" "));
+                                }
+                            });
                         }
-                        else { done(); }
-                    },
-                    init: function () {
+                    });
 
-                    }
-                });
-
-                if (files.length > 0) {
                     myDropzone.removeAllFiles();
-                    for (var i = 0; i < files.length; i++) {
-                        if (files[i]) {
-                            var mock = {
-                                name: files[i].Name,
-                                size: parseInt(files[i].Size),
-                                type: 'image/jpeg',
-                                status: Dropzone.ADDED,
-                                url: "photo/" + files[i].Name
-                            };
+                    if (files.length > 0) {
+                        for (var i = 0; i < files.length; i++) {
+                            if (files[i]) {
+                                var mock = {
+                                    name: files[i].Name,
+                                    size: parseInt(files[i].Size),
+                                    type: 'image/jpeg',
+                                    status: Dropzone.ADDED,
+                                    url: "photo/" + files[i].Name
+                                };
 
-                            mock.accepted = true;
+                                mock.accepted = true;
 
-                            myDropzone.files.push(mock);
-                            myDropzone.emit('addedfile', mock);
-                            myDropzone.createThumbnailFromUrl(mock, mock.url);
-                            myDropzone.emit('complete', mock);
+                                myDropzone.files.push(mock);
+                                myDropzone.emit('addedfile', mock);
+                                myDropzone.createThumbnailFromUrl(mock, mock.url);
+                                myDropzone.emit('complete', mock);
+                            }
                         }
                     }
+
+                    $('#uploadImages').click(function () {
+                        // myDropzone.options.url = "Doctor.aspx/UploadImagesById?id=" + id;
+                        myDropzone.processQueue();
+                    });
+
+                    $("#exampleModal").modal("show");
                 }
 
-                $('#uploadImages').click(function () {
-                    myDropzone.options.url = "Doctor.aspx/UploadImagesById?id=" + id;
-                    myDropzone.processQueue();
-                });
-
-                $("#exampleModal").modal("show");
+                else {
+                    alert(data.d.Message);
+                }
             }
-
-
         });
 
 

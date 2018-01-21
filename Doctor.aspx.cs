@@ -23,7 +23,8 @@ public partial class Doctor : System.Web.UI.Page
         {
             city.Items.Add(new ListItem(c.Value, c.Id));
         }
-        var docs = new MasterDataManager().GetAllDoctors();
+        
+        var docs = new DoctorManager().GetAllDoctors();
     }
     protected void SubmitDoctor(object sender, EventArgs e)
     {
@@ -32,19 +33,20 @@ public partial class Doctor : System.Web.UI.Page
             var doc = new DoctorModel();
 
             doc.City = int.Parse(city.Value);
-            doc.Degree = degree.Value;            
+            doc.Degree = degree.Value;
             doc.Experience = experience.Value;
             doc.IsSpecial = true;
-            doc.Mobile = telephone.Value;          
+            doc.Mobile = mobile.Value;
 
-            var servicesKeys = Request.Form.AllKeys.Where(x => x.Contains("services")).ToList();
+            var servicesKeys = Request.Form.AllKeys.Where(x => x.Contains("service")).ToList();
             var services = new List<string>();
             foreach (var key in servicesKeys)
             {
-                services.Add(Request.Form[key]);
+                var i = key.Replace("service", "");
+                services.Add(Request.Form["service" + i]);
             }
-            doc.Services = string.Join("\n", services);           
-        
+            doc.Services = string.Join("\n", services);
+
             var locations = new List<string>();
             var hospitalKeys = Request.Form.AllKeys.Where(x => x.Contains("hospital")).ToList();
             foreach (var key in hospitalKeys)
@@ -57,10 +59,8 @@ public partial class Doctor : System.Web.UI.Page
 
                 var timing = "{" + string.Format("\"hospital\":\"{0}\", \"Address\":\"{1}\", \"timing\":\"{2} - {3}\"", hospital, address, from, to) + "}";
                 locations.Add(timing);
-            }            
-       
+            }
             doc.Timing = "[" + string.Join(",", locations) + "]";
-            doc.Services = string.Join(" ", services);
 
             doc.Speciality = int.Parse(speciality.Value);
             doc.Tagline = tagline.Value;
@@ -68,10 +68,15 @@ public partial class Doctor : System.Web.UI.Page
 
             doc.Created = DateTime.UtcNow.AddHours(5).AddMinutes(30);
 
-            var insertQuery = new Helper().GetInsertQuery<DoctorModel>(doc);
 
 
-            var dam = new DataAccessManager().ExecuteInsertUpdateQuery(insertQuery);
+            var sqlQuery = new Helper().GetInsertQuery<DoctorModel>(doc);
+            if (!string.IsNullOrWhiteSpace(doctor_id.Value)) {
+                doc.Id = int.Parse(doctor_id.Value);
+                sqlQuery = new Helper().GetUpdateQuery<DoctorModel>(doc);
+            }
+
+            var dam = new DataAccessManager().ExecuteInsertUpdateQuery(sqlQuery);
             if (dam)
             {
                 msg = "Doctor Added Successfully!";
@@ -88,7 +93,7 @@ public partial class Doctor : System.Web.UI.Page
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public static object GetDoctors(DataTableAjaxPostModel model)
     {
-        var cols = new List<string>() { "a.modified", "LOWER(TRIM(CONCAT(a.last_name, ' ', a.first_name, ' ', a.middle_name)))", "a.email", "a.mobile", "a.aadhar_card", "t.status" };
+        var cols = new List<string>() { "LOWER(TRIM(dm.doctor_name))", "LOWER(TRIM(dm.tagline))", "LOWER(TRIM(dm.degree))", "dm.experience", "dm.mobile", "LOWER(TRIM(sm.speciality_name))", "LOWER(TRIM(cm.city_name))" };
         // Initialization.    
         DataTableData<DoctorModel> result = new DataTableData<DoctorModel>();
         try
@@ -102,7 +107,7 @@ public partial class Doctor : System.Web.UI.Page
             foreach (var o in model.order)
             {
                 var columnName = cols[o.column];
-                c_order = string.IsNullOrWhiteSpace(c_order) ? columnName + " " + o.dir : ", " + columnName + " " + o.dir;
+                c_order += string.IsNullOrWhiteSpace(c_order) ? columnName + " " + o.dir : ", " + columnName + " " + o.dir;
 
             }
             if (!string.IsNullOrWhiteSpace(c_order))
@@ -117,13 +122,11 @@ public partial class Doctor : System.Web.UI.Page
                 {
                     var i = model.columns.IndexOf(s);
                     var columnName = cols[i];
-                    c_search = i == 1 ? " and " + columnName + " like '%" + s.search.value.Trim().ToLower() + "%'" : " and " + columnName + " like '%" + s.search.value + "%'";
+                    c_search += i == 1 ? " and " + columnName + " like '%" + s.search.value.Trim().ToLower() + "%'" : " and " + columnName + " like '%" + s.search.value + "%'";
                 }
             }
-            var q = "select t.*, a.aadhar_card, a.id, a.email, a.first_name, a.middle_name, a.last_name, a.alt_fname, a.alt_mname, a.alt_lname, a.mobile, a.modified, a.post_applied from applicant a, transaction_details t where a.id=t.applicant_id " + c_search + c_order + " limit " + pageSize + " offset " + startRec;
-            var countq = "select count(*) from applicant a, transaction_details t where a.id=t.applicant_id " + c_search + c_order;
 
-            var docs = new MasterDataManager().GetAllDoctorsPaginated(startRec, pageSize);
+            var docs = new DoctorManager().GetAllDoctorsPaginated(startRec, pageSize, c_order, c_search);
 
             var doclist = docs.Data;
             foreach (var doc in doclist)
@@ -151,7 +154,7 @@ public partial class Doctor : System.Web.UI.Page
     [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
     public static object GetDoctorById(string id)
     {
-        var doc = new MasterDataManager().GetDoctorById(id);
+        var doc = new DoctorManager().GetDoctorById(id);
         return doc;
     }
 
@@ -160,36 +163,44 @@ public partial class Doctor : System.Web.UI.Page
     public static object GetImagesById(string id)
     {
         var files = new List<FileInfoModel>();
-        var doc = new MasterDataManager().GetDoctorImagesById(id);
+        var doc = new DoctorManager().GetDoctorImagesById(id);
+
+        var response = new JsonResponse() { IsSuccess = false, Message="Error while getting images." };
 
         if (!string.IsNullOrEmpty(doc))
         {
             var images = doc.Split(' ');
-            foreach (var item in images)
+            try
             {
-                if (!string.IsNullOrEmpty(item))
+                foreach (var item in images)
                 {
-                    string absFile = HttpContext.Current.Server.MapPath("/photo/" + item);
-                    //var f = File.Open(absFile, FileMode.Open);
-                    var fs = new FileStream(absFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                    using (var sr = new StreamReader(fs))
+                    if (!string.IsNullOrEmpty(item))
                     {
-                        var size = fs.Length;
-                        files.Add(new FileInfoModel()
+                        string absFile = HttpContext.Current.Server.MapPath("/photo/" + item);
+                        var fs = new FileStream(absFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                        using (var sr = new StreamReader(fs))
                         {
-                            Name = item,
-                            Size = size.ToString(),
-                            Type = "image"
-                        });
+                            var size = fs.Length;
+                            files.Add(new FileInfoModel()
+                            {
+                                Name = item,
+                                Size = size.ToString(),
+                                Type = "image"
+                            });
+                        }
+
                     }
-
                 }
+                response.IsSuccess = true;
+                response.Message = "Files found successfully";
+                response.Data = files;
             }
-
-
+            catch(Exception e)
+            {
+                response.Message = e.Message;
+            }
         }
-
-        return files;
+        return response;
     }
 
     [WebMethod(EnableSession = true)]
@@ -197,7 +208,7 @@ public partial class Doctor : System.Web.UI.Page
     public static object UploadImagesById(string id)
     {
         var files = new List<FileInfoModel>();
-        var doc = new MasterDataManager().GetDoctorImagesById(id);
+        var doc = new DoctorManager().GetDoctorImagesById(id);
 
         if (!string.IsNullOrEmpty(doc))
         {

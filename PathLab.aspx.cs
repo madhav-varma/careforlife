@@ -113,7 +113,7 @@ public partial class PathLab : System.Web.UI.Page
             var q = "select t.*, a.aadhar_card, a.id, a.email, a.first_name, a.middle_name, a.last_name, a.alt_fname, a.alt_mname, a.alt_lname, a.mobile, a.modified, a.post_applied from applicant a, transaction_details t where a.id=t.applicant_id " + c_search + c_order + " limit " + pageSize + " offset " + startRec;
             var countq = "select count(*) from applicant a, transaction_details t where a.id=t.applicant_id " + c_search + c_order;
 
-            var docs = new MasterDataManager().GetAllDoctorsPaginated(startRec, pageSize);
+            var docs = new DoctorManager().GetAllDoctorsPaginated(startRec, pageSize, c_order, c_search);
 
             var doclist = docs.Data;
             foreach (var doc in doclist)
@@ -141,7 +141,7 @@ public partial class PathLab : System.Web.UI.Page
     [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
     public static object GetDoctorById(string id)
     {
-        var doc = new MasterDataManager().GetDoctorById(id);
+        var doc = new DoctorManager().GetDoctorById(id);
         return doc;
     }
 
@@ -150,7 +150,7 @@ public partial class PathLab : System.Web.UI.Page
     public static object GetImagesById(string id)
     {
         var files = new List<FileInfoModel>();
-        var doc = new MasterDataManager().GetDoctorImagesById(id);
+        var doc = new DoctorManager().GetDoctorImagesById(id);
 
         if (!string.IsNullOrEmpty(doc))
         {
@@ -187,7 +187,7 @@ public partial class PathLab : System.Web.UI.Page
     public static object UploadImagesById(string id)
     {
         var files = new List<FileInfoModel>();
-        var doc = new MasterDataManager().GetDoctorImagesById(id);
+        var doc = new DoctorManager().GetDoctorImagesById(id);
 
         if (!string.IsNullOrEmpty(doc))
         {

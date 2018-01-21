@@ -58,14 +58,18 @@
                                 <div class="x_panel" style="border-top: 0">
                                     <div class="x_content">
                                         <form runat="server" id="docform" method="post">
+                                            <input type="hidden" runat="server" id="doctor_id">
                                             <div class="row item form-group">
-                                                <span class="section">Basic Info</span>
-                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
-                                                    Doctor Name <span class="required">*</span>
-                                                </label>
-                                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <input runat="server" id="name" class="form-control col-md-7 col-xs-12" name="name" placeholder="Name" required="required" type="text">
-                                                </div>
+                                                <span class="section" style="padding-bottom:10px">Basic Info<button runat="server" id="send" type="submit" onserverclick="SubmitDoctor" class="pull-right btn btn-success">Save</button><input type="button" class="pull-right btn btn-primary" value="Add New Doctor" /> </span>
+                                                
+                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
+                                                        Doctor Name <span class="required">*</span>
+                                                    </label>
+
+                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                        <input runat="server" id="name" class="form-control col-md-7 col-xs-12" name="name" placeholder="Name" required="required" type="text">
+                                                    </div>
+                                               
                                             </div>
 
 
@@ -114,7 +118,7 @@
                                                     Mobile Number <span class="required">*</span>
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <input type="tel" runat="server" id="telephone" name="phone" required="required" placeholder="Mobile" class="form-control col-md-7 col-xs-12">
+                                                    <input type="tel" runat="server" id="mobile" name="mobile" required="required" placeholder="Mobile" class="form-control col-md-7 col-xs-12">
                                                 </div>
                                             </div>
 
@@ -154,12 +158,11 @@
                                             </div>
 
 
-                                            <div class="row item form-group" style="margin-top: 25px">
+                                            <%--<div class="row item form-group" style="margin-top: 25px">
                                                 <div class="col-md-6 col-md-offset-3">
-                                                    <button class="btn btn-primary">Cancel</button>
-                                                    <button runat="server" id="send" type="submit" onserverclick="SubmitDoctor" class="btn btn-success">Submit</button>
+                                                   
                                                 </div>
-                                            </div>
+                                            </div>--%>
 
                                         </form>
                                     </div>
@@ -177,7 +180,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title" id="exampleModalLabel">Modal title
+                    <h3 class="modal-title" id="exampleModalLabel">Upload Images
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -185,7 +188,9 @@
 
                 </div>
                 <div class="modal-body">
-                    <form class="dropzone" id="my-dropzone"></form>
+                    <form class="dropzone" id="my-dropzone">
+                        <input type="hidden" id="doc_id"/>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -249,7 +254,7 @@
             <label class="col-sm-3 control-label">Services</label>
             <div class="col-sm-6 ">
                 <div id="Container" class="input-group" style="width: 100%">
-                    <input value="${service}" placeholder="Services" type="text" class="form-control" id="services${index}">
+                    <input value="${service}" placeholder="Services" type="text" class="form-control" id="service${index}" name="service${index}">
                     {{if index > 0}}
                 <span class="input-group-btn">
                     <button type="button" value="Clone it" class="del-services btn btn-danger"><i class="fa fa-minus"></i></button>
