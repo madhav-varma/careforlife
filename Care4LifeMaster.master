@@ -260,6 +260,7 @@
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.js"></script>      
       <script src="Scripts/doctor.js"></script>
+      <script src="Scripts/pathlab.js"></script>
 	
     <!-- bootstrap-daterangepicker -->
     <script src="../vendors/moment/min/moment.min.js"></script>

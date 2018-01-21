@@ -89,6 +89,7 @@ public partial class Doctor : System.Web.UI.Page
             action.Value = msg;
         }
     }
+
     [WebMethod(EnableSession = true)]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public static object GetDoctors(DataTableAjaxPostModel model)
