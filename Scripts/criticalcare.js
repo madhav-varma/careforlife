@@ -1,23 +1,21 @@
 ﻿$(document).ready(function () {
 
-    function addBlankLocation() {
-        var index = $("div.locations-div").length;
+
+    function addBlankSpeciality() {
+        var index = $("div.specialities-div").length;
 
         if (index > 0)
-            index = parseInt($($("div.locations-div")[index - 1]).data("index")) + 1
+            index = parseInt($($("div.specialities-div")[index - 1]).data("index")) + 1
 
-        var loctmpl = $("#locationsTemplate");
-        var location = {
+        var sp = $("#specialitiesTemplate");
+        var speciality = {
             index: index,
-            address: "",
-            hospital: "",
-            timingTo: "",
-            timingFrom: ""
+            speciality: ""
         }
-        $("#timings_rep").append($(loctmpl).tmpl(location));
-    }
+        $("#sspecialities_rep").append($(sp).tmpl(speciality));
+    };    
 
-    function addBlankServices() {
+    function addBlankCCServices() {
         var index = $("div.services-div").length;
 
         if (index > 0)
@@ -28,33 +26,31 @@
             index: index,
             service: ""
         }
-        $("#services_rep").append($(ser).tmpl(service));
+        $("#cc_services_rep").append($(ser).tmpl(service));
     };
-    addBlankLocation();
-    addBlankServices();
-
-    $(document).on("click", ".del-loc", function () {
-        $(this).parent().parent().parent().remove();
-    });
+    
+    addBlankCCServices();
+    addBlankSpeciality();   
 
     $(document).on("click", ".del-services", function () {
         $(this).parent().parent().parent().parent().remove();
-    });
-
-    $(document).on("click", "#addloc", function () {
-        addBlankLocation();
-    });
+    });   
 
     $(document).on("click", "#addservices", function () {
-        addBlankServices();
+        addBlankCCServices();
     });
 
+    $(document).on("click", ".del-specialities", function () {
+        $(this).parent().parent().parent().parent().remove();
+    });
 
+    $(document).on("click", "#addspecialities", function () {
+        addBlankSpeciality();
+    });
 
     Dropzone.autoDiscover = false;
 
-
-    $('#doclist_table').DataTable({
+    $('#cclist_table').DataTable({
         lengthMenu: [[10, 25, 50], [10, 25, 50]],
         "language":
         {
@@ -63,7 +59,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "Doctor.aspx/GetDoctors",
+            "url": "CriticalCare.aspx/GetCriticalCares",
             "contentType": "application/json",
             "type": "POST",
             "dataType": "JSON",
@@ -83,69 +79,44 @@
         //"order": [[0, "desc"]],
         "columns": [
             { "data": "Name", "autoWidth": true, "orderable": true, "searchable": true },
-            { "data": "Tagline", "autoWidth": true, "orderable": true, "searchable": true },
-            { "data": "Degree", "autoWidth": true, "orderable": true, "searchable": true },
-            { "data": "Experience", "autoWidth": true, "orderable": true, "searchable": true },
-            { "data": "Mobile", "autoWidth": true, "orderable": true, "searchable": true },
-            { "data": "SpecialityName", "autoWidth": true, "orderable": true, "searchable": true },
+            { "data": "Email", "autoWidth": true, "orderable": true, "searchable": true },            
+            { "data": "Mobile", "autoWidth": true, "orderable": true, "searchable": true },            
             { "data": "CityName", "autoWidth": true, "orderable": true, "searchable": true },
             { "data": "Link", "autoWidth": true, "orderable": false, "searchable": false }
         ],
         responsive: true,
         "pagingType": "full_numbers"
     });
-    $('#doclist_table tfoot th').each(function () {
+    $('#cclist_table tfoot th').each(function () {
         var title = $(this).text();
         if (title !== "") {
             $(this).html('<input type="text" style="width:100%" placeholder="Search ' + title + '" />');
         }
     });
 
-    var table = $('#doclist_table').DataTable();
+    var table = $('#cclist_table').DataTable();
 
-    $(document).on('click', '.edit-doc', function () {
+    $(document).on('click', '.edit-cc', function () {
         var id = $(this).data('id');
 
         $.ajax({
-            "url": "Doctor.aspx/GetDoctorById?id=" + id,
+            "url": "CriticalCare.aspx/GetCriticalCareById?id=" + id,
             "contentType": "application/json",
             "type": "GET",
             "dataType": "JSON",
             "success": function (data) {
-                var doc = data.d;
+                var cc = data.d;
 
-                $("#MainContent_doctor_id").val(doc.Id);
-                $("#MainContent_name").val(doc.Name);
-                $("#MainContent_tagline").val(doc.Tagline);
-                $("#MainContent_degree").val(doc.Degree);
-                $("#MainContent_experience").val(doc.Experience);
-                $("#MainContent_email").val(doc.Email);
-                $("#MainContent_mobile").val(doc.Mobile);
-                $("#MainContent_speciality").val(doc.Speciality);
-                $("#MainContent_city").val(doc.City);
-
-                var timings = JSON.parse(doc.Timing);
-                var t = [];
-                if (timings.length > 0) {
-                    $.each(timings, function (i, timing) {
-                        var tt = [];
-                        if (timing.timing)
-                            tt = timing.timing.split('-');
-                        t.push({
-                            index: i,
-                            hospital: timing.hospital,
-                            address: timing.Address,
-                            timingTo: tt[1],
-                            timingFrom: tt[0],
-                        });
-                    });
-                    var loctmpl = $("#locationsTemplate");
-                    $("#timings_rep").empty().append($(loctmpl).tmpl(t));
-                }
+                $("#MainContent_cc_id").val(cc.Id);
+                $("#MainContent_name").val(cc.Name);
+                $("#MainContent_address").val(cc.Address);               
+                $("#MainContent_email").val(cc.Email);
+                $("#MainContent_mobile").val(cc.Mobile);                
+                $("#MainContent_city").val(cc.City);               
 
                 var s = [];
                 var ser = $("#servicesTemplate");
-                var services = doc.Services ? doc.Services.split('\n') : [];
+                var services = cc.Services ? cc.Services.split('\n') : [];
                 if (services.length > 0) {
                     $.each(services, function (i, service) {
                         s.push({
@@ -153,23 +124,35 @@
                             service: service
                         });
                     });
-                    $("#services_rep").empty().append($(ser).tmpl(s));
+                    $("#cc_services_rep").empty().append($(ser).tmpl(s));
+                }
+                var sp = [];
+                var spt = $("#specialitiesTemplate");
+                var specialities = cc.Specialities ? cc.Specialities.split('\n') : [];
+                if (specialities.length > 0) {
+                    $.each(specialities, function (i, speciality) {
+                        sp.push({
+                            index: i,
+                            speciality: speciality
+                        });
+                    });
+                    $("#sspecialities_rep").empty().append($(spt).tmpl(sp));
                 }
             }
         });
 
-        $("#doclistli").removeClass("active");
-        $("#doclist").removeClass("active");
-        $("#doceditli").addClass("active");
-        $("#docedit").addClass("active");
+        $("#cclistli").removeClass("active");
+        $("#cclist").removeClass("active");
+        $("#cceditli").addClass("active");
+        $("#ccedit").addClass("active");
     });
 
-    $(document).on('click', '.add-doc-images', function () {
+    $(document).on('click', '.add-cc-images', function () {
         var id = $(this).data('id');
-        $("#doc_id").val(id);
+        $("#cc_dz_id").val(id);
 
         $.ajax({
-            "url": "Doctor.aspx/GetImagesById?id=" + id,
+            "url": "CriticalCare.aspx/GetImagesById?id=" + id,
             "contentType": "application/json",
             "type": "GET",
             "dataType": "JSON",
@@ -178,7 +161,7 @@
                     var files = data.d.Data;
                     var myDropzone = new Dropzone("#my-dropzone", {
                         autoProcessQueue: false,
-                        url: "Handlers/DoctorImageUploader.ashx",
+                        url: "Handlers/CriticalCareImageUploader.ashx",
                         addRemoveLinks: true,
                         uploadMultiple: true,
                         maxFiles: 5,
@@ -190,7 +173,7 @@
                             if (!response.IsSuccess) {
                                 alert(response.Message);
                                 this.defaultOptions.error(file, response.Message);
-                            }
+                            }                            
                         },
                         error: function (file, error) {
                             debugger
@@ -207,12 +190,12 @@
                         },
                         init: function () {
                             this.on("sending", function (file, xhr, data) {
-                                var docid = $("#doc_id").val();
-                                data.append("id", docid);
+                                var ccid = $("#cc_dz_id").val();
+                                data.append("id", ccid);
                                 var files = this.getAcceptedFiles();
                                 var fnames = [];
                                 $.each(files, function (i, file) {
-                                    fnames.push(docid + "_" + file.name.replace(/\s+/g, ""));
+                                    fnames.push(ccid + "_" + file.name.replace(/\s+/g, ""));
                                 });
                                 if (fnames.length > 0) {
                                     data.append("fnames", fnames.join(" "));
@@ -234,6 +217,7 @@
                                 };
 
                                 mock.accepted = true;
+
                                 myDropzone.files.push(mock);
                                 myDropzone.emit('addedfile', mock);
                                 myDropzone.createThumbnailFromUrl(mock, mock.url);

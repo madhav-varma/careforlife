@@ -4,8 +4,6 @@
 
     <div class="right_col" role="main">
         <div class="">
-
-
             <div id="exTab1" class="container">
                 <ul class="nav nav-tabs">
                     <li id="doceditli" class="active"><a href="#docedit" data-toggle="tab">Add/Update</a>
@@ -60,7 +58,7 @@
                                         <form runat="server" id="docform" method="post">
                                             <input type="hidden" runat="server" id="doctor_id">
                                             <div class="row item form-group">
-                                                <span class="section" style="padding-bottom:10px">Basic Info<button runat="server" id="send" type="submit" onserverclick="SubmitDoctor" class="pull-right btn btn-success">Save</button><input type="button" class="pull-right btn btn-primary" value="Add New Doctor" /> </span>
+                                                <span class="section" style="padding-bottom:10px">Basic Info<button runat="server" id="send" type="submit" onserverclick="SubmitDoctor" class="pull-right btn btn-success">Save</button> </span>
                                                 
                                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
                                                         Doctor Name <span class="required">*</span>
@@ -78,8 +76,7 @@
                                                     Tagline <span class="required">*</span>
                                                 </label>
 
-                                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <!--data-validate-words not write below -->
+                                                <div class="col-md-6 col-sm-6 col-xs-12">                                                   
                                                     <input type="text" runat="server" id="tagline" name="tagline" placeholder="Tagline" required="required" class="optional form-control col-md-7 col-xs-12">
                                                 </div>
                                             </div>
@@ -89,8 +86,7 @@
                                                     Degree <span class="required">*</span>
                                                 </label>
 
-                                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <!--data-validate-words not write below -->
+                                                <div class="col-md-6 col-sm-6 col-xs-12">                                                    
                                                     <input type="text" runat="server" id="degree" name="degree" placeholder="Degree" required="required" class="optional form-control col-md-7 col-xs-12">
                                                 </div>
                                             </div>
@@ -156,20 +152,11 @@
 
                                                 <div id="services_rep"></div>
                                             </div>
-
-
-                                            <%--<div class="row item form-group" style="margin-top: 25px">
-                                                <div class="col-md-6 col-md-offset-3">
-                                                   
-                                                </div>
-                                            </div>--%>
-
                                         </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

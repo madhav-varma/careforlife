@@ -1,60 +1,8 @@
-﻿$(document).ready(function () {
-
-    function addBlankLocation() {
-        var index = $("div.locations-div").length;
-
-        if (index > 0)
-            index = parseInt($($("div.locations-div")[index - 1]).data("index")) + 1
-
-        var loctmpl = $("#locationsTemplate");
-        var location = {
-            index: index,
-            address: "",
-            hospital: "",
-            timingTo: "",
-            timingFrom: ""
-        }
-        $("#timings_rep").append($(loctmpl).tmpl(location));
-    }
-
-    function addBlankServices() {
-        var index = $("div.services-div").length;
-
-        if (index > 0)
-            index = parseInt($($("div.services-div")[index - 1]).data("index")) + 1
-
-        var ser = $("#servicesTemplate");
-        var service = {
-            index: index,
-            service: ""
-        }
-        $("#services_rep").append($(ser).tmpl(service));
-    };
-    addBlankLocation();
-    addBlankServices();
-
-    $(document).on("click", ".del-loc", function () {
-        $(this).parent().parent().parent().remove();
-    });
-
-    $(document).on("click", ".del-services", function () {
-        $(this).parent().parent().parent().parent().remove();
-    });
-
-    $(document).on("click", "#addloc", function () {
-        addBlankLocation();
-    });
-
-    $(document).on("click", "#addservices", function () {
-        addBlankServices();
-    });
-
-
+﻿$(document).ready(function () {   
 
     Dropzone.autoDiscover = false;
 
-
-    $('#doclist_table').DataTable({
+    $('#mflist_table').DataTable({
         lengthMenu: [[10, 25, 50], [10, 25, 50]],
         "language":
         {
@@ -63,7 +11,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "Doctor.aspx/GetDoctors",
+            "url": "MedicalFacility.aspx/GetMedicalFacilities",
             "contentType": "application/json",
             "type": "POST",
             "dataType": "JSON",
@@ -83,93 +31,56 @@
         //"order": [[0, "desc"]],
         "columns": [
             { "data": "Name", "autoWidth": true, "orderable": true, "searchable": true },
-            { "data": "Tagline", "autoWidth": true, "orderable": true, "searchable": true },
-            { "data": "Degree", "autoWidth": true, "orderable": true, "searchable": true },
-            { "data": "Experience", "autoWidth": true, "orderable": true, "searchable": true },
-            { "data": "Mobile", "autoWidth": true, "orderable": true, "searchable": true },
-            { "data": "SpecialityName", "autoWidth": true, "orderable": true, "searchable": true },
+            { "data": "Address", "autoWidth": true, "orderable": true, "searchable": true },
+            { "data": "Email", "autoWidth": true, "orderable": true, "searchable": true },            
+            { "data": "Mobile", "autoWidth": true, "orderable": true, "searchable": true },            
             { "data": "CityName", "autoWidth": true, "orderable": true, "searchable": true },
             { "data": "Link", "autoWidth": true, "orderable": false, "searchable": false }
         ],
         responsive: true,
         "pagingType": "full_numbers"
     });
-    $('#doclist_table tfoot th').each(function () {
+    $('#mflist_table tfoot th').each(function () {
         var title = $(this).text();
         if (title !== "") {
             $(this).html('<input type="text" style="width:100%" placeholder="Search ' + title + '" />');
         }
     });
 
-    var table = $('#doclist_table').DataTable();
+    var table = $('#mflist_table').DataTable();
 
-    $(document).on('click', '.edit-doc', function () {
+    $(document).on('click', '.edit-mf', function () {
         var id = $(this).data('id');
 
         $.ajax({
-            "url": "Doctor.aspx/GetDoctorById?id=" + id,
+            "url": "MedicalFacility.aspx/GetMedicalFacilityById?id=" + id,
             "contentType": "application/json",
             "type": "GET",
             "dataType": "JSON",
             "success": function (data) {
-                var doc = data.d;
+                var mf = data.d;
 
-                $("#MainContent_doctor_id").val(doc.Id);
-                $("#MainContent_name").val(doc.Name);
-                $("#MainContent_tagline").val(doc.Tagline);
-                $("#MainContent_degree").val(doc.Degree);
-                $("#MainContent_experience").val(doc.Experience);
-                $("#MainContent_email").val(doc.Email);
-                $("#MainContent_mobile").val(doc.Mobile);
-                $("#MainContent_speciality").val(doc.Speciality);
-                $("#MainContent_city").val(doc.City);
-
-                var timings = JSON.parse(doc.Timing);
-                var t = [];
-                if (timings.length > 0) {
-                    $.each(timings, function (i, timing) {
-                        var tt = [];
-                        if (timing.timing)
-                            tt = timing.timing.split('-');
-                        t.push({
-                            index: i,
-                            hospital: timing.hospital,
-                            address: timing.Address,
-                            timingTo: tt[1],
-                            timingFrom: tt[0],
-                        });
-                    });
-                    var loctmpl = $("#locationsTemplate");
-                    $("#timings_rep").empty().append($(loctmpl).tmpl(t));
-                }
-
-                var s = [];
-                var ser = $("#servicesTemplate");
-                var services = doc.Services ? doc.Services.split('\n') : [];
-                if (services.length > 0) {
-                    $.each(services, function (i, service) {
-                        s.push({
-                            index: i,
-                            service: service
-                        });
-                    });
-                    $("#services_rep").empty().append($(ser).tmpl(s));
-                }
+                $("#MainContent_facility_id").val(mf.Id);
+                $("#MainContent_name").val(mf.Name);
+                $("#MainContent_address").val(mf.Address);          
+                $("#MainContent_email").val(mf.Email);
+                $("#MainContent_mobile").val(mf.Mobile);               
+                $("#MainContent_city").val(mf.City);              
             }
         });
 
-        $("#doclistli").removeClass("active");
-        $("#doclist").removeClass("active");
-        $("#doceditli").addClass("active");
-        $("#docedit").addClass("active");
+        $("#mflistli").removeClass("active");
+        $("#mflist").removeClass("active");
+        $("#mfeditli").addClass("active");
+        $("#mfedit").addClass("active");
     });
 
-    $(document).on('click', '.add-doc-images', function () {
+    $(document).on('click', '.add-mf-images', function () {
         var id = $(this).data('id');
-        $("#doc_id").val(id);
+        $("#mf_id").val(id);
 
         $.ajax({
-            "url": "Doctor.aspx/GetImagesById?id=" + id,
+            "url": "MedicalFacility.aspx/GetImagesById?id=" + id,
             "contentType": "application/json",
             "type": "GET",
             "dataType": "JSON",
@@ -178,7 +89,7 @@
                     var files = data.d.Data;
                     var myDropzone = new Dropzone("#my-dropzone", {
                         autoProcessQueue: false,
-                        url: "Handlers/DoctorImageUploader.ashx",
+                        url: "Handlers/MedicalFacilityImageUploader.ashx",
                         addRemoveLinks: true,
                         uploadMultiple: true,
                         maxFiles: 5,
@@ -190,7 +101,7 @@
                             if (!response.IsSuccess) {
                                 alert(response.Message);
                                 this.defaultOptions.error(file, response.Message);
-                            }
+                            }                           
                         },
                         error: function (file, error) {
                             debugger
@@ -207,12 +118,12 @@
                         },
                         init: function () {
                             this.on("sending", function (file, xhr, data) {
-                                var docid = $("#doc_id").val();
-                                data.append("id", docid);
+                                var mfid = $("#mf_id").val();
+                                data.append("id", mfid);
                                 var files = this.getAcceptedFiles();
                                 var fnames = [];
                                 $.each(files, function (i, file) {
-                                    fnames.push(docid + "_" + file.name.replace(/\s+/g, ""));
+                                    fnames.push(mfid + "_" + file.name.replace(/\s+/g, ""));
                                 });
                                 if (fnames.length > 0) {
                                     data.append("fnames", fnames.join(" "));
@@ -234,6 +145,7 @@
                                 };
 
                                 mock.accepted = true;
+
                                 myDropzone.files.push(mock);
                                 myDropzone.emit('addedfile', mock);
                                 myDropzone.createThumbnailFromUrl(mock, mock.url);
@@ -261,7 +173,6 @@
 
     table.columns().every(function () {
         var that = this;
-
         $('input', this.footer()).on('keyup change', function () {
             if (that.search() !== this.value) {
                 that
