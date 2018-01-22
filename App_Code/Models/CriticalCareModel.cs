@@ -8,7 +8,7 @@ using System.Web;
 /// Summary description for CriticalCareModel
 /// </summary>
 /// 
-[DisplayName("critical_master")]
+[DisplayName("critical_care_master")]
 public class CriticalCareModel
 {
 
@@ -38,7 +38,7 @@ public class CriticalCareModel
     [DisplayName("address")]
     public string Address { get; set; }
     [DisplayName("is_active")]
-    public bool IsSpecial { get; set; }
+    public bool IsActive { get; set; }
     [DisplayName("created_on")]
     public DateTime Created { get; set; }
     [IgnoreInsert]

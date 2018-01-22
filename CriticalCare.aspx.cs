@@ -8,16 +8,10 @@ using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class Doctor : System.Web.UI.Page
+public partial class CriticalCare : System.Web.UI.Page
 {
-    public string msg = "";
     protected void Page_Load(object sender, EventArgs e)
     {
-        var specialities = new MasterDataManager().GetAvailableSpecialities();
-        foreach (var sp in specialities)
-        {
-            speciality.Items.Add(new ListItem(sp.Value, sp.Id));
-        }
         var cities = new MasterDataManager().GetAvailableCities();
         foreach (var c in cities)
         {
@@ -25,17 +19,19 @@ public partial class Doctor : System.Web.UI.Page
         }
     }
 
-    protected void SubmitDoctor(object sender, EventArgs e)
+    protected void SubmitCriticalCare(object sender, EventArgs e)
     {
         try
         {
-            var doc = new DoctorModel();
+            var criticalCare = new CriticalCareModel();
 
-            doc.City = int.Parse(city.Value);
-            doc.Degree = degree.Value;
-            doc.Experience = experience.Value;
-            doc.IsSpecial = true;
-            doc.Mobile = mobile.Value;
+            criticalCare.City = int.Parse(city.Value);
+            criticalCare.Address = address.Value;
+            criticalCare.Email = email.Value;
+            criticalCare.IsActive = true;
+            criticalCare.Mobile = mobile.Value;
+            criticalCare.Name = name.Value;
+            criticalCare.Created = DateTime.UtcNow.AddHours(5).AddMinutes(30);
 
             var servicesKeys = Request.Form.AllKeys.Where(x => x.Contains("service")).ToList();
             var services = new List<string>();
@@ -44,58 +40,43 @@ public partial class Doctor : System.Web.UI.Page
                 var i = key.Replace("service", "");
                 services.Add(Request.Form["service" + i]);
             }
-            doc.Services = string.Join("\n", services);
+            criticalCare.Services = string.Join("\n", services);
 
-            var locations = new List<string>();
-            var hospitalKeys = Request.Form.AllKeys.Where(x => x.Contains("hospital")).ToList();
-            foreach (var key in hospitalKeys)
+            var specialityKeys = Request.Form.AllKeys.Where(x => x.Contains("speciality")).ToList();
+            var specialities = new List<string>();
+            foreach (var key in specialityKeys)
             {
-                var i = key.Replace("hospital", "");
-                var hospital = Request.Form["hospital" + i];
-                var address = Request.Form["address" + i];
-                var from = Request.Form["timingFrom" + i];
-                var to = Request.Form["timingTo" + i];
-
-                var timing = "{" + string.Format("\"hospital\":\"{0}\", \"Address\":\"{1}\", \"timing\":\"{2} - {3}\"", hospital, address, from, to) + "}";
-                locations.Add(timing);
+                var i = key.Replace("speciality", "");
+                specialities.Add(Request.Form["speciality" + i]);
             }
-            doc.Timing = "[" + string.Join(",", locations) + "]";
+            criticalCare.Specialities = string.Join("\n", specialities);
 
-            doc.Speciality = int.Parse(speciality.Value);
-            doc.Tagline = tagline.Value;
-            doc.Name = name.Value;
-
-            doc.Created = DateTime.UtcNow.AddHours(5).AddMinutes(30);
-
-
-
-            var sqlQuery = new Helper().GetInsertQuery<DoctorModel>(doc);
-            if (!string.IsNullOrWhiteSpace(doctor_id.Value)) {
-                doc.Id = int.Parse(doctor_id.Value);
-                sqlQuery = new Helper().GetUpdateQuery<DoctorModel>(doc);
+            var sqlQuery = new Helper().GetInsertQuery<CriticalCareModel>(criticalCare);
+            if (!string.IsNullOrWhiteSpace(cc_id.Value))
+            {
+                criticalCare.Id = int.Parse(cc_id.Value);
+                sqlQuery = new Helper().GetUpdateQuery<CriticalCareModel>(criticalCare);
             }
 
             var dam = new DataAccessManager().ExecuteInsertUpdateQuery(sqlQuery);
             if (dam)
             {
-                msg = "Doctor Added Successfully!";
-                Response.Redirect("Doctor", true);
+                Response.Redirect("CriticalCare", true);
             }
         }
         catch (Exception ex)
         {
-            msg = "Failed To Add Doctor!";
-            action.Value = msg;
+            action.Value = "Failed To Add Doctor!";
         }
     }
 
     [WebMethod(EnableSession = true)]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static object GetDoctors(DataTableAjaxPostModel model)
+    public static object GetCriticalCares(DataTableAjaxPostModel model)
     {
-        var cols = new List<string>() { "LOWER(TRIM(dm.doctor_name))", "LOWER(TRIM(dm.tagline))", "LOWER(TRIM(dm.degree))", "dm.experience", "dm.mobile", "LOWER(TRIM(sm.speciality_name))", "LOWER(TRIM(cm.city_name))" };
+        var cols = new List<string>() { "LOWER(TRIM(cc.hospital_name))", "LOWER(TRIM(cc.email_id))", "LOWER(TRIM(cc.contact_no))", "LOWER(TRIM(cm.city_name))" };
         // Initialization.    
-        DataTableData<DoctorModel> result = new DataTableData<DoctorModel>();
+        DataTableData<CriticalCareModel> result = new DataTableData<CriticalCareModel>();
         try
         {
             // Initialization.                
@@ -126,20 +107,20 @@ public partial class Doctor : System.Web.UI.Page
                 }
             }
 
-            var docs = new DoctorManager().GetAllDoctorsPaginated(startRec, pageSize, c_order, c_search);
+            var criticalCares = new CriticalCareManager().GetAllCriticalCaresPaginated(startRec, pageSize, c_order, c_search);
 
-            var doclist = docs.Data;
-            foreach (var doc in doclist)
+            var criticalCareList = criticalCares.Data;
+            foreach (var criticalCare in criticalCareList)
             {
-                doc.Link = "<a href='javascript:void(0);' style='margin-right:10px' class='edit-doc' data-id='" + doc.Id + "'>Edit</a><a href='javascript:void(0);' class='add-doc-images' data-id='" + doc.Id + "'>Add Images</a>";
+                criticalCare.Link = "<a href='javascript:void(0);' style='margin-right:10px' class='edit-cc' data-id='" + criticalCare.Id + "'>Edit</a><a href='javascript:void(0);' class='add-cc-images' data-id='" + criticalCare.Id + "'>Add Images</a>";
             }
 
-            int recFilter = docs.Data.Count;
+            int recFilter = criticalCares.Data.Count;
 
             result.draw = Convert.ToInt32(draw);
-            result.recordsTotal = docs.TotalCount;
-            result.recordsFiltered = docs.TotalCount;
-            result.data = doclist;
+            result.recordsTotal = criticalCares.TotalCount;
+            result.recordsFiltered = criticalCares.TotalCount;
+            result.data = criticalCareList;
         }
         catch (Exception ex)
         {
@@ -152,10 +133,10 @@ public partial class Doctor : System.Web.UI.Page
 
     [WebMethod(EnableSession = true)]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
-    public static object GetDoctorById(string id)
+    public static object GetCriticalCareById(string id)
     {
-        var doc = new DoctorManager().GetDoctorById(id);
-        return doc;
+        var cc = new CriticalCareManager().GetCriticalCareById(id);
+        return cc;
     }
 
     [WebMethod(EnableSession = true)]
@@ -163,13 +144,13 @@ public partial class Doctor : System.Web.UI.Page
     public static object GetImagesById(string id)
     {
         var files = new List<FileInfoModel>();
-        var docImages = new DoctorManager().GetDoctorImagesById(id);
+        var criticalCareImages = new CriticalCareManager().GetCriticalCareImagesById(id);
 
-        var response = new JsonResponse() { IsSuccess = false, Message= "Files found successfully.", Data = files };
+        var response = new JsonResponse() { IsSuccess = true, Message = "Files found successfully.", Data = files };
 
-        if (!string.IsNullOrEmpty(docImages))
+        if (!string.IsNullOrEmpty(criticalCareImages))
         {
-            var images = docImages.Split(' ');
+            var images = criticalCareImages.Split(' ');
             try
             {
                 foreach (var item in images)
@@ -190,10 +171,10 @@ public partial class Doctor : System.Web.UI.Page
                         }
 
                     }
-                }              
+                }                
                 response.Data = files;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 response.IsSuccess = false;
                 response.Message = e.Message;
