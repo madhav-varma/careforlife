@@ -113,9 +113,7 @@
                             var response = JSON.parse(data);
                             if (!response.IsSuccess) {
                                 alert(response.Message);
-                            }
-                            else {
-                                this.defaultOptions.error(file, response.Message);
+                                this.defaultOptions.error(file, response.Message);                              
                             }
                         },
                         error: function (file, error) {
