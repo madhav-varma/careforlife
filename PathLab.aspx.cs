@@ -13,59 +13,41 @@ public partial class PathLab : System.Web.UI.Page
     public string msg = "";
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        var cities = new MasterDataManager().GetAvailableCities();
+        foreach (var c in cities)
+        {
+            city.Items.Add(new ListItem(c.Value, c.Id));
+        }
     }
-    protected void SubmitDoctor(object sender, EventArgs e)
+    protected void SubmitPathLab(object sender, EventArgs e)
     {
         try
         {
-            var doc = new DoctorModel();
+            var pathLab = new PathLabModel();
 
-            doc.City = int.Parse(city.Value);
-            doc.Degree = degree.Value;
-            doc.Experience = experience.Value;
-            doc.IsSpecial = true;
-            doc.Mobile = telephone.Value;
+            pathLab.City = int.Parse(city.Value);
+            pathLab.Email = email.Value;
+            pathLab.Mobile = mobile.Value;
+            pathLab.Address = address.Value;
+            pathLab.Timing = timingFrom.Value + " to " + timingTo.Value;
+            pathLab.OpeningYear = opening_year.Value;
 
-            var servicesKeys = Request.Form.AllKeys.Where(x => x.Contains("services")).ToList();
-            var services = new List<string>();
-            foreach (var key in servicesKeys)
+            pathLab.Name = lab_name.Value;
+            pathLab.IsActive = true;
+            pathLab.Created = DateTime.UtcNow.AddHours(5).AddMinutes(30);
+
+            var sqlQuery = new Helper().GetInsertQuery<PathLabModel>(pathLab);
+            if (!string.IsNullOrWhiteSpace(path_lab_id.Value))
             {
-                services.Add(Request.Form[key]);
-            }
-            doc.Services = string.Join("\n", services);
-
-            var locations = new List<string>();
-            var hospitalKeys = Request.Form.AllKeys.Where(x => x.Contains("hospital")).ToList();
-            foreach (var key in hospitalKeys)
-            {
-                var i = key.Replace("hospital", "");
-                var hospital = Request.Form["hospital" + i];
-                var address = Request.Form["address" + i];
-                var from = Request.Form["timingFrom" + i];
-                var to = Request.Form["timingTo" + i];
-
-                var timing = "{" + string.Format("\"hospital\":\"{0}\", \"Address\":\"{1}\", \"timing\":\"{2} - {3}\"", hospital, address, from, to) + "}";
-                locations.Add(timing);
+                pathLab.Id = int.Parse(path_lab_id.Value);
+                sqlQuery = new Helper().GetUpdateQuery<PathLabModel>(pathLab);
             }
 
-            doc.Timing = "[" + string.Join(",", locations) + "]";
-            doc.Services = string.Join(" ", services);
-
-            doc.Speciality = int.Parse(speciality.Value);
-            doc.Tagline = tagline.Value;
-            doc.Name = name.Value;
-
-            doc.Created = DateTime.UtcNow.AddHours(5).AddMinutes(30);
-
-            var insertQuery = new Helper().GetInsertQuery<DoctorModel>(doc);
-
-
-            var dam = new DataAccessManager().ExecuteInsertUpdateQuery(insertQuery);
+            var dam = new DataAccessManager().ExecuteInsertUpdateQuery(sqlQuery);
             if (dam)
             {
-                msg = "Doctor Added Successfully!";
-                Response.Redirect("Doctor", true);
+                msg = "PathLab Added Successfully!";
+                Response.Redirect("PathLab", true);
             }
         }
         catch (Exception ex)
@@ -74,13 +56,14 @@ public partial class PathLab : System.Web.UI.Page
             action.Value = msg;
         }
     }
+
     [WebMethod(EnableSession = true)]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static object GetDoctors(DataTableAjaxPostModel model)
+    public static object GetPathLabs(DataTableAjaxPostModel model)
     {
-        var cols = new List<string>() { "a.modified", "LOWER(TRIM(CONCAT(a.last_name, ' ', a.first_name, ' ', a.middle_name)))", "a.email", "a.mobile", "a.aadhar_card", "t.status" };
+        var cols = new List<string>() { "LOWER(TRIM(pm.lab_name))", "LOWER(TRIM(pm.email_id))", "LOWER(TRIM(pm.contact_no))", "LOWER(TRIM(pm.year_of_opening))", "LOWER(TRIM(pm.timings))", "LOWER(TRIM(cm.city_name))" };
         // Initialization.    
-        DataTableData<DoctorModel> result = new DataTableData<DoctorModel>();
+        DataTableData<PathLabModel> result = new DataTableData<PathLabModel>();
         try
         {
             // Initialization.                
@@ -92,7 +75,7 @@ public partial class PathLab : System.Web.UI.Page
             foreach (var o in model.order)
             {
                 var columnName = cols[o.column];
-                c_order = string.IsNullOrWhiteSpace(c_order) ? columnName + " " + o.dir : ", " + columnName + " " + o.dir;
+                c_order += string.IsNullOrWhiteSpace(c_order) ? columnName + " " + o.dir : ", " + columnName + " " + o.dir;
 
             }
             if (!string.IsNullOrWhiteSpace(c_order))
@@ -107,26 +90,23 @@ public partial class PathLab : System.Web.UI.Page
                 {
                     var i = model.columns.IndexOf(s);
                     var columnName = cols[i];
-                    c_search = i == 1 ? " and " + columnName + " like '%" + s.search.value.Trim().ToLower() + "%'" : " and " + columnName + " like '%" + s.search.value + "%'";
+                    c_search += i == 1 ? " and " + columnName + " like '%" + s.search.value.Trim().ToLower() + "%'" : " and " + columnName + " like '%" + s.search.value + "%'";
                 }
             }
-            var q = "select t.*, a.aadhar_card, a.id, a.email, a.first_name, a.middle_name, a.last_name, a.alt_fname, a.alt_mname, a.alt_lname, a.mobile, a.modified, a.post_applied from applicant a, transaction_details t where a.id=t.applicant_id " + c_search + c_order + " limit " + pageSize + " offset " + startRec;
-            var countq = "select count(*) from applicant a, transaction_details t where a.id=t.applicant_id " + c_search + c_order;
+            var pathLabs = new PathLabManager().GetAllPathLabPaginated(startRec, pageSize, c_order, c_search);
 
-            var docs = new DoctorManager().GetAllDoctorsPaginated(startRec, pageSize, c_order, c_search);
-
-            var doclist = docs.Data;
-            foreach (var doc in doclist)
+            var pathLabList = pathLabs.Data;
+            foreach (var pathLab in pathLabList)
             {
-                doc.Link = "<a href='javascript:void(0);' style='margin-right:10px' class='edit-doc' data-id='" + doc.Id + "'>Edit</a><a href='javascript:void(0);' class='add-doc-images' data-id='" + doc.Id + "'>Add Images</a>";
+                pathLab.Link = "<a href='javascript:void(0);' style='margin-right:10px' class='edit-pathlab' data-id='" + pathLab.Id + "'>Edit</a><a href='javascript:void(0);' class='add-pathlab-images' data-id='" + pathLab.Id + "'>Add Images</a>";
             }
 
-            int recFilter = docs.Data.Count;
+            int recFilter = pathLabs.Data.Count;
 
             result.draw = Convert.ToInt32(draw);
-            result.recordsTotal = docs.TotalCount;
-            result.recordsFiltered = docs.TotalCount;
-            result.data = doclist;
+            result.recordsTotal = pathLabs.TotalCount;
+            result.recordsFiltered = pathLabs.TotalCount;
+            result.data = pathLabList;
         }
         catch (Exception ex)
         {
@@ -139,10 +119,10 @@ public partial class PathLab : System.Web.UI.Page
 
     [WebMethod(EnableSession = true)]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
-    public static object GetDoctorById(string id)
+    public static object GetPathLabById(string id)
     {
-        var doc = new DoctorManager().GetDoctorById(id);
-        return doc;
+        var pathLab = new PathLabManager().GetPathLabById(id);
+        return pathLab;
     }
 
     [WebMethod(EnableSession = true)]
@@ -150,36 +130,44 @@ public partial class PathLab : System.Web.UI.Page
     public static object GetImagesById(string id)
     {
         var files = new List<FileInfoModel>();
-        var doc = new DoctorManager().GetDoctorImagesById(id);
+        var pathLab = new PathLabManager().GetPathLabImagesById(id);
 
-        if (!string.IsNullOrEmpty(doc))
+        var response = new JsonResponse() { IsSuccess = false, Message = "Error while getting images." };
+
+        if (!string.IsNullOrEmpty(pathLab))
         {
-            var images = doc.Split(' ');
-            foreach (var item in images)
+            try
             {
-                if (!string.IsNullOrEmpty(item))
+                var images = pathLab.Split(' ');
+                foreach (var item in images)
                 {
-                    string absFile = HttpContext.Current.Server.MapPath("/photo/" + item);
-                    //var f = File.Open(absFile, FileMode.Open);
-                    var fs = new FileStream(absFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                    using (var sr = new StreamReader(fs))
+                    if (!string.IsNullOrEmpty(item))
                     {
-                        var size = fs.Length;
-                        files.Add(new FileInfoModel()
+                        string absFile = HttpContext.Current.Server.MapPath("/photo/" + item);
+                        //var f = File.Open(absFile, FileMode.Open);
+                        var fs = new FileStream(absFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                        using (var sr = new StreamReader(fs))
                         {
-                            Name = item,
-                            Size = size.ToString(),
-                            Type = "image"
-                        });
+                            var size = fs.Length;
+                            files.Add(new FileInfoModel()
+                            {
+                                Name = item,
+                                Size = size.ToString(),
+                                Type = "image"
+                            });
+                        }
                     }
-
                 }
+                response.IsSuccess = true;
+                response.Message = "Files found successfully";
+                response.Data = files;
             }
-
-
+            catch (Exception e)
+            {
+                response.Message = e.Message;
+            }
         }
-
-        return files;
+        return response;
     }
 
     [WebMethod(EnableSession = true)]
@@ -187,11 +175,11 @@ public partial class PathLab : System.Web.UI.Page
     public static object UploadImagesById(string id)
     {
         var files = new List<FileInfoModel>();
-        var doc = new DoctorManager().GetDoctorImagesById(id);
+        var pathLab = new PathLabManager().GetPathLabImagesById(id);
 
-        if (!string.IsNullOrEmpty(doc))
+        if (!string.IsNullOrEmpty(pathLab))
         {
-            var images = doc.Split(' ');
+            var images = pathLab.Split(' ');
             foreach (var item in images)
             {
                 if (!string.IsNullOrEmpty(item))

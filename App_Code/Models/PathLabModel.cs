@@ -36,7 +36,7 @@ public class PathLabModel
     [DisplayName("address")]
     public string Address { get; set; }
     [DisplayName("is_active")]
-    public bool IsSpecial { get; set; }
+    public bool IsActive { get; set; }
     [DisplayName("year_of_opening")]
     public string OpeningYear { get; set; }
     [DisplayName("created_on")]
