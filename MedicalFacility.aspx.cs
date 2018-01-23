@@ -12,6 +12,9 @@ public partial class MedicalFacility : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        SessionManager.ValidateSession(Session, Response);
+        var user = (UserModel)Session["user"];
+
         var cities = new MasterDataManager().GetAvailableCities();
         foreach (var c in cities)
         {

@@ -71,10 +71,10 @@
                     $("#MainContent_timingFrom").val(t[0]);
                     $("#MainContent_timingTo").val(t[1]);
                 }
-                $("#MainContent_opening_year").val(pathLab.OpeningYear);
-                $("#MainContent_email").val(pathLab.Email);
-                $("#MainContent_mobile").val(pathLab.Mobile);
-                $("#MainContent_city").val(pathLab.City);
+                $("#MainContent_opening_year").val(bloodBank.OpeningYear);
+                $("#MainContent_email").val(bloodBank.Email);
+                $("#MainContent_mobile").val(bloodBank.Mobile);
+                $("#MainContent_city").val(bloodBank.City);
 
             }
         });
@@ -114,9 +114,9 @@
                             }
                         },
                         error: function (file, error) {
-                            debugger
+                            var msg = file.accepted ? "File not uploaded" : error;
                             var msgEl = $(file.previewElement).find('.dz-error-message');
-                            msgEl.text("File not uploaded");
+                            msgEl.text(msg);
                             msgEl.show();
                             msgEl.css("opacity", 1);
                         },
@@ -130,13 +130,21 @@
                             this.on("sending", function (file, xhr, data) {
                                 var bloodbankid = $("#bb_id").val();
                                 data.append("id", bloodbankid);
-                                var files = this.getAcceptedFiles();
-                                var fnames = [];
+                                
+                                var files = this.files;
+                                var rejectedFiles = this.getRejectedFiles();
+                                if (rejectedFiles.length > 0) {
+                                    $.each(rejectedFiles, function (i, f) {
+                                        files.splice(files.indexOf(f), 1);
+                                    });
+                                }                                
+                                var fcnames = [];
                                 $.each(files, function (i, file) {
-                                    fnames.push(bloodbankid + "_" + file.name.replace(/\s+/g, ""));
-                                });
-                                if (fnames.length > 0) {
-                                    data.append("fnames", fnames.join(" "));
+                                    fcnames.push(bloodbankid + "_" + file.name.replace(/\s+/g, ""));
+                                });                                
+                                
+                                if (fcnames.length > 0) {
+                                    data.append("fnames", fcnames.join(" "));
                                 }
                             });
                         }
@@ -166,7 +174,22 @@
 
                     $('#uploadImages').click(function () {
                         // myDropzone.options.url = "Doctor.aspx/UploadImagesById?id=" + id;
-                        myDropzone.processQueue();
+                       // myDropzone.processQueue();
+                        if (myDropzone.getQueuedFiles().length > 0) {
+                            myDropzone.processQueue();
+                        }
+                        else {
+                            // Upload anyway without files
+                            var files = myDropzone.files;
+                            var rejectedFiles = myDropzone.getRejectedFiles();
+                            if (rejectedFiles.length > 0) {
+                                $.each(rejectedFiles, function (i, f) {
+                                    files.splice(files.indexOf(f), 1);
+                                });
+                            }
+                            if (files > 0)
+                                myDropzone.uploadFiles(myDropzone.files);
+                        }
                     });
 
                     $("#exampleModal").modal("show");

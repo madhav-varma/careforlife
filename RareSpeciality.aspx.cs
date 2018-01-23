@@ -13,6 +13,9 @@ public partial class RareSpeciality : System.Web.UI.Page
     public string msg = "";
     protected void Page_Load(object sender, EventArgs e)
     {
+        SessionManager.ValidateSession(Session, Response);
+        var user = (UserModel)Session["user"];
+
         var cities = new MasterDataManager().GetAvailableCities();
         foreach (var c in cities)
         {
@@ -159,7 +162,7 @@ public partial class RareSpeciality : System.Web.UI.Page
         var files = new List<FileInfoModel>();
         var rareImages = new RareSpecialityManager().GetRareSpecialityImagesById(id);
 
-        var response = new JsonResponse() { IsSuccess = false, Message = "Files found successfully.", Data = files };
+        var response = new JsonResponse() { IsSuccess = true, Message = "Files found successfully.", Data = files };
 
         if (!string.IsNullOrEmpty(rareImages))
         {

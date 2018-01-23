@@ -1,5 +1,7 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Care4LifeMaster.Master" AutoEventWireup="true" CodeFile="RareSpeciality.aspx.cs" Inherits="RareSpeciality" %>
-
+<asp:Content ID="Content1" ContentPlaceHolderID="cphPageJs" runat="server">
+     <script src="Scripts/rarespeciality.js"></script>
+</asp:Content>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <div class="right_col" role="main">

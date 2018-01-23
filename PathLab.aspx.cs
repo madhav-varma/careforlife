@@ -13,6 +13,9 @@ public partial class PathLab : System.Web.UI.Page
     public string msg = "";
     protected void Page_Load(object sender, EventArgs e)
     {
+        SessionManager.ValidateSession(Session, Response);
+        var user = (UserModel)Session["user"];
+
         var cities = new MasterDataManager().GetAvailableCities();
         foreach (var c in cities)
         {

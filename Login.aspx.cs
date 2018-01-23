@@ -11,4 +11,16 @@ public partial class Login : System.Web.UI.Page
     {
 
     }
+    protected void ValidateUser(object sender, EventArgs e)
+    {
+        var uname = username.Value;
+        var pass = password.Value;
+
+        var isValidUser = new MasterDataManager().ValidateUser(uname, pass);
+
+        if (isValidUser)
+        {
+            SessionManager.StartSession(Session, Response, uname);
+        }
+    }
 }

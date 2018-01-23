@@ -13,6 +13,9 @@ public partial class BloodBank : System.Web.UI.Page
     public string msg = "";
     protected void Page_Load(object sender, EventArgs e)
     {
+        SessionManager.ValidateSession(Session, Response);
+        var user = (UserModel)Session["user"];
+
         var cities = new MasterDataManager().GetAvailableCities();
         foreach (var c in cities)
         {
@@ -133,7 +136,7 @@ public partial class BloodBank : System.Web.UI.Page
         var files = new List<FileInfoModel>();
         var bloodBank = new BloodBankManager().GetBloodBankImagesById(id);
 
-        var response = new JsonResponse() { IsSuccess = false, Message = "Error while getting images." };
+        var response = new JsonResponse() { IsSuccess = true, Message = "Files found successfully.", Data = files };
 
         if (!string.IsNullOrEmpty(bloodBank))
         {
@@ -158,13 +161,12 @@ public partial class BloodBank : System.Web.UI.Page
                             });
                         }
                     }
-                }
-                response.IsSuccess = true;
-                response.Message = "Files found successfully";
+                }                
                 response.Data = files;
             }
             catch (Exception e)
             {
+                response.IsSuccess = false;
                 response.Message = e.Message;
             }
         }

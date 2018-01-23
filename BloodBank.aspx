@@ -8,7 +8,7 @@
 
             <div id="exTab1" class="container">
                 <ul class="nav nav-tabs">
-                    <li id="bloodbankeditli" class="active"><a href="#bloodbanklabedit" data-toggle="tab">Add/Update</a>
+                    <li id="bloodbankeditli" class="active"><a href="#bloodbankedit" data-toggle="tab">Add/Update</a>
                     </li>
                     <li id="bloodbanklistli">
                         <a href="#bloodbanklist" data-toggle="tab">List</a>
@@ -21,7 +21,7 @@
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="x_panel" style="border-top: 0">
                                     <div class="x_content">
-                                        <table id="bloodblanklist_table" class="table table-striped table-bordered" style="width: 100%">
+                                        <table id="bloodbanklist_table" class="table table-striped table-bordered" style="width: 100%">
                                             <thead>
                                                 <tr>
                                                     <th>BloodBank Name</th>
@@ -169,7 +169,7 @@
                 </div>
                 <div class="modal-body">
                     <form class="dropzone" id="my-dropzone">
-                        <input type="hidden" id="pl_id" />
+                        <input type="hidden" id="bb_id" />
                     </form>
                 </div>
                 <div class="modal-footer">

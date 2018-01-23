@@ -13,6 +13,9 @@ public partial class Doctor : System.Web.UI.Page
     public string msg = "";
     protected void Page_Load(object sender, EventArgs e)
     {
+        SessionManager.ValidateSession(Session, Response);
+        var user = (UserModel)Session["user"];
+
         var specialities = new MasterDataManager().GetAvailableSpecialities();
         foreach (var sp in specialities)
         {
@@ -165,7 +168,7 @@ public partial class Doctor : System.Web.UI.Page
         var files = new List<FileInfoModel>();
         var docImages = new DoctorManager().GetDoctorImagesById(id);
 
-        var response = new JsonResponse() { IsSuccess = false, Message= "Files found successfully.", Data = files };
+        var response = new JsonResponse() { IsSuccess = true, Message= "Files found successfully.", Data = files };
 
         if (!string.IsNullOrEmpty(docImages))
         {

@@ -41,7 +41,64 @@ public class MasterDataManager
         }
         return options;
     }
-   
+
+    public bool ValidateUser(string username, string password)
+    {
+        var query = "SELECT count(*) as count FROM user_master where email_id='" + username + "' and password='" + password + "'";
+        var count = new DataAccessManager().ExecuteScalar(query);
+
+        if (count != null)
+            return int.Parse(count.ToString()) > 0;
+        else
+            return false;
+    }
+
+    public UserModel GetUser(string username)
+    {
+        var user = new UserModel();
+
+        var query = "SELECT u.* FROM user_master u where u.email_id='" + username + "'";
+        var rows = new DataAccessManager().ExecuteSelectQuery(query);
+        if (rows != null && rows.Count > 0)
+        {
+            var r = rows[0];
+
+            var props = typeof(UserModel).GetProperties();
+
+            foreach (var prop in props)
+            {
+                var ignore = Attribute.IsDefined(prop, typeof(IgnoreUpdate));
+                if (!ignore)
+                {
+                    var attribute = prop.GetCustomAttributes(typeof(DisplayNameAttribute), true).Cast<DisplayNameAttribute>().Single();
+                    string displayName = attribute.DisplayName;
+
+                    var value = r[displayName];
+                    var pType = prop.PropertyType;
+                    object v = null;
+                    if (pType == typeof(bool))
+                    {
+                        v = value.ToString() == "y";
+                    }
+                    else
+                    {
+                        v = value == null ? null : value;
+                    }
+
+                    var variable = prop.SetMethod;
+
+                    if (!r.IsNull(displayName))
+                    {
+                        variable.Invoke(user, new object[] { v });
+                    }
+
+                }
+            }
+            return user;
+        }
+        return null;
+    }
+
     public MasterDataManager()
     {
         //

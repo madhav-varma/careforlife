@@ -192,13 +192,21 @@
                             this.on("sending", function (file, xhr, data) {
                                 var ccid = $("#cc_dz_id").val();
                                 data.append("id", ccid);
-                                var files = this.getAcceptedFiles();
-                                var fnames = [];
+
+                                var files = this.files;
+                                var rejectedFiles = this.getRejectedFiles();
+                                if (rejectedFiles.length > 0) {
+                                    $.each(rejectedFiles, function (i, f) {
+                                        files.splice(files.indexOf(f), 1);
+                                    });
+                                }
+                                var fcnames = [];
                                 $.each(files, function (i, file) {
-                                    fnames.push(ccid + "_" + file.name.replace(/\s+/g, ""));
+                                    fcnames.push(ccid + "_" + file.name.replace(/\s+/g, ""));
                                 });
-                                if (fnames.length > 0) {
-                                    data.append("fnames", fnames.join(" "));
+
+                                if (fcnames.length > 0) {
+                                    data.append("fnames", fcnames.join(" "));
                                 }
                             });
                         }
@@ -228,7 +236,21 @@
 
                     $('#uploadImages').click(function () {
                         // myDropzone.options.url = "Doctor.aspx/UploadImagesById?id=" + id;
-                        myDropzone.processQueue();
+                        if (myDropzone.getQueuedFiles().length > 0) {
+                            myDropzone.processQueue();
+                        }
+                        else {
+                            // Upload anyway without files
+                            var files = myDropzone.files;
+                            var rejectedFiles = myDropzone.getRejectedFiles();
+                            if (rejectedFiles.length > 0) {
+                                $.each(rejectedFiles, function (i, f) {
+                                    files.splice(files.indexOf(f), 1);
+                                });
+                            }
+                            if (files > 0)
+                                myDropzone.uploadFiles(myDropzone.files);
+                        }
                     });
 
                     $("#exampleModal").modal("show");
