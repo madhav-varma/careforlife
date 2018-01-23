@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Care4LifeMaster.Master" AutoEventWireup="true" CodeFile="PathLab.aspx.cs" Inherits="PathLab" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Care4LifeMaster.Master" AutoEventWireup="true" CodeFile="BloodBank.aspx.cs" Inherits="BloodBank" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -8,23 +8,23 @@
 
             <div id="exTab1" class="container">
                 <ul class="nav nav-tabs">
-                    <li id="pathlabeditli" class="active"><a href="#pathlabedit" data-toggle="tab">Add/Update</a>
+                    <li id="bloodbankeditli" class="active"><a href="#bloodbanklabedit" data-toggle="tab">Add/Update</a>
                     </li>
-                    <li id="pathlablistli">
-                        <a href="#pathlablist" data-toggle="tab">List</a>
+                    <li id="bloodbanklistli">
+                        <a href="#bloodbanklist" data-toggle="tab">List</a>
                     </li>
                 </ul>
 
                 <div class="tab-content clearfix">
-                    <div class="tab-pane" id="pathlablist">
+                    <div class="tab-pane" id="bloodbanklist">
                         <div class="row">
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="x_panel" style="border-top: 0">
                                     <div class="x_content">
-                                        <table id="pathlablist_table" class="table table-striped table-bordered" style="width: 100%">
+                                        <table id="bloodblanklist_table" class="table table-striped table-bordered" style="width: 100%">
                                             <thead>
                                                 <tr>
-                                                    <th>Lab Name</th>
+                                                    <th>BloodBank Name</th>
                                                     <th>Email Id</th>
                                                     <th>Mobile</th>
                                                     <th>Year Of Opening</th>
@@ -35,7 +35,7 @@
                                             </thead>
                                             <tfoot>
                                                 <tr>
-                                                    <th style="width: 10%">Lab Name</th>
+                                                    <th style="width: 10%">BloodBank Name</th>
                                                     <th>Email Id</th>
                                                     <th style="width: 25%">Mobile</th>
                                                     <th>Year Of Opening</th>
@@ -50,25 +50,25 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane active" id="pathlabedit">
+                    <div class="tab-pane active" id="bloodbankedit">
                         <div class="row">
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="x_panel" style="border-top: 0">
                                     <div class="x_content">
-                                        <form runat="server" id="pathlabform" method="post">
-                                            <input type="hidden" runat="server" id="path_lab_id">
+                                        <form runat="server" id="bloodbankform" method="post">
+                                            <input type="hidden" runat="server" id="blood_bank_id">
                                             <div class="row item form-group">
                                                 <span class="section" style="padding-bottom: 10px">Basic Info
-                                                    <button runat="server" id="send" type="submit" onserverclick="SubmitPathLab" class="pull-right btn btn-success">Save</button>
+                                                    <button runat="server" id="send" type="submit" onserverclick="SubmitBloodBank" class="pull-right btn btn-success">Save</button>
                                                     
                                                 </span>
 
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="lab_name">
-                                                    Lab Name <span class="required">*</span>
+                                                    BloodBank Name <span class="required">*</span>
                                                 </label>
 
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <input runat="server" id="lab_name" class="form-control col-md-7 col-xs-12" name="lab_name" placeholder="Lab Name" required="required" type="text">
+                                                    <input runat="server" id="blood_bank_name" class="form-control col-md-7 col-xs-12" name="lab_name" placeholder="Lab Name" required="required" type="text">
                                                 </div>
 
                                             </div>
