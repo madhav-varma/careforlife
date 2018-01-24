@@ -1,3 +1,6 @@
+label.error{
+    color:red;
+}
 .dataTables_paginate .pagination{
     margin:0;
 }

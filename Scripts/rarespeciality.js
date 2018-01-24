@@ -284,5 +284,11 @@
             }
         });
     });
+    $(document).on("click", "#saveRS", function () {
+        var valid = $("#rsform").valid();
+        if (valid) {
+            $("#MainContent_sendRS").trigger("click");
+        }
+    });
 });
 

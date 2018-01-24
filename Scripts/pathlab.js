@@ -216,5 +216,11 @@
             }
         });
     });
+    $(document).on("click", "#savePL", function () {
+        var valid = $("#pathlabform").valid();
+        if (valid) {
+            $("#MainContent_sendPL").trigger("click");
+        }
+    });
 });
 

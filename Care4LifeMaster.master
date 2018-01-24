@@ -54,7 +54,7 @@
                         </div>
                         <div class="profile_info">
                             <span>Welcome,</span>
-                            <h2>Aashay Karekar</h2>
+                            <h2 runat="server" id="username_head"></h2>
                         </div>
                     </div>
                     <!-- /menu profile quick info -->
@@ -90,11 +90,11 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="photo/LOGO.png" alt="">Aashay Karekar
+                                    <img src="photo/LOGO.png" alt=""><span runat="server" id="username_dd"></span>
                                         <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                    <li><a href="javascript:;">Profile</a></li>                                    
+                                    <li class="hidden"><a href="javascript:;">Profile</a></li>                                    
                                     <li><a href="Logout.aspx"><i class="fa fa-sign-out pull-right"></i>Log Out</a></li>
                                 </ul>
                             </li>
@@ -191,16 +191,13 @@
     <!-- NProgress -->
     <script src="../vendors/nprogress/nprogress.js"></script>
     <!-- validator -->
-    <script src="../vendors/validator/validator.js"></script>
+    <%--<script src="../vendors/validator/validator.js"></script>--%>
 
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.js"></script>
      <asp:ContentPlaceHolder ID="cphPageJs" runat="server">
     </asp:ContentPlaceHolder>
-    <script src="Scripts/medicalfacility.js"></script>
-    <script src="Scripts/criticalcare.js"></script>
-    <script src="Scripts/bloodbank.js"></script>
-    <script src="Scripts/pathlab.js"></script>
+ 
    
     
     <!-- bootstrap-daterangepicker -->
@@ -239,5 +236,7 @@
     <script src="Scripts/jquery.repeater.min.js"></script>
     <script src="../vendors/dropzone/dist/dropzone.js"></script>
     <script src="Scripts/jquery.tmpl.js"></script>
+     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </body>
 </html>

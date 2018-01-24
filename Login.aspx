@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Aaple Bazar </title>
+    <title>Care For Life! | </title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -34,7 +34,7 @@
           <section class="login_content">
             <form id="login_form" method="post" runat="server">
                <div>
-                  <h1><img src="images/logo_old.png" style="width:100%" /></h1>                  
+                  <h1><img src="photo/LOGO.png" style="width:100%" /></h1>                  
                 </div>
               <div>
                 <input type="text" class="form-control" placeholder="Username" id="username" runat="server" required="" />

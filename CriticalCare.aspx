@@ -1,5 +1,9 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Care4LifeMaster.master" CodeFile="CriticalCare.aspx.cs" Inherits="CriticalCare" %>
+<%@ MasterType VirtualPath="~/Care4LifeMaster.Master" %>
 
+<asp:Content ID="Content1" ContentPlaceHolderID="cphPageJs" runat="server">
+    <script src="Scripts/criticalcare.js"></script>
+</asp:Content>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <div class="right_col" role="main">
@@ -55,7 +59,9 @@
                                             <input type="hidden" runat="server" id="cc_id">
                                             <div class="row item form-group">
                                                 <span class="section" style="padding-bottom: 10px">Basic Info
-                                                    <button runat="server" id="send" type="submit" onserverclick="SubmitCriticalCare" class="pull-right btn btn-success">Save</button></span>
+                                                    <button runat="server" id="sendCC" type="submit" onserverclick="SubmitCriticalCare" class="hidden pull-right btn btn-success">Save</button>
+                                                    <input id="saveCC" type="button" class="pull-right btn btn-success" value="Save" />
+                                                </span>
 
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
                                                     Hospital Name <span class="required">*</span>
@@ -89,7 +95,7 @@
                                                     Mobile Number <span class="required">*</span>
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <input type="tel" runat="server" id="mobile" name="mobile" required="required" placeholder="Mobile" class="form-control col-md-7 col-xs-12">
+                                                    <input type="tel" data-rule-number="true" data-rule-minlength="10" data-rule-maxlength="10" runat="server" id="mobile" name="mobile" required="required" placeholder="Mobile" class="form-control col-md-7 col-xs-12">
                                                 </div>
                                             </div>
 
@@ -97,10 +103,10 @@
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">City</label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                     <select id="city" runat="server" required="required" class="select2_group form-control">
-                                                        <option>Select City</option>
+                                                        <option value="">Select City</option>
                                                     </select>
                                                 </div>
-                                            </div>                                           
+                                            </div>
 
                                             <div class=" row item form-group">
                                                 <span class="section">Available Services                                                    
@@ -158,7 +164,7 @@
             <label class="col-sm-3 control-label">Services</label>
             <div class="col-sm-6 ">
                 <div class="input-group" style="width: 100%">
-                    <input value="${service}" placeholder="Services" type="text" class="form-control" id="service${index}" name="service${index}">
+                    <input value="${service}" required="required" placeholder="Services" type="text" class="form-control" id="service${index}" name="service${index}">
                     {{if index > 0}}
                 <span class="input-group-btn">
                     <button type="button" value="Clone it" class="del-services btn btn-danger"><i class="fa fa-minus"></i></button>
@@ -174,7 +180,7 @@
             <label class="col-sm-3 control-label">Speciality</label>
             <div class="col-sm-6 ">
                 <div class="input-group" style="width: 100%">
-                    <input value="${speciality}" placeholder="Speciality" type="text" class="form-control" id="speciality${index}" name="speciality${index}">
+                    <input value="${speciality}" required="required" placeholder="Speciality" type="text" class="form-control" id="speciality${index}" name="speciality${index}">
                     {{if index > 0}}
                 <span class="input-group-btn">
                     <button type="button" value="Clone it" class="del-specialities btn btn-danger"><i class="fa fa-minus"></i></button>

@@ -15,6 +15,9 @@ public partial class CriticalCare : System.Web.UI.Page
         SessionManager.ValidateSession(Session, Response);
         var user = (UserModel)Session["user"];
 
+        this.Master.UsernameHead = user.FullName;
+        this.Master.UsernameDD = user.FullName;
+
         var cities = new MasterDataManager().GetAvailableCities();
         foreach (var c in cities)
         {

@@ -215,5 +215,11 @@
             }
         });
     });
+    $(document).on("click", "#saveBB", function () {
+        var valid = $("#bloodbankform").valid();
+        if (valid) {
+            $("#MainContent_sendBB").trigger("click");
+        }
+    });
 });
 

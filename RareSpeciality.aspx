@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Care4LifeMaster.Master" AutoEventWireup="true" CodeFile="RareSpeciality.aspx.cs" Inherits="RareSpeciality" %>
+<%@ MasterType VirtualPath="~/Care4LifeMaster.Master" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="cphPageJs" runat="server">
      <script src="Scripts/rarespeciality.js"></script>
 </asp:Content>
@@ -51,10 +52,13 @@
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="x_panel" style="border-top: 0">
                                     <div class="x_content">
-                                        <form runat="server" id="docform" method="post">
+                                        <form runat="server" id="rsform" method="post">
                                             <input type="hidden" runat="server" id="rare_speciality_id">
                                             <div class="row item form-group">
-                                                <span class="section" style="padding-bottom:10px">Basic Info<button runat="server" id="send" type="submit" onserverclick="SubmitRareSpeciality" class="pull-right btn btn-success">Save</button> </span>
+                                                <span class="section" style="padding-bottom:10px">Basic Info
+                                                    <button runat="server" id="sendRS" type="submit" onserverclick="SubmitRareSpeciality" class="hidden pull-right btn btn-success">Save</button> 
+                                                    <input id="saveRS" type="button" class="pull-right btn btn-success" value="Save" /> 
+                                                </span>
                                                 
                                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
                                                         Doctor Name <span class="required">*</span>
@@ -82,7 +86,7 @@
                                                     Mobile Number <span class="required">*</span>
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <input type="tel" runat="server" id="mobile" name="mobile" required="required" placeholder="Mobile" class="form-control col-md-7 col-xs-12">
+                                                    <input type="tel" data-rule-number="true" data-rule-minlength="10" data-rule-maxlength="10" runat="server" id="mobile" name="mobile" required="required" placeholder="Mobile" class="form-control col-md-7 col-xs-12">
                                                 </div>
                                             </div>
 
@@ -91,7 +95,7 @@
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">City</label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                     <select id="city" runat="server" required="required" class="select2_group form-control">
-                                                        <option>Select City</option>
+                                                        <option value="">Select City</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -179,14 +183,14 @@
                 <div class="col-md-3 col-sm-3 col-xs-12">
                     <div class="form-group">
                         <div class='input-group date' style="width: 100%">
-                            <input id="timingFrom${index}" value="${timingFrom}" name="timingFrom${index}" placeholder="From e.g. 10 AM" type='text' class="form-control" />
+                            <input id="timingFrom${index}" value="${timingFrom}" required="required" name="timingFrom${index}" placeholder="From e.g. 10 AM" type='text' class="form-control" />
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-12">
                     <div class="form-group">
                         <div class='input-group date' style="width: 100%">
-                            <input id="timingTo${index}" value="${timingTo}" name="timingTo${index}" placeholder="To e.g. 2 PM" type='text' class="form-control" />
+                            <input id="timingTo${index}" value="${timingTo}" required="required" name="timingTo${index}" placeholder="To e.g. 2 PM" type='text' class="form-control" />
                         </div>
                     </div>
                 </div>
@@ -199,7 +203,7 @@
             <label class="col-sm-3 control-label">Specialities</label>
             <div class="col-sm-6 ">
                 <div id="Container" class="input-group" style="width: 100%">
-                    <input value="${service}" placeholder="Services" type="text" class="form-control" id="service${index}" name="service${index}">
+                    <input value="${service}" required="required" placeholder="Services" type="text" class="form-control" id="service${index}" name="service${index}">
                     {{if index > 0}}
                 <span class="input-group-btn">
                     <button type="button" value="Clone it" class="del-services btn btn-danger"><i class="fa fa-minus"></i></button>

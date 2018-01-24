@@ -291,5 +291,11 @@
             }
         });
     });
+    $(document).on("click", "#saveDoc", function () {
+        var valid = $("#docform").valid();
+        if (valid) {
+            $("#MainContent_sendDoc").trigger("click");
+        }
+    });
 });
 

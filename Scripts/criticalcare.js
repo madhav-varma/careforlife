@@ -276,5 +276,11 @@
             }
         });
     });
+    $(document).on("click", "#saveCC", function () {
+        var valid = $("#ccform").valid();
+        if (valid) {
+            $("#MainContent_sendCC").trigger("click");
+        }
+    });
 });
 

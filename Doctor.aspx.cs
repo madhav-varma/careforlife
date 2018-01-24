@@ -16,6 +16,9 @@ public partial class Doctor : System.Web.UI.Page
         SessionManager.ValidateSession(Session, Response);
         var user = (UserModel)Session["user"];
 
+        this.Master.UsernameHead = user.FullName;
+        this.Master.UsernameDD = user.FullName;
+
         var specialities = new MasterDataManager().GetAvailableSpecialities();
         foreach (var sp in specialities)
         {

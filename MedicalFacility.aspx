@@ -1,5 +1,9 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Care4LifeMaster.master" CodeFile="MedicalFacility.aspx.cs" Inherits="MedicalFacility" %>
+<%@ MasterType VirtualPath="~/Care4LifeMaster.Master" %>
 
+<asp:Content ID="Content1" ContentPlaceHolderID="cphPageJs" runat="server">
+    <script src="Scripts/medicalfacility.js"></script>
+</asp:Content>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <div class="right_col" role="main">
@@ -24,8 +28,8 @@
                                                 <tr>
                                                     <th>Name</th>
                                                     <th>Address</th>
-                                                    <th>Email</th>                                                    
-                                                    <th>Mobile</th>                                                    
+                                                    <th>Email</th>
+                                                    <th>Mobile</th>
                                                     <th>City</th>
                                                     <th>Actions</th>
                                                 </tr>
@@ -34,8 +38,8 @@
                                                 <tr>
                                                     <th style="width: 10%">Name</th>
                                                     <th>Address</th>
-                                                    <th>Email</th>                                                    
-                                                    <th style="width: 25%">Mobile</th>                                                    
+                                                    <th>Email</th>
+                                                    <th style="width: 25%">Mobile</th>
                                                     <th style="width: 10%">City</th>
                                                     <th></th>
                                                 </tr>
@@ -51,11 +55,11 @@
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="x_panel" style="border-top: 0">
                                     <div class="x_content">
-                                        <form runat="server" id="docform" method="post">
+                                        <form runat="server" id="mfform" method="post">
                                             <input type="hidden" runat="server" id="facility_id">
                                             <div class="row item form-group">
                                                 <span class="section" style="padding-bottom: 10px">Basic Info
-                                                    <button runat="server" id="send" type="submit" onserverclick="SubmitMedicalFacility" class="pull-right btn btn-success">Save</button>
+                                                    <button runat="server" id="sendMF" type="submit" onserverclick="SubmitMedicalFacility" class="hidden pull-right btn btn-success">Save</button><input id="saveMF" type="button" class="pull-right btn btn-success" value="Save" />
                                                 </span>
 
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
@@ -90,7 +94,7 @@
                                                     Mobile Number <span class="required">*</span>
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <input type="tel" runat="server" id="mobile" name="mobile" required="required" placeholder="Mobile" class="form-control col-md-7 col-xs-12">
+                                                    <input type="tel" runat="server" data-rule-number="true" data-rule-minlength="10" data-rule-maxlength="10" id="mobile" name="mobile" required="required" placeholder="Mobile" class="form-control col-md-7 col-xs-12">
                                                 </div>
                                             </div>
 
@@ -98,7 +102,7 @@
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">City</label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                     <select id="city" runat="server" required="required" class="select2_group form-control">
-                                                        <option>Select City</option>
+                                                        <option value="">Select City</option>
                                                     </select>
                                                 </div>
                                             </div>

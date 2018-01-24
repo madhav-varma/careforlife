@@ -202,5 +202,11 @@
             }
         });
     });
+    $(document).on("click", "#saveMF", function () {
+        var valid = $("#mfform").valid();
+        if (valid) {
+            $("#MainContent_sendMF").trigger("click");
+        }
+    });
 });
 

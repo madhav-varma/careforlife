@@ -11,4 +11,26 @@ public partial class Care4LifeMaster : System.Web.UI.MasterPage
     {
 
     }
+    public string UsernameHead
+    {
+        get
+        {
+            return username_head.InnerText;
+        }
+        set
+        {
+            username_head.InnerText = value;
+        }
+    }
+    public string UsernameDD
+    {
+        get
+        {
+            return username_dd.InnerText;
+        }
+        set
+        {
+            username_dd.InnerText = value;
+        }
+    }
 }

@@ -1,11 +1,11 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Care4LifeMaster.Master" AutoEventWireup="true" CodeFile="BloodBank.aspx.cs" Inherits="BloodBank" %>
-
+<asp:Content ID="Content1" ContentPlaceHolderID="cphPageJs" runat="server">
+     <script src="Scripts/bloodbank.js"></script>
+</asp:Content>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <div class="right_col" role="main">
         <div class="">
-
-
             <div id="exTab1" class="container">
                 <ul class="nav nav-tabs">
                     <li id="bloodbankeditli" class="active"><a href="#bloodbankedit" data-toggle="tab">Add/Update</a>
@@ -59,7 +59,7 @@
                                             <input type="hidden" runat="server" id="blood_bank_id">
                                             <div class="row item form-group">
                                                 <span class="section" style="padding-bottom: 10px">Basic Info
-                                                    <button runat="server" id="send" type="submit" onserverclick="SubmitBloodBank" class="pull-right btn btn-success">Save</button>
+                                                    <button runat="server" id="sendBB" type="submit" onserverclick="SubmitBloodBank" class="hidden pull-right btn btn-success">Save</button><input type="button" id="saveBB" class="pull-right btn btn-success" value="Save"/>
                                                     
                                                 </span>
 
@@ -92,14 +92,14 @@
                                                 <div class="col-md-3 col-sm-3 col-xs-12">
                                                     <div class="form-group">
                                                         <div class='input-group date' style="width: 100%">
-                                                            <input runat="server" id="timingFrom" name="timingFrom" placeholder="From e.g. 10 AM" type='text' class="form-control" />
+                                                            <input runat="server" required="required" id="timingFrom" name="timingFrom" placeholder="From e.g. 10 AM" type='text' class="form-control" />
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3 col-sm-3 col-xs-12">
                                                     <div class="form-group">
                                                         <div class='input-group date' style="width: 100%">
-                                                            <input runat="server" id="timingTo" name="timingTo" placeholder="To e.g. 2 PM" type='text' class="form-control" />
+                                                            <input runat="server" required="required" id="timingTo" name="timingTo" placeholder="To e.g. 2 PM" type='text' class="form-control" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -110,7 +110,7 @@
                                                     Year Of Opening <span class="required">*</span>
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <input runat="server" id="opening_year" name="opening_year" required="required" placeholder="eg. 1996" class="form-control col-md-7 col-xs-12">
+                                                    <input data-rule-number="true" data-rule-minlength="4" data-rule-maxlength="4" title="Enter a valid year" runat="server" id="opening_year" name="opening_year" required="required" placeholder="eg. 1996" class="form-control col-md-7 col-xs-12">
                                                 </div>
                                             </div>
 
@@ -128,7 +128,7 @@
                                                     Mobile Number <span class="required">*</span>
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <input type="tel" runat="server" id="mobile" name="mobile" required="required" placeholder="Mobile" class="form-control col-md-7 col-xs-12">
+                                                    <input type="tel" data-rule-number="true" data-rule-minlength="10" data-rule-maxlength="10" title="Enter a valid mobile number" runat="server" id="mobile" name="mobile" required="required" placeholder="Mobile" class="form-control col-md-7 col-xs-12">
                                                 </div>
                                             </div>
 
@@ -140,7 +140,7 @@
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">City</label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                     <select id="city" runat="server" required="required" class="select2_group form-control">
-                                                        <option>Select City</option>
+                                                        <option value="">Select City</option>
                                                     </select>
                                                 </div>
                                             </div>
