@@ -44,7 +44,7 @@ public class MasterDataManager
 
     public bool ValidateUser(string username, string password)
     {
-        var query = "SELECT count(*) as count FROM user_master where email_id='" + username + "' and password='" + password + "'";
+        var query = "SELECT count(*) as count FROM user_master where user_type=1 and email_id='" + username + "' and password='" + password + "'";
         var count = new DataAccessManager().ExecuteScalar(query);
 
         if (count != null)
