@@ -119,7 +119,7 @@
 
                 $("label.error").hide();
 
-                var timings = JSON.parse(doc.Timing);
+                var timings = JSON.parse(rare.Timing);
                 var t = [];
                 if (timings.length > 0) {
                     $.each(timings, function (i, timing) {
@@ -140,7 +140,7 @@
 
                 var s = [];
                 var ser = $("#servicesTemplate");
-                var services = doc.Services ? doc.Services.split('\n') : [];
+                var services = rare.Services ? rare.Services.split('\n') : [];
                 if (services.length > 0) {
                     $.each(services, function (i, service) {
                         s.push({
