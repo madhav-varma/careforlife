@@ -39,7 +39,7 @@ public partial class Doctor : System.Web.UI.Page
 
             doc.City = int.Parse(city.Value);
             doc.Degree = degree.Value;
-            doc.Experience = experience.Value;
+            doc.Experience = experience.Value + " Years";
             doc.IsSpecial = true;
             doc.Mobile = mobile.Value;
 
@@ -137,7 +137,7 @@ public partial class Doctor : System.Web.UI.Page
             var doclist = docs.Data;
             foreach (var doc in doclist)
             {
-                doc.Link = "<a href='javascript:void(0);' style='margin-right:10px' class='edit-doc' data-id='" + doc.Id + "'>Edit</a><a href='javascript:void(0);' class='add-doc-images' data-id='" + doc.Id + "'>Add Images</a>";
+                doc.Link = "<a href='javascript:void(0);' style='margin-right:10px' class='edit-doc' data-id='" + doc.Id + "'>Edit</a><a href='javascript:void(0);' class='add-doc-images' data-id='" + doc.Id + "'>Add Images</a><a href='javascript:void(0);' style='margin-left:10px' class='delete-doc' data-id='" + doc.Id + "'>Delete</a>";
             }
 
             int recFilter = docs.Data.Count;
@@ -206,5 +206,13 @@ public partial class Doctor : System.Web.UI.Page
             }
         }
         return response;
+    }
+
+    [WebMethod(EnableSession = true)]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+    public static object DeleteDoctorById(string id)
+    {
+        var resp = new DoctorManager().DeleteDoctor(id);
+        return resp;
     }
 }

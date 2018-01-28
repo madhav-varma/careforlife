@@ -99,7 +99,7 @@ public partial class MedicalFacility : System.Web.UI.Page
             var medicalFacilityList = medicalFacilities.Data;
             foreach (var medicalFacility in medicalFacilityList)
             {
-                medicalFacility.Link = "<a href='javascript:void(0);' style='margin-right:10px' class='edit-mf' data-id='" + medicalFacility.Id + "'>Edit</a><a href='javascript:void(0);' class='add-mf-images' data-id='" + medicalFacility.Id + "'>Add Images</a>";
+                medicalFacility.Link = "<a href='javascript:void(0);' style='margin-right:10px' class='edit-mf' data-id='" + medicalFacility.Id + "'>Edit</a><a href='javascript:void(0);' class='add-mf-images' data-id='" + medicalFacility.Id + "'>Add Images</a><a href='javascript:void(0);' style='margin-left:10px' class='delete-mf' data-id='" + medicalFacility.Id + "'>Delete</a>";
             }
 
             int recFilter = medicalFacilities.Data.Count;
@@ -168,5 +168,13 @@ public partial class MedicalFacility : System.Web.UI.Page
             }
         }
         return response;
+    }
+
+    [WebMethod(EnableSession = true)]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+    public static object DeleteMedicalFacilityById(string id)
+    {
+        var resp = new MedicalFacilityManager().DeleteMedicalFacility(id);
+        return resp;
     }
 }

@@ -103,6 +103,23 @@
 
     var table = $('#doclist_table').DataTable();
 
+    $(document).on('click', '.delete-doc', function () {
+
+        if (confirm('Are you sure, you want to delete this item ?')) {
+            var id = $(this).data('id');
+
+            $.ajax({
+                "url": "Doctor.aspx/DeleteDoctorById?id=" + id,
+                "contentType": "application/json",
+                "type": "GET",
+                "dataType": "JSON",
+                "success": function (data) {
+                    table.ajax.reload();
+                }
+            });
+        }
+    });
+
     $(document).on('click', '.edit-doc', function () {
         var id = $(this).data('id');
 

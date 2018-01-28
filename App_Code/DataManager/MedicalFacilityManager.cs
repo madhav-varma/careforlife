@@ -111,6 +111,14 @@ public class MedicalFacilityManager
         return url.ToString();
     }
 
+    public bool DeleteMedicalFacility(string id)
+    {
+        var query = string.Format("delete from {0} where {1} = '{2}'", TABLE_NAME, TABLE_ID, id);
+        var res = new DataAccessManager().ExecuteInsertUpdateQuery(query);
+
+        return res;
+    }
+
     public bool UpdateMedicalFacilityImagesById(string id, string fileNames)
     {
         var query = "update medical_facility_master set img_url = '" + fileNames + "' where medical_facility_id = '" + id + "'";
@@ -171,10 +179,14 @@ public class MedicalFacilityManager
         var result = new PagedList<MedicalFacilityModel>() { TotalCount = count, Data = medicalFacilities };
         return result;
     }
+
     public MedicalFacilityManager()
     {
         //
         // TODO: Add constructor logic here
         //
     }
+
+    private string TABLE_NAME = "medical_facility_master";
+    private string TABLE_ID = "medical_facility_id";
 }

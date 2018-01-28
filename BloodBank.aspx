@@ -36,11 +36,11 @@
                                             </thead>
                                             <tfoot>
                                                 <tr>
-                                                    <th style="width: 10%">BloodBank Name</th>
-                                                    <th>Email Id</th>
-                                                    <th style="width: 25%">Mobile</th>
-                                                    <th>Year Of Opening</th>
-                                                    <th>Timing</th>
+                                                    <th style="width: 30%">BloodBank Name</th>
+                                                    <th style="width: 10%">Email Id</th>
+                                                    <th style="width: 10%">Mobile</th>
+                                                    <th style="width: 10%">Year Of Opening</th>
+                                                    <th style="width: 10%">Timing</th>
                                                     <th style="width: 10%">City</th>
                                                     <th></th>
                                                 </tr>

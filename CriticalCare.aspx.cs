@@ -118,7 +118,7 @@ public partial class CriticalCare : System.Web.UI.Page
             var criticalCareList = criticalCares.Data;
             foreach (var criticalCare in criticalCareList)
             {
-                criticalCare.Link = "<a href='javascript:void(0);' style='margin-right:10px' class='edit-cc' data-id='" + criticalCare.Id + "'>Edit</a><a href='javascript:void(0);' class='add-cc-images' data-id='" + criticalCare.Id + "'>Add Images</a>";
+                criticalCare.Link = "<a href='javascript:void(0);' style='margin-right:10px' class='edit-cc' data-id='" + criticalCare.Id + "'>Edit</a><a href='javascript:void(0);' class='add-cc-images' data-id='" + criticalCare.Id + "'>Add Images</a><a href='javascript:void(0);' style='margin-left:10px' class='delete-cc' data-id='" + criticalCare.Id + "'>Delete</a>";
             }
 
             int recFilter = criticalCares.Data.Count;
@@ -187,5 +187,13 @@ public partial class CriticalCare : System.Web.UI.Page
             }
         }
         return response;
+    }
+
+    [WebMethod(EnableSession = true)]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+    public static object DeleteCriticalCareById(string id)
+    {
+        var resp = new CriticalCareManager().DeleteCriticalCare(id);
+        return resp;
     }
 }

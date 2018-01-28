@@ -104,7 +104,7 @@ public partial class PathLab : System.Web.UI.Page
             var pathLabList = pathLabs.Data;
             foreach (var pathLab in pathLabList)
             {
-                pathLab.Link = "<a href='javascript:void(0);' style='margin-right:10px' class='edit-pathlab' data-id='" + pathLab.Id + "'>Edit</a><a href='javascript:void(0);' class='add-pathlab-images' data-id='" + pathLab.Id + "'>Add Images</a>";
+                pathLab.Link = "<a href='javascript:void(0);' style='margin-right:10px' class='edit-pathlab' data-id='" + pathLab.Id + "'>Edit</a><a href='javascript:void(0);' class='add-pathlab-images' data-id='" + pathLab.Id + "'>Add Images</a><a href='javascript:void(0);' style='margin-left:10px' class='delete-pl' data-id='" + pathLab.Id + "'>Delete</a>";
             }
 
             int recFilter = pathLabs.Data.Count;
@@ -174,6 +174,14 @@ public partial class PathLab : System.Web.UI.Page
             }
         }
         return response;
+    }
+
+    [WebMethod(EnableSession = true)]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+    public static object DeletePathLabById(string id)
+    {
+        var resp = new PathLabManager().DeletePathLab(id);
+        return resp;
     }
 
     [WebMethod(EnableSession = true)]

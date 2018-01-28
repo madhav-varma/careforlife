@@ -119,6 +119,14 @@ public class DoctorManager
         return res;
     }
 
+    public bool DeleteDoctor(string id)
+    {
+        var query = string.Format("delete from {0} where {1} = '{2}'",TABLE_NAME, TABLE_ID, id);
+        var res = new DataAccessManager().ExecuteInsertUpdateQuery(query);
+
+        return res;
+    }
+
     public PagedList<DoctorModel> GetAllDoctorsPaginated(int skip, int take, string order, string where)
     {
         var docs = new List<DoctorModel>();
@@ -174,8 +182,9 @@ public class DoctorManager
 
     public DoctorManager()
     {
-        //
-        // TODO: Add constructor logic here
-        //
+        
     }
+
+    private string TABLE_NAME = "doctor_master";
+    private string TABLE_ID = "doctor_id";
 }

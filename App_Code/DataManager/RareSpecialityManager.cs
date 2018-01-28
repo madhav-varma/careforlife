@@ -112,6 +112,14 @@ public class RareSpecialityManager
         return url.ToString();
     }
 
+    public bool DeleteRareSpeciality(string id)
+    {
+        var query = string.Format("delete from {0} where {1} = '{2}'", TABLE_NAME, TABLE_ID, id);
+        var res = new DataAccessManager().ExecuteInsertUpdateQuery(query);
+
+        return res;
+    }
+
     public bool UpdateRareSpecialityImagesById(string id, string fileNames)
     {
         var query = "update rare_speciality_master set img_url = '" + fileNames + "' where rare_speciality_id = '" + id + "'";
@@ -179,4 +187,7 @@ public class RareSpecialityManager
         // TODO: Add constructor logic here
         //
     }
+
+    private string TABLE_NAME = "rare_speciality_master";
+    private string TABLE_ID = "rare_speciality_id";
 }

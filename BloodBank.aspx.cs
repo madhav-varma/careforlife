@@ -105,7 +105,7 @@ public partial class BloodBank : System.Web.UI.Page
             var bloodBankList = bloodBanks.Data;
             foreach (var bloodBank in bloodBankList)
             {
-                bloodBank.Link = "<a href='javascript:void(0);' style='margin-right:10px' class='edit-bloodbank' data-id='" + bloodBank.Id + "'>Edit</a><a href='javascript:void(0);' class='add-bloodbank-images' data-id='" + bloodBank.Id + "'>Add Images</a>";
+                bloodBank.Link = "<a href='javascript:void(0);' style='margin-right:10px' class='edit-bloodbank' data-id='" + bloodBank.Id + "'>Edit</a><a href='javascript:void(0);' class='add-bloodbank-images' data-id='" + bloodBank.Id + "'>Add Images</a><a href='javascript:void(0);' style='margin-left:10px' class='delete-bb' data-id='" + bloodBank.Id + "'>Delete</a>";
             }
 
             int recFilter = bloodBanks.Data.Count;
@@ -211,6 +211,14 @@ public partial class BloodBank : System.Web.UI.Page
         }
 
         return files;
+    }
+
+    [WebMethod(EnableSession = true)]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+    public static object DeleteBloodBankById(string id)
+    {
+        var resp = new BloodBankManager().DeleteBloodBank(id);
+        return resp;
     }
 
 }

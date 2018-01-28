@@ -51,6 +51,23 @@
 
     var table = $('#bloodbanklist_table').DataTable();
 
+    $(document).on('click', '.delete-bb', function () {
+
+        if (confirm('Are you sure, you want to delete this item ?')) {
+            var id = $(this).data('id');
+
+            $.ajax({
+                "url": "BloodBank.aspx/DeleteBloodBankById?id=" + id,
+                "contentType": "application/json",
+                "type": "GET",
+                "dataType": "JSON",
+                "success": function (data) {
+                    table.ajax.reload();
+                }
+            });
+        }
+    });
+
     $(document).on('click', '.edit-bloodbank', function () {
         var id = $(this).data('id');
 

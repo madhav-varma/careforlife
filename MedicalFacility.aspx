@@ -36,10 +36,10 @@
                                             </thead>
                                             <tfoot>
                                                 <tr>
-                                                    <th style="width: 10%">Name</th>
-                                                    <th>Address</th>
-                                                    <th>Email</th>
-                                                    <th style="width: 25%">Mobile</th>
+                                                    <th style="width: 35%">Name</th>
+                                                    <th style="width: 15%">Address</th>
+                                                    <th style="width: 15%">Email</th>
+                                                    <th style="width: 10%">Mobile</th>
                                                     <th style="width: 10%">City</th>
                                                     <th></th>
                                                 </tr>

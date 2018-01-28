@@ -118,6 +118,14 @@ public class PathLabManager
         return res;
     }
 
+    public bool DeletePathLab(string id)
+    {
+        var query = string.Format("delete from {0} where {1} = '{2}'", TABLE_NAME, TABLE_ID, id);
+        var res = new DataAccessManager().ExecuteInsertUpdateQuery(query);
+
+        return res;
+    }
+
     public PagedList<PathLabModel> GetAllPathLabPaginated(int skip, int take, string order, string where)
     {
         var pathlabs = new List<PathLabModel>();
@@ -178,4 +186,7 @@ public class PathLabManager
         // TODO: Add constructor logic here
         //
     }
+
+    private string TABLE_NAME = "path_lab_master";
+    private string TABLE_ID = "path_lab_id";
 }

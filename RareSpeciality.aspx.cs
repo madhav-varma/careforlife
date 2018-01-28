@@ -131,7 +131,7 @@ public partial class RareSpeciality : System.Web.UI.Page
             var rarelist = rares.Data;
             foreach (var rare in rarelist)
             {
-                rare.Link = "<a href='javascript:void(0);' style='margin-right:10px' class='edit-rare' data-id='" + rare.Id + "'>Edit</a><a href='javascript:void(0);' class='add-rare-images' data-id='" + rare.Id + "'>Add Images</a>";
+                rare.Link = "<a href='javascript:void(0);' style='margin-right:10px' class='edit-rare' data-id='" + rare.Id + "'>Edit</a><a href='javascript:void(0);' class='add-rare-images' data-id='" + rare.Id + "'>Add Images</a><a href='javascript:void(0);' style='margin-left:10px' class='delete-rare' data-id='" + rare.Id + "'>Delete</a>";
             }
 
             int recFilter = rares.Data.Count;
@@ -156,6 +156,14 @@ public partial class RareSpeciality : System.Web.UI.Page
     {
         var rare = new RareSpecialityManager().GetRareSpecialityById(id);
         return rare;
+    }
+
+    [WebMethod(EnableSession = true)]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+    public static object DeleteRareSpecialityById(string id)
+    {
+        var resp = new RareSpecialityManager().DeleteRareSpeciality(id);
+        return resp;
     }
 
     [WebMethod(EnableSession = true)]

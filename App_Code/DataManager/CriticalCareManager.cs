@@ -110,6 +110,14 @@ public class CriticalCareManager
         return url.ToString();
     }
 
+    public bool DeleteCriticalCare(string id)
+    {
+        var query = string.Format("delete from {0} where {1} = '{2}'", TABLE_NAME, TABLE_ID, id);
+        var res = new DataAccessManager().ExecuteInsertUpdateQuery(query);
+
+        return res;
+    }
+
     public bool UpdateCriticalCareImagesById(string id, string fileNames)
     {
         var query = "update critical_care_master set img_url = '" + fileNames + "' where critical_care_id = '" + id + "'";
@@ -177,4 +185,7 @@ public class CriticalCareManager
         // TODO: Add constructor logic here
         //
     }
+
+    private string TABLE_NAME = "critical_care_master";
+    private string TABLE_ID = "critical_care_id";
 }

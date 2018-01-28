@@ -116,6 +116,14 @@ public class BloodBankManager
         return res;
     }
 
+    public bool DeleteBloodBank(string id)
+    {
+        var query = string.Format("delete from {0} where {1} = '{2}'", TABLE_NAME, TABLE_ID, id);
+        var res = new DataAccessManager().ExecuteInsertUpdateQuery(query);
+
+        return res;
+    }
+
     public PagedList<BloodBankModel> GetAllBloodBanksPaginated(int skip, int take, string order, string where)
     {
         var bloodBanks = new List<BloodBankModel>();
@@ -175,4 +183,7 @@ public class BloodBankManager
         // TODO: Add constructor logic here
         //
     }
+
+    private string TABLE_NAME = "blood_bank_master";
+    private string TABLE_ID = "blood_bank_id";
 }

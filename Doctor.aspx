@@ -38,13 +38,13 @@
                                             </thead>
                                             <tfoot>
                                                 <tr>
-                                                    <th style="width: 10%">Name</th>
-                                                    <th>Tagline</th>
-                                                    <th>Degree</th>
-                                                    <th>Experience</th>
-                                                    <th style="width: 25%">Mobile</th>
-                                                    <th style="width: 15%">Speciality</th>
-                                                    <th style="width: 10%">City</th>
+                                                    <th style="width: 20%">Name</th>
+                                                    <th style="width: 20%">Tagline</th>
+                                                    <th style="width: 10%">Degree</th>
+                                                    <th style="width: 10%">Experience</th>
+                                                    <th style="width: 10%">Mobile</th>
+                                                    <th style="width: 10%">Speciality</th>
+                                                    <th style="width: 5%">City</th>
                                                     <th></th>
                                                 </tr>
                                             </tfoot>

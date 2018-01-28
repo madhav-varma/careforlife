@@ -157,6 +157,23 @@
         $("#rareedit").addClass("active");
     });
 
+    $(document).on('click', '.delete-rare', function () {
+
+        if (confirm('Are you sure, you want to delete this item ?')) {
+            var id = $(this).data('id');
+
+            $.ajax({
+                "url": "RareSpeciality.aspx/DeleteRareSpecialityById?id=" + id,
+                "contentType": "application/json",
+                "type": "GET",
+                "dataType": "JSON",
+                "success": function (data) {
+                    table.ajax.reload();
+                }
+            });        
+        }         
+    });
+
     $(document).on('click', '.add-rare-images', function () {
         var id = $(this).data('id');
         $("#rare_id").val(id);
