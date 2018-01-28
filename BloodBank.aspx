@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Care4LifeMaster.Master" AutoEventWireup="true" CodeFile="BloodBank.aspx.cs" Inherits="BloodBank" %>
+<%@ MasterType VirtualPath="~/Care4LifeMaster.Master" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="cphPageJs" runat="server">
      <script src="Scripts/bloodbank.js"></script>
 </asp:Content>
@@ -119,7 +120,7 @@
                                                     Email <span class="required">*</span>
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <input type="email" runat="server" id="email" name="email" placeholder="Email" required="required" class="form-control col-md-7 col-xs-12">
+                                                    <input type="email" runat="server" id="email" name="email" placeholder="Email" class="form-control col-md-7 col-xs-12">
                                                 </div>
                                             </div>
 

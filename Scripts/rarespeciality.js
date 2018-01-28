@@ -256,7 +256,7 @@
                                     files.splice(files.indexOf(f), 1);
                                 });
                             }
-                            if (files > 0)
+                            if (files.length > 0)
                                 myDropzone.uploadFiles(myDropzone.files);
                         }
                     });

@@ -79,7 +79,7 @@
                                                     Address <span class="required">*</span>
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <textarea runat="server" placeholder="Address" id="address" required="required" name="address" class="form-control col-md-7 col-xs-12"></textarea>
+                                                    <textarea runat="server" placeholder="Address" id="address" name="address" class="form-control col-md-7 col-xs-12"></textarea>
                                                 </div>
                                             </div>
 
