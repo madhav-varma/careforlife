@@ -93,6 +93,8 @@
                 $("#MainContent_mobile").val(bloodBank.Mobile);
                 $("#MainContent_city").val(bloodBank.City);
 
+                $("label.error").hide();
+
             }
         });
 

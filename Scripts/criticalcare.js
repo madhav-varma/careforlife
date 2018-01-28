@@ -129,7 +129,9 @@
                 $("#MainContent_address").val(cc.Address);               
                 $("#MainContent_email").val(cc.Email);
                 $("#MainContent_mobile").val(cc.Mobile);                
-                $("#MainContent_city").val(cc.City);               
+                $("#MainContent_city").val(cc.City);    
+
+                $("label.error").hide();
 
                 var s = [];
                 var ser = $("#servicesTemplate");

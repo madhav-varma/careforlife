@@ -117,6 +117,8 @@
                 $("#MainContent_mobile").val(rare.Mobile);
                 $("#MainContent_city").val(rare.City);
 
+                $("label.error").hide();
+
                 var timings = JSON.parse(doc.Timing);
                 var t = [];
                 if (timings.length > 0) {

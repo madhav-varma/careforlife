@@ -154,6 +154,8 @@
                 changeSwitchery($("#is_special"), doc.IsSpecial);
                 $("#MainContent_chk_special").prop("checked", doc.IsSpecial);
 
+                $("label.error").hide();
+
                 var timings = JSON.parse(doc.Timing);
                 var t = [];
                 if (timings.length > 0) {

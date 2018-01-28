@@ -82,7 +82,9 @@
                 $("#MainContent_address").val(mf.Address);          
                 $("#MainContent_email").val(mf.Email);
                 $("#MainContent_mobile").val(mf.Mobile);               
-                $("#MainContent_city").val(mf.City);              
+                $("#MainContent_city").val(mf.City);    
+
+                $("label.error").hide();
             }
         });
 

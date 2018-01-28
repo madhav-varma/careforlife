@@ -96,6 +96,8 @@
                 $("#MainContent_mobile").val(pathLab.Mobile);
                 $("#MainContent_city").val(pathLab.City);
 
+                $("label.error").hide();
+
             }
         });
 
