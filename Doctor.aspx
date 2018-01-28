@@ -1,8 +1,8 @@
-﻿
-<%@ Page Language="C#" MasterPageFile="~/Care4LifeMaster.Master" AutoEventWireup="true" CodeFile="Doctor.aspx.cs" Inherits="Doctor" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Care4LifeMaster.Master" AutoEventWireup="true" CodeFile="Doctor.aspx.cs" Inherits="Doctor" %>
+
 <%@ MasterType VirtualPath="~/Care4LifeMaster.Master" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="cphPageJs" runat="server">
-     <script src="Scripts/doctor.js"></script>
+    <script src="Scripts/doctor.js"></script>
 </asp:Content>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -62,18 +62,18 @@
                                         <form runat="server" id="docform" method="post">
                                             <input type="hidden" runat="server" id="doctor_id">
                                             <div class="row item form-group">
-                                                <span class="section" style="padding-bottom:10px">Basic Info
-                                                    <button runat="server" id="sendDoc" type="submit" onserverclick="SubmitDoctor" class="hidden pull-right btn btn-success">Save</button> 
-                                                    <input id="saveDoc" type="button" class="pull-right btn btn-success" value="Save" /> 
+                                                <span class="section" style="padding-bottom: 10px">Basic Info
+                                                    <button runat="server" id="sendDoc" type="submit" onserverclick="SubmitDoctor" class="hidden pull-right btn btn-success">Save</button>
+                                                    <input id="saveDoc" type="button" class="pull-right btn btn-success" value="Save" />
                                                 </span>
-                                                
-                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
-                                                        Doctor Name <span class="required">*</span>
-                                                    </label>
 
-                                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                                        <input runat="server" id="name" class="form-control col-md-7 col-xs-12" name="name" placeholder="Name" required="required" type="text">
-                                                    </div>
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
+                                                    Doctor Name <span class="required">*</span>
+                                                </label>
+
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input runat="server" id="name" class="form-control col-md-7 col-xs-12" name="name" placeholder="Name" required="required" type="text">
+                                                </div>
                                             </div>
 
 
@@ -82,7 +82,7 @@
                                                     Tagline <span class="required">*</span>
                                                 </label>
 
-                                                <div class="col-md-6 col-sm-6 col-xs-12">                                                   
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
                                                     <input type="text" runat="server" id="tagline" name="tagline" placeholder="Tagline" required="required" class="optional form-control col-md-7 col-xs-12">
                                                 </div>
                                             </div>
@@ -92,7 +92,7 @@
                                                     Degree <span class="required">*</span>
                                                 </label>
 
-                                                <div class="col-md-6 col-sm-6 col-xs-12">                                                    
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
                                                     <input type="text" runat="server" id="degree" name="degree" placeholder="Degree" required="required" class="optional form-control col-md-7 col-xs-12">
                                                 </div>
                                             </div>
@@ -144,6 +144,19 @@
                                                 </div>
                                             </div>
 
+                                            <input type="checkbox" runat="server" id="chk_special" class="hidden"/>
+                                            <div class="row form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Special</label>
+                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                    <div class="">
+                                                        <label>
+                                                            <input type="checkbox" class="js-switch" id="is_special" checked />
+                                                            
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                             <div class="row">
                                                 <span class="section">Locations                                                    
                                                     <button type="button" id="addloc" style="margin: 10px 0" class="btn btn-primary"><i class="fa fa-plus"></i></button>
@@ -182,7 +195,7 @@
                 </div>
                 <div class="modal-body">
                     <form class="dropzone" id="my-dropzone">
-                        <input type="hidden" id="doc_id"/>
+                        <input type="hidden" id="doc_id" />
                     </form>
                 </div>
                 <div class="modal-footer">

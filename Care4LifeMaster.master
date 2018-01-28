@@ -32,6 +32,8 @@
     <!-- Bootstrap Colorpicker -->
     <link href="../vendors/mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css" rel="stylesheet">
 
+    <link href="../vendors/switchery/dist/switchery.min.css" rel="stylesheet">
+
     <link href="../vendors/cropper/dist/cropper.min.css" rel="stylesheet">
     <link href="../vendors/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
 </head>
@@ -229,6 +231,7 @@
     <script src="../vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
     <script src="../vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
     <script src="../vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+    <script src="../vendors/switchery/dist/switchery.min.js"></script>
     <script src="../vendors/jszip/dist/jszip.min.js"></script>
     <script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="../vendors/pdfmake/build/vfs_fonts.js"></script>

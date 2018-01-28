@@ -40,7 +40,7 @@ public partial class Doctor : System.Web.UI.Page
             doc.City = int.Parse(city.Value);
             doc.Degree = degree.Value;
             doc.Experience = experience.Value + " Years";
-            doc.IsSpecial = true;
+            doc.IsSpecial = chk_special.Checked;
             doc.Mobile = mobile.Value;
 
             var servicesKeys = Request.Form.AllKeys.Where(x => x.Contains("service")).ToList();
@@ -76,7 +76,8 @@ public partial class Doctor : System.Web.UI.Page
 
 
             var sqlQuery = new Helper().GetInsertQuery<DoctorModel>(doc);
-            if (!string.IsNullOrWhiteSpace(doctor_id.Value)) {
+            if (!string.IsNullOrWhiteSpace(doctor_id.Value))
+            {
                 doc.Id = int.Parse(doctor_id.Value);
                 sqlQuery = new Helper().GetUpdateQuery<DoctorModel>(doc);
             }
@@ -161,6 +162,7 @@ public partial class Doctor : System.Web.UI.Page
     public static object GetDoctorById(string id)
     {
         var doc = new DoctorManager().GetDoctorById(id);
+        doc.Experience = doc.Experience.Replace("years", "").Replace("Years", "").Replace("year", "").Replace("Year", "").Trim();
         return doc;
     }
 
@@ -171,7 +173,7 @@ public partial class Doctor : System.Web.UI.Page
         var files = new List<FileInfoModel>();
         var docImages = new DoctorManager().GetDoctorImagesById(id);
 
-        var response = new JsonResponse() { IsSuccess = true, Message= "Files found successfully.", Data = files };
+        var response = new JsonResponse() { IsSuccess = true, Message = "Files found successfully.", Data = files };
 
         if (!string.IsNullOrEmpty(docImages))
         {
@@ -196,10 +198,10 @@ public partial class Doctor : System.Web.UI.Page
                         }
 
                     }
-                }              
+                }
                 response.Data = files;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 response.IsSuccess = false;
                 response.Message = e.Message;

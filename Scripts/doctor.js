@@ -32,6 +32,8 @@
     };
     addBlankLocation();
     addBlankServices();
+    changeSwitchery($("#is_special"), false);
+    $("#MainContent_chk_special").prop("checked", false);
 
     $(document).on("click", ".del-loc", function () {
         $(this).parent().parent().parent().remove();
@@ -120,6 +122,15 @@
         }
     });
 
+    var changeCheckbox = document.querySelector('.js-switch');
+
+    changeCheckbox.onchange = function () {
+        var chk = changeCheckbox.checked;
+
+        $("#MainContent_chk_special").prop("checked", chk);
+
+    };
+
     $(document).on('click', '.edit-doc', function () {
         var id = $(this).data('id');
 
@@ -135,11 +146,13 @@
                 $("#MainContent_name").val(doc.Name);
                 $("#MainContent_tagline").val(doc.Tagline);
                 $("#MainContent_degree").val(doc.Degree);
-                $("#MainContent_experience").val(doc.Experience);
+                $("#MainContent_experience").val(doc.Experience ? doc.Experience.split(' ')[0] : "");
                 $("#MainContent_email").val(doc.Email);
                 $("#MainContent_mobile").val(doc.Mobile);
                 $("#MainContent_speciality").val(doc.Speciality);
                 $("#MainContent_city").val(doc.City);
+                changeSwitchery($("#is_special"), doc.IsSpecial);
+                $("#MainContent_chk_special").prop("checked", doc.IsSpecial);
 
                 var timings = JSON.parse(doc.Timing);
                 var t = [];
@@ -314,5 +327,10 @@
             $("#MainContent_sendDoc").trigger("click");
         }
     });
+    function changeSwitchery(element, checked) {
+        if ((element.is(':checked') && checked == false) || (!element.is(':checked') && checked == true)) {
+            element.parent().find('.switchery').trigger('click');
+        }
+    }
 });
 

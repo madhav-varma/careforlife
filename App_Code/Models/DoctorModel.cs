@@ -29,7 +29,7 @@ public class DoctorModel
     [DisplayName("speciality_id")]
     public int Speciality { get; set; }
     [DisplayName("city_id")]
-    public int City { get; set; }
+    public int City { get; set; }    
     [IgnoreInsert]
     [IgnoreUpdate]
     [DisplayName("speciality_name")]

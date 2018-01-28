@@ -34,7 +34,7 @@
           <section class="login_content">
             <form id="login_form" method="post" runat="server">
                <div>
-                  <h1><img src="photo/LOGO.png" style="width:100%" /></h1>                  
+                  <h2><img src="photo/LOGO.png" style="width:100%" /></h2>                  
                 </div>
               <div>
                 <input type="text" class="form-control" placeholder="Username" id="username" runat="server" required="" />
