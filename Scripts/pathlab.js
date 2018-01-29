@@ -81,15 +81,19 @@
             "dataType": "JSON",
             "success": function (data) {
                 var pathLab = data.d;
-
+                
                 $("#MainContent_path_lab_id").val(pathLab.Id);
                 $("#MainContent_lab_name").val(pathLab.Name);
                 $("#MainContent_address").val(pathLab.Address);
                 if (pathLab.Timing) {
-                    var t = pathLab.Timing.split('to');
+                    var t = pathLab.Timing.split('-');
+                    if (t.length < 2)
+                        t = pathLab.Timing.split('to');
+                    if (t.length < 2)
+                        t = pathLab.Timing.split('&');
 
-                    $("#MainContent_timingFrom").val(t[0]);
-                    $("#MainContent_timingTo").val(t[1]);
+                    $("#MainContent_timingFrom").val(t[0].trim());
+                    $("#MainContent_timingTo").val(t[1].trim());
                 }
                 $("#MainContent_opening_year").val(pathLab.OpeningYear);
                 $("#MainContent_email").val(pathLab.Email);

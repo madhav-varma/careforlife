@@ -163,12 +163,17 @@
                         var tt = [];
                         if (timing.timing)
                             tt = timing.timing.split('-');
+                        if (tt.length < 2)
+                            tt = timing.timing.split('&');
+                        if (tt.length < 2)
+                            tt = timing.timing.split('to');
+
                         t.push({
                             index: i,
                             hospital: timing.hospital,
                             address: timing.Address,
-                            timingTo: tt[1],
-                            timingFrom: tt[0],
+                            timingTo: tt[1].trim(),
+                            timingFrom: tt[0].trim(),
                         });
                     });
                     var loctmpl = $("#locationsTemplate");

@@ -119,19 +119,21 @@
 
                 $("label.error").hide();
 
-                var timings = JSON.parse(rare.Timing);
+                var timings = JSON.parse(rare.Address);
                 var t = [];
                 if (timings.length > 0) {
                     $.each(timings, function (i, timing) {
                         var tt = [];
                         if (timing.timing)
                             tt = timing.timing.split('-');
+                        if (tt.length < 2)
+                            tt = timing.timing.split('&');
                         t.push({
                             index: i,
                             hospital: timing.hospital,
                             address: timing.Address,
-                            timingTo: tt[1],
-                            timingFrom: tt[0],
+                            timingTo: tt[1].trim(),
+                            timingFrom: tt[0].trim(),
                         });
                     });
                     var loctmpl = $("#locationsTemplate");

@@ -63,7 +63,7 @@ public class RareSpecialityManager
     {
         var rare = new RareSpecialityModel();
 
-        var query = "select * from rare_speciaity_master where is_active='y' and rare_speciality_id='" + id + "' order by created_on desc";
+        var query = "select * from rare_speciality_master where is_active='y' and rare_speciality_id='" + id + "' order by created_on desc";
         var rows = new DataAccessManager().ExecuteSelectQuery(query);
         if (rows != null && rows.Count > 0)
         {

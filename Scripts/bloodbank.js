@@ -83,10 +83,16 @@
                 $("#MainContent_blood_bank_name").val(bloodBank.Name);
                 $("#MainContent_address").val(bloodBank.Address);
                 if (bloodBank.Timing) {
-                    var t = bloodBank.Timing.split('to');
+                    var tt = [];
+                    if (bloodBank.Timing)
+                        tt = bloodBank.Timing.split('-');
+                    if (tt.length < 2)
+                        tt = bloodBank.Timing.split('&');
+                    if (tt.length < 2)
+                        tt = bloodBank.Timing.split('to');
 
-                    $("#MainContent_timingFrom").val(t[0]);
-                    $("#MainContent_timingTo").val(t[1]);
+                    $("#MainContent_timingFrom").val(tt[0].trim());
+                    $("#MainContent_timingTo").val(tt[1].trim());
                 }
                 $("#MainContent_opening_year").val(bloodBank.OpeningYear);
                 $("#MainContent_email").val(bloodBank.Email);
