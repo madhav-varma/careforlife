@@ -1,20 +1,4 @@
 ﻿$(document).ready(function () {
-
-
-    function addBlankSpeciality() {
-        var index = $("div.specialities-div").length;
-
-        if (index > 0)
-            index = parseInt($($("div.specialities-div")[index - 1]).data("index")) + 1
-
-        var sp = $("#specialitiesTemplate");
-        var speciality = {
-            index: index,
-            speciality: ""
-        }
-        $("#sspecialities_rep").append($(sp).tmpl(speciality));
-    };    
-
     function addBlankCCServices() {
         var index = $("div.services-div").length;
 
@@ -28,24 +12,15 @@
         }
         $("#cc_services_rep").append($(ser).tmpl(service));
     };
-    
+
     addBlankCCServices();
-    addBlankSpeciality();   
 
     $(document).on("click", ".del-services", function () {
         $(this).parent().parent().parent().parent().remove();
-    });   
+    });
 
     $(document).on("click", "#addservices", function () {
         addBlankCCServices();
-    });
-
-    $(document).on("click", ".del-specialities", function () {
-        $(this).parent().parent().parent().parent().remove();
-    });
-
-    $(document).on("click", "#addspecialities", function () {
-        addBlankSpeciality();
     });
 
     Dropzone.autoDiscover = false;
@@ -79,8 +54,8 @@
         //"order": [[0, "desc"]],
         "columns": [
             { "data": "Name", "autoWidth": true, "orderable": true, "searchable": true },
-            { "data": "Email", "autoWidth": true, "orderable": true, "searchable": true },            
-            { "data": "Mobile", "autoWidth": true, "orderable": true, "searchable": true },            
+            { "data": "Email", "autoWidth": true, "orderable": true, "searchable": true },
+            { "data": "Mobile", "autoWidth": true, "orderable": true, "searchable": true },
             { "data": "CityName", "autoWidth": true, "orderable": true, "searchable": true },
             { "data": "Link", "autoWidth": true, "orderable": false, "searchable": false }
         ],
@@ -126,10 +101,11 @@
 
                 $("#MainContent_cc_id").val(cc.Id);
                 $("#MainContent_name").val(cc.Name);
-                $("#MainContent_address").val(cc.Address);               
+                $("#MainContent_address").val(cc.Address);
                 $("#MainContent_email").val(cc.Email);
-                $("#MainContent_mobile").val(cc.Mobile);                
-                $("#MainContent_city").val(cc.City);    
+                $("#MainContent_mobile").val(cc.Mobile);
+                $("#MainContent_city").val(cc.City);
+                $("#MainContent_speciality").val(cc.Specialities);                
 
                 $("label.error").hide();
 
@@ -144,18 +120,6 @@
                         });
                     });
                     $("#cc_services_rep").empty().append($(ser).tmpl(s));
-                }
-                var sp = [];
-                var spt = $("#specialitiesTemplate");
-                var specialities = cc.Specialities ? cc.Specialities.split('\n') : [];
-                if (specialities.length > 0) {
-                    $.each(specialities, function (i, speciality) {
-                        sp.push({
-                            index: i,
-                            speciality: speciality
-                        });
-                    });
-                    $("#sspecialities_rep").empty().append($(spt).tmpl(sp));
                 }
             }
         });
@@ -192,7 +156,7 @@
                             if (!response.IsSuccess) {
                                 alert(response.Message);
                                 this.defaultOptions.error(file, response.Message);
-                            }                            
+                            }
                         },
                         error: function (file, error) {
                             debugger

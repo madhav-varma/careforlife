@@ -39,7 +39,7 @@ public partial class Doctor : System.Web.UI.Page
 
             doc.City = int.Parse(city.Value);
             doc.Degree = degree.Value;
-            doc.Experience = experience.Value + " Years";
+            doc.Experience = experience.Value + " Year(s)";
             doc.IsSpecial = chk_special.Checked;
             doc.Mobile = mobile.Value;
 

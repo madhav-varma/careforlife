@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Care4LifeMaster.master" CodeFile="CriticalCare.aspx.cs" Inherits="CriticalCare" %>
+
 <%@ MasterType VirtualPath="~/Care4LifeMaster.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="cphPageJs" runat="server">
@@ -107,6 +108,15 @@
                                                     </select>
                                                 </div>
                                             </div>
+                                            <div class=" row item form-group">
+
+                                                <label class="col-md-3 col-sm-3 col-xs-12 control-label">Specialities</label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12 ">
+
+                                                    <textarea rows="4" required="required" runat="server" placeholder="Speciality" class="form-control" id="speciality" name="speciality"></textarea>
+
+                                                </div>
+                                            </div>
 
                                             <div class=" row item form-group">
                                                 <span class="section">Available Services                                                    
@@ -116,13 +126,7 @@
                                                 <div id="cc_services_rep"></div>
                                             </div>
 
-                                            <div class=" row item form-group">
-                                                <span class="section">Available Specialities                                                    
-                                                    <button type="button" id="addspecialities" style="margin: 10px 0" class="btn btn-primary"><i class="fa fa-plus"></i></button>
-                                                </span>
 
-                                                <div id="sspecialities_rep"></div>
-                                            </div>
                                         </form>
                                     </div>
                                 </div>

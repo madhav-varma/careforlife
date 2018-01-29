@@ -146,7 +146,7 @@
 
                                             <input type="checkbox" runat="server" id="chk_special" class="hidden"/>
                                             <div class="row form-group">
-                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Special</label>
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Advertise</label>
                                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                                     <div class="">
                                                         <label>

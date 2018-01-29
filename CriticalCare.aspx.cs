@@ -31,6 +31,7 @@ public partial class CriticalCare : System.Web.UI.Page
         {
             var criticalCare = new CriticalCareModel();
 
+            criticalCare.Specialities = speciality.Value;
             criticalCare.City = int.Parse(city.Value);
             criticalCare.Address = address.Value;
             criticalCare.Email = email.Value;
@@ -47,15 +48,6 @@ public partial class CriticalCare : System.Web.UI.Page
                 services.Add(Request.Form["service" + i]);
             }
             criticalCare.Services = string.Join("\n", services);
-
-            var specialityKeys = Request.Form.AllKeys.Where(x => x.Contains("speciality")).ToList();
-            var specialities = new List<string>();
-            foreach (var key in specialityKeys)
-            {
-                var i = key.Replace("speciality", "");
-                specialities.Add(Request.Form["speciality" + i]);
-            }
-            criticalCare.Specialities = string.Join("\n", specialities);
 
             var sqlQuery = new Helper().GetInsertQuery<CriticalCareModel>(criticalCare);
             if (!string.IsNullOrWhiteSpace(cc_id.Value))
