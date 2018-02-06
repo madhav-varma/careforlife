@@ -23,9 +23,15 @@ public class UserModel
     [DisplayName("state")]
     public string State { get; set; }
     [DisplayName("is_active")]
-    public string IsActive { get; set; }
+    public bool IsActive { get; set; }
+    [DisplayName("is_doctor")]
+    public bool IsDoctor { get; set; }
     [DisplayName("created_on")]
     public DateTime Created { get; set; }
+    [IgnoreInsert]
+    [IgnoreUpdate]
+    [IgnoreSelect]
+    public string Link { get; set; }
     public UserModel()
     {
         //

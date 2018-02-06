@@ -1,7 +1,8 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Care4LifeMaster.Master" AutoEventWireup="true" CodeFile="BloodBank.aspx.cs" Inherits="BloodBank" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Camp.aspx.cs" Inherits="Camp" MasterPageFile="~/Care4LifeMaster.master" %>
+
 <%@ MasterType VirtualPath="~/Care4LifeMaster.Master" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="cphPageJs" runat="server">
-     <script src="Scripts/bloodbank.js"></script>
+     <script src="Scripts/camp.js"></script>
 </asp:Content>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -9,37 +10,36 @@
         <div class="">
             <div id="exTab1" class="container">
                 <ul class="nav nav-tabs">
-                    <li id="bloodbankeditli" class="active"><a href="#bloodbankedit" data-toggle="tab">Add/Update</a>
+                    <li id="campeditli" class="active"><a href="#campedit" data-toggle="tab">Add/Update</a>
                     </li>
-                    <li id="bloodbanklistli">
-                        <a href="#bloodbanklist" data-toggle="tab">List</a>
+                    <li id="camplistli">
+                        <a href="#camplist" data-toggle="tab">List</a>
                     </li>
                 </ul>
 
                 <div class="tab-content clearfix">
-                    <div class="tab-pane" id="bloodbanklist">
+                    <div class="tab-pane" id="camplist">
                         <div class="row">
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="x_panel" style="border-top: 0">
                                     <div class="x_content">
-                                        <table id="bloodbanklist_table" class="table table-striped table-bordered" style="width: 100%">
+                                        <table id="camplist_table" class="table table-striped table-bordered" style="width: 100%">
                                             <thead>
                                                 <tr>
-                                                    <th>BloodBank Name</th>
-                                                    <th>Email Id</th>
-                                                    <th>Mobile</th>
-                                                    <th>Year Of Opening</th>
+                                                    <th>Camp Title</th>
+                                                    <th>Description</th>
+                                                    <th>Address</th>                                                    
                                                     <th>Timing</th>
                                                     <th>City</th>
+
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tfoot>
                                                 <tr>
-                                                    <th style="width: 30%">BloodBank Name</th>
-                                                    <th style="width: 10%">Email Id</th>
-                                                    <th style="width: 10%">Mobile</th>
-                                                    <th style="width: 10%">Year Of Opening</th>
+                                                    <th style="width: 30%">Camp Title</th>
+                                                    <th style="width: 10%">Description</th>
+                                                    <th style="width: 10%">Address</th>                                                    
                                                     <th style="width: 10%">Timing</th>
                                                     <th style="width: 10%">City</th>
                                                     <th></th>
@@ -51,30 +51,51 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane active" id="bloodbankedit">
+                    <div class="tab-pane active" id="campedit">
                         <div class="row">
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="x_panel" style="border-top: 0">
                                     <div class="x_content">
-                                        <form runat="server" id="bloodbankform" method="post">
-                                            <input type="hidden" runat="server" id="blood_bank_id">
+                                        <form runat="server" id="campform" method="post">
+                                            <input type="hidden" runat="server" id="camp_id">
                                             <div class="row item form-group">
                                                 <span class="section" style="padding-bottom: 10px">Basic Info
-                                                    <button runat="server" id="sendBB" type="submit" onserverclick="SubmitBloodBank" class="hidden pull-right btn btn-success">Save</button><input type="button" id="saveBB" class="pull-right btn btn-success" value="Save"/>
-                                                    
+                                                    <button runat="server" id="sendCP" type="submit" onserverclick="SubmitCamp" class="hidden pull-right btn btn-success">Save</button><input type="button" id="saveCP" class="pull-right btn btn-success" value="Save"/>                                                    
                                                 </span>
 
-                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="lab_name">
-                                                    BloodBank Name <span class="required">*</span>
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="camp_title">
+                                                    Camp Title <span class="required">*</span>
                                                 </label>
 
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <input runat="server" id="blood_bank_name" class="form-control col-md-7 col-xs-12" name="lab_name" placeholder="Lab Name" required="required" type="text">
+                                                    <input runat="server" id="camp_title" class="form-control col-md-7 col-xs-12" name="camp_title" placeholder="Title" required="required" type="text">
                                                 </div>
 
                                             </div>
-
-
+                                            <div class="row item form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                                    Description <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <textarea runat="server" placeholder="Description" id="description" required="required" name="description" class="form-control col-md-7 col-xs-12"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="row item form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                                    Additional Description <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <textarea runat="server" placeholder="Additional Description" id="description1" name="description1" class="form-control col-md-7 col-xs-12"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="row item form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                                    Additional Description <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <textarea runat="server" placeholder="Additional Description" id="description2" name="description2" class="form-control col-md-7 col-xs-12"></textarea>
+                                                </div>
+                                            </div>
                                             
                                             <div class="row item form-group">
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">
@@ -107,29 +128,11 @@
                                             </div>
 
                                             <div class="row item form-group">
-                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="opening_year">
-                                                    Year Of Opening <span class="required">*</span>
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="organizer">
+                                                    Organizer <span class="required">*</span>
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <input data-rule-number="true" data-rule-minlength="4" data-rule-maxlength="4" title="Enter a valid year" runat="server" id="opening_year" name="opening_year" required="required" placeholder="eg. 1996" class="form-control col-md-7 col-xs-12">
-                                                </div>
-                                            </div>
-
-                                            <div class="row item form-group">
-                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">
-                                                    Email <span class="required">*</span>
-                                                </label>
-                                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <input type="email" runat="server" id="email" name="email" placeholder="Email" class="form-control col-md-7 col-xs-12">
-                                                </div>
-                                            </div>
-
-                                            <div class="row item form-group">
-                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="number">
-                                                    Mobile Number <span class="required">*</span>
-                                                </label>
-                                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <input type="tel" data-rule-number="true" data-rule-minlength="10" data-rule-maxlength="10" title="Enter a valid mobile number" runat="server" id="mobile" name="mobile" required="required" placeholder="Mobile" class="form-control col-md-7 col-xs-12">
+                                                    <input type="text" runat="server" id="organizer" name="organizer" placeholder="Organizer" class="form-control col-md-7 col-xs-12">
                                                 </div>
                                             </div>
 
@@ -166,7 +169,7 @@
                 </div>
                 <div class="modal-body">
                     <form class="dropzone" id="my-dropzone">
-                        <input type="hidden" id="bb_id" />
+                        <input type="hidden" id="cp_id" />
                     </form>
                 </div>
                 <div class="modal-footer">

@@ -1,31 +1,8 @@
 ﻿$(document).ready(function () {
-    function addBlankCCServices() {
-        var index = $("div.services-div").length;
-
-        if (index > 0)
-            index = parseInt($($("div.services-div")[index - 1]).data("index")) + 1
-
-        var ser = $("#servicesTemplate");
-        var service = {
-            index: index,
-            service: ""
-        }
-        $("#cc_services_rep").append($(ser).tmpl(service));
-    };
-
-    addBlankCCServices();
-
-    $(document).on("click", ".del-services", function () {
-        $(this).parent().parent().parent().parent().remove();
-    });
-
-    $(document).on("click", "#addservices", function () {
-        addBlankCCServices();
-    });
-
     Dropzone.autoDiscover = false;
 
-    $('#cclist_table').DataTable({
+
+    $('#camplist_table').DataTable({
         lengthMenu: [[10, 25, 50], [10, 25, 50]],
         "language":
         {
@@ -34,7 +11,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "CriticalCare.aspx/GetCriticalCares",
+            "url": "Camp.aspx/GetCamps",
             "contentType": "application/json",
             "type": "POST",
             "dataType": "JSON",
@@ -54,30 +31,32 @@
         //"order": [[0, "desc"]],
         "columns": [
             { "data": "Name", "autoWidth": true, "orderable": true, "searchable": true },
-            { "data": "Email", "autoWidth": true, "orderable": true, "searchable": true },
-            { "data": "Mobile", "autoWidth": true, "orderable": true, "searchable": true },
+            { "data": "Description", "autoWidth": true, "orderable": true, "searchable": true },
+            { "data": "Address", "autoWidth": true, "orderable": true, "searchable": true },            
+            { "data": "Timing", "autoWidth": true, "orderable": true, "searchable": true },
             { "data": "CityName", "autoWidth": true, "orderable": true, "searchable": true },
+
             { "data": "Link", "autoWidth": true, "orderable": false, "searchable": false }
         ],
         responsive: true,
         "pagingType": "full_numbers"
     });
-    $('#cclist_table tfoot th').each(function () {
+    $('#camplist_table tfoot th').each(function () {
         var title = $(this).text();
         if (title !== "") {
             $(this).html('<input type="text" style="width:100%" placeholder="Search ' + title + '" />');
         }
     });
 
-    var table = $('#cclist_table').DataTable();
+    var table = $('#camplist_table').DataTable();
 
-    $(document).on('click', '.delete-cc', function () {
+    $(document).on('click', '.delete-cp', function () {
 
         if (confirm('Are you sure, you want to delete this item ?')) {
             var id = $(this).data('id');
 
             $.ajax({
-                "url": "CriticalCare.aspx/DeleteCriticalCareById?id=" + id,
+                "url": "Camp.aspx/DeleteCampById?id=" + id,
                 "contentType": "application/json",
                 "type": "GET",
                 "dataType": "JSON",
@@ -87,55 +66,59 @@
             });
         }
     });
-
-    $(document).on('click', '.edit-cc', function () {
+    $(document).on('click', '.edit-cp', function () {
         var id = $(this).data('id');
 
         $.ajax({
-            "url": "CriticalCare.aspx/GetCriticalCareById?id=" + id,
+            "url": "Camp.aspx/GetCampById?id=" + id,
             "contentType": "application/json",
             "type": "GET",
             "dataType": "JSON",
             "success": function (data) {
-                var cc = data.d;
+                var camp = data.d;
 
-                $("#MainContent_cc_id").val(cc.Id);
-                $("#MainContent_name").val(cc.Name);
-                $("#MainContent_address").val(cc.Address);
-                $("#MainContent_email").val(cc.Email);
-                $("#MainContent_mobile").val(cc.Mobile);
-                $("#MainContent_city").val(cc.City);
-                $("#MainContent_speciality").val(cc.Specialities);                
+                $("#MainContent_camp_id").val(camp.Id);
+                $("#MainContent_organizer").val(camp.Organizer);
+                $("#MainContent_camp_title").val(camp.Name);
+                $("#MainContent_address").val(camp.Address);
+                $("#MainContent_description").val(camp.Description);
+                $("#MainContent_description1").val(camp.Description1);
+                $("#MainContent_description2").val(camp.Description2);
+                $("#MainContent_city").val(camp.City);
+                var timings = camp.Timing;
+                var t = [];
+                if (timings.length > 0) {
+
+                    var tt = [];
+                    if (timings)
+                        tt = timings.split('-');
+                    if (tt.length < 2)
+                        tt = timings.split('&');
+                    if (tt.length < 2)
+                        tt = timings.split('to');
+
+                    $("#MainContent_timingFrom").val(tt[0]);
+                    $("#MainContent_timingTo").val(tt[1]);
+                }
 
                 $("label.error").hide();
 
-                var s = [];
-                var ser = $("#servicesTemplate");
-                var services = cc.Services ? cc.Services.split('\n') : [];
-                if (services.length > 0) {
-                    $.each(services, function (i, service) {
-                        s.push({
-                            index: i,
-                            service: service
-                        });
-                    });
-                    $("#cc_services_rep").empty().append($(ser).tmpl(s));
-                }
+
             }
         });
 
-        $("#cclistli").removeClass("active");
-        $("#cclist").removeClass("active");
-        $("#cceditli").addClass("active");
-        $("#ccedit").addClass("active");
+        $("#camplistli").removeClass("active");
+        $("#camplist").removeClass("active");
+        $("#campeditli").addClass("active");
+        $("#campedit").addClass("active");
     });
 
-    $(document).on('click', '.add-cc-images', function () {
+    $(document).on('click', '.add-cp-images', function () {
         var id = $(this).data('id');
-        $("#cc_dz_id").val(id);
+        $("#cp_id").val(id);
 
         $.ajax({
-            "url": "CriticalCare.aspx/GetImagesById?id=" + id,
+            "url": "Camp.aspx/GetImagesById?id=" + id,
             "contentType": "application/json",
             "type": "GET",
             "dataType": "JSON",
@@ -144,7 +127,7 @@
                     var files = data.d.Data;
                     var myDropzone = new Dropzone("#my-dropzone", {
                         autoProcessQueue: false,
-                        url: "Handlers/CriticalCareImageUploader.ashx",
+                        url: "Handlers/CampImageUploader.ashx",
                         addRemoveLinks: true,
                         uploadMultiple: true,
                         maxFiles: 5,
@@ -158,7 +141,7 @@
                                 this.defaultOptions.error(file, response.Message);
                             }
                         },
-                        error: function (file, error) {
+                        error: function (file, error) {                            
                             var msg = file.accepted ? "File not uploaded" : error;
                             var msgEl = $(file.previewElement).find('.dz-error-message');
                             msgEl.text(msg);
@@ -173,9 +156,8 @@
                         },
                         init: function () {
                             this.on("sending", function (file, xhr, data) {
-                                var ccid = $("#cc_dz_id").val();
-                                data.append("id", ccid);
-
+                                var cpid = $("#cp_id").val();
+                                data.append("id", cpid);
                                 var files = this.files;
                                 var rejectedFiles = this.getRejectedFiles();
                                 if (rejectedFiles.length > 0) {
@@ -185,7 +167,7 @@
                                 }
                                 var fcnames = [];
                                 $.each(files, function (i, file) {
-                                    fcnames.push(ccid + "_" + file.name.replace(/\s+/g, ""));
+                                    fcnames.push(cpid + "_" + file.name.replace(/\s+/g, ""));
                                 });
 
                                 if (fcnames.length > 0) {
@@ -208,7 +190,6 @@
                                 };
 
                                 mock.accepted = true;
-
                                 myDropzone.files.push(mock);
                                 myDropzone.emit('addedfile', mock);
                                 myDropzone.createThumbnailFromUrl(mock, mock.url);
@@ -218,7 +199,7 @@
                     }
 
                     $('#uploadImages').click(function () {
-                        // myDropzone.options.url = "Doctor.aspx/UploadImagesById?id=" + id;
+                        // myDropzone.options.url = "Camp.aspx/UploadImagesById?id=" + id;
                         if (myDropzone.getQueuedFiles().length > 0) {
                             myDropzone.processQueue();
                         }
@@ -259,11 +240,10 @@
             }
         });
     });
-    $(document).on("click", "#saveCC", function () {
-        var valid = $("#ccform").valid();
+    $(document).on("click", "#saveCP", function () {
+        var valid = $("#campform").valid();
         if (valid) {
-            $("#MainContent_sendCC").trigger("click");
+            $("#MainContent_sendCP").trigger("click");
         }
     });
 });
-

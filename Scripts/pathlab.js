@@ -140,9 +140,9 @@
                             }
                         },
                         error: function (file, error) {
-                            debugger
+                            var msg = file.accepted ? "File not uploaded" : error;
                             var msgEl = $(file.previewElement).find('.dz-error-message');
-                            msgEl.text("File not uploaded");
+                            msgEl.text(msg);
                             msgEl.show();
                             msgEl.css("opacity", 1);
                         },

@@ -25,6 +25,22 @@ public class MasterDataManager
         }
         return options;
     }
+    public List<OptionModel> GetAvailableEducationSpecialities()
+    {
+        var options = new List<OptionModel>();
+
+        var query = "select speciality_id, speciality_name from edu_speciality_master where is_active='y' order by speciality_name";
+        var rows = new DataAccessManager().ExecuteSelectQuery(query);
+        if (rows != null && rows.Count > 0)
+        {
+            foreach (DataRow r in rows)
+            {
+                options.Add(new OptionModel() { Id = r["speciality_id"].ToString(), Value = r["speciality_name"].ToString() });
+            }
+        }
+        return options;
+    }
+    
 
     public List<OptionModel> GetAvailableCities()
     {
