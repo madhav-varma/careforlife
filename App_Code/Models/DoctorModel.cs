@@ -20,10 +20,9 @@ public class DoctorModel
     [DisplayName("degree")]
     public string Degree { get; set; }
     [DisplayName("experience")]
-    public string Experience { get; set; }
-   // [IgnoreInsert]
-   // [DisplayName("email")]
-   // public string Email { get; set; }
+    public string Experience { get; set; }    
+    [DisplayName("email")]
+    public string Email { get; set; }
     [DisplayName("contact_no")]
     public string Mobile { get; set; }
     [DisplayName("speciality_id")]
@@ -44,6 +43,8 @@ public class DoctorModel
     public string Address { get; set; }
     [DisplayName("is_special")]
     public bool IsSpecial { get; set; }
+    [DisplayName("is_rare")]
+    public bool IsRare { get; set; }
     [DisplayName("services")]
     public string Services { get; set; }
     [DisplayName("created_on")]

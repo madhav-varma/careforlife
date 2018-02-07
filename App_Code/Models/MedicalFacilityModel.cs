@@ -27,6 +27,14 @@ public class MedicalFacilityModel
     public string Email { get; set; }
     [DisplayName("contact_no")]
     public string Mobile { get; set; }
+    [DisplayName("doctor_name")]
+    public string Doctor { get; set; }
+    [DisplayName("description")]
+    public string Description { get; set; }
+    [DisplayName("timing")]
+    public string Timing { get; set; }
+    [DisplayName("services")]
+    public string Services { get; set; }
     [IgnoreInsert]
     [IgnoreUpdate]
     [DisplayName("city_name")]

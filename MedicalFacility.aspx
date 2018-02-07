@@ -71,6 +71,22 @@
                                                 </div>
 
                                             </div>
+                                            <div class="row item form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="doctor">
+                                                   Doctor Name <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input type="text" runat="server" required="required" id="doctor" name="doctor" placeholder="Doctor Name" class="form-control col-md-7 col-xs-12">
+                                                </div>
+                                            </div>
+                                             <div class="row item form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                                    Description <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <textarea runat="server" placeholder="Description" id="description" required="required" name="description" class="form-control col-md-7 col-xs-12"></textarea>
+                                                </div>
+                                            </div>
 
                                             <div class="row item form-group">
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">
@@ -78,6 +94,26 @@
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                     <textarea runat="server" placeholder="Address" id="address" required="required" name="address" class="form-control col-md-7 col-xs-12"></textarea>
+                                                </div>
+                                            </div>
+                                             <div class="row item form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                                    Timing <span class="required">*</span>
+                                                </label>
+
+                                                <div class="col-md-3 col-sm-3 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='input-group date' style="width: 100%">
+                                                            <input runat="server" required="required" id="timingFrom" name="timingFrom" placeholder="From e.g. 10 AM" type='text' class="form-control" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 col-sm-3 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='input-group date' style="width: 100%">
+                                                            <input runat="server" required="required" id="timingTo" name="timingTo" placeholder="To e.g. 2 PM" type='text' class="form-control" />
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="row item form-group">
@@ -105,6 +141,13 @@
                                                         <option value="">Select City</option>
                                                     </select>
                                                 </div>
+                                            </div>
+                                             <div class=" row item form-group">
+                                                <span class="section">Available Services                                                    
+                                                    <button type="button" id="addservices" style="margin: 10px 0" class="btn btn-primary"><i class="fa fa-plus"></i></button>
+                                                </span>
+
+                                                <div id="services_rep"></div>
                                             </div>
                                         </form>
                                     </div>
@@ -140,6 +183,22 @@
             </div>
         </div>
     </div>
+
+     <script id="servicesTemplate" type="text/html">
+        <div class="row services-div" data-index="${index}">
+            <label class="col-sm-3 control-label">Services</label>
+            <div class="col-sm-6 ">
+                <div id="Container" class="input-group" style="width: 100%">
+                    <input value="${service}" required="required" placeholder="Services" type="text" class="form-control" id="service${index}" name="service${index}">
+                    {{if index > 0}}
+                <span class="input-group-btn">
+                    <button type="button" value="Clone it" class="del-services btn btn-danger"><i class="fa fa-minus"></i></button>
+                </span>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </script>
 
 
     <input type="hidden" runat="server" id="action" />

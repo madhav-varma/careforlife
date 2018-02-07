@@ -42,6 +42,8 @@ public partial class Doctor : System.Web.UI.Page
             doc.Experience = experience.Value + " Year(s)";
             doc.IsSpecial = chk_special.Checked;
             doc.Mobile = mobile.Value;
+            doc.Email = email.Value;
+            doc.IsRare = true;
 
             var servicesKeys = Request.Form.AllKeys.Where(x => x.Contains("service")).ToList();
             var services = new List<string>();

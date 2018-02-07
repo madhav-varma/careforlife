@@ -2,6 +2,30 @@
 
     Dropzone.autoDiscover = false;
 
+    function addBlankServices() {
+        var index = $("div.services-div").length;
+
+        if (index > 0)
+            index = parseInt($($("div.services-div")[index - 1]).data("index")) + 1
+
+        var ser = $("#servicesTemplate");
+        var service = {
+            index: index,
+            service: ""
+        }
+        $("#services_rep").append($(ser).tmpl(service));
+    };
+    $(document).on("click", "#addservices", function () {
+        addBlankServices();
+    });
+
+    $(document).on("click", ".del-services", function () {
+        $(this).parent().parent().parent().parent().remove();
+    });
+
+    
+    addBlankServices();
+
     $('#mflist_table').DataTable({
         lengthMenu: [[10, 25, 50], [10, 25, 50]],
         "language":
@@ -83,6 +107,34 @@
                 $("#MainContent_email").val(mf.Email);
                 $("#MainContent_mobile").val(mf.Mobile);               
                 $("#MainContent_city").val(mf.City);    
+                $("#MainContent_doctor").val(mf.Doctor);    
+                $("#MainContent_description").val(mf.Description);    
+
+                if (mf.Timing) {
+                    var tt = [];
+                    if (mf.Timing)
+                        tt = mf.Timing.split('-');
+                    if (tt.length < 2)
+                        tt = mf.Timing.split('&');
+                    if (tt.length < 2)
+                        tt = mf.Timing.split('to');
+
+                    $("#MainContent_timingFrom").val(tt[0].trim());
+                    $("#MainContent_timingTo").val(tt[1].trim());
+                }
+
+                var s = [];
+                var ser = $("#servicesTemplate");
+                var services = mf.Services ? mf.Services.split('\n') : [];
+                if (services.length > 0) {
+                    $.each(services, function (i, service) {
+                        s.push({
+                            index: i,
+                            service: service
+                        });
+                    });
+                    $("#services_rep").empty().append($(ser).tmpl(s));
+                }
 
                 $("label.error").hide();
             }

@@ -19,32 +19,39 @@ public partial class RareSpeciality : System.Web.UI.Page
         this.Master.UsernameHead = user.FullName;
         this.Master.UsernameDD = user.FullName;
 
+        var specialities = new MasterDataManager().GetAvailableSpecialities("y");
+        foreach (var sp in specialities)
+        {
+            speciality.Items.Add(new ListItem(sp.Value, sp.Id));
+        }
         var cities = new MasterDataManager().GetAvailableCities();
         foreach (var c in cities)
         {
             city.Items.Add(new ListItem(c.Value, c.Id));
         }
-
     }
 
-    protected void SubmitRareSpeciality(object sender, EventArgs e)
+    protected void SubmitDoctor(object sender, EventArgs e)
     {
         try
         {
-            var rare = new RareSpecialityModel();
+            var doc = new DoctorModel();
 
-            rare.City = int.Parse(city.Value);
-            rare.IsActive = true;
-            rare.Mobile = mobile.Value;
+            doc.City = int.Parse(city.Value);
+            doc.Degree = degree.Value;
+            doc.Experience = experience.Value + " Year(s)";           
+            doc.Mobile = mobile.Value;
+            doc.Email = email.Value;
+            doc.IsRare = true;
 
-            var specialitiesKeys = Request.Form.AllKeys.Where(x => x.Contains("service")).ToList();
-            var specialities = new List<string>();
-            foreach (var key in specialitiesKeys)
+            var servicesKeys = Request.Form.AllKeys.Where(x => x.Contains("service")).ToList();
+            var services = new List<string>();
+            foreach (var key in servicesKeys)
             {
                 var i = key.Replace("service", "");
-                specialities.Add(Request.Form["service" + i]);
+                services.Add(Request.Form["service" + i]);
             }
-            rare.Specialities = string.Join("\n", specialities);
+            doc.Services = string.Join("\n", services);
 
             var locations = new List<string>();
             var hospitalKeys = Request.Form.AllKeys.Where(x => x.Contains("hospital")).ToList();
@@ -59,43 +66,43 @@ public partial class RareSpeciality : System.Web.UI.Page
                 var timing = "{" + string.Format("\"hospital\":\"{0}\", \"Address\":\"{1}\", \"timing\":\"{2} - {3}\"", hospital, address, from, to) + "}";
                 locations.Add(timing);
             }
+            doc.Timing = "[" + string.Join(",", locations) + "]";
 
-            rare.Address = "[" + string.Join(",", locations) + "]";
-       
-            rare.Name = name.Value;
+            doc.Speciality = int.Parse(speciality.Value);            
+            doc.Name = name.Value;
 
-            rare.Created = DateTime.UtcNow.AddHours(5).AddMinutes(30);
-
+            doc.Created = DateTime.UtcNow.AddHours(5).AddMinutes(30);
 
 
-            var sqlQuery = new Helper().GetInsertQuery<RareSpecialityModel>(rare);
-            if (!string.IsNullOrWhiteSpace(rare_speciality_id.Value))
+
+            var sqlQuery = new Helper().GetInsertQuery<DoctorModel>(doc);
+            if (!string.IsNullOrWhiteSpace(doctor_id.Value))
             {
-                rare.Id = int.Parse(rare_speciality_id.Value);
-                sqlQuery = new Helper().GetUpdateQuery<RareSpecialityModel>(rare);
+                doc.Id = int.Parse(doctor_id.Value);
+                sqlQuery = new Helper().GetUpdateQuery<DoctorModel>(doc);
             }
 
             var dam = new DataAccessManager().ExecuteInsertUpdateQuery(sqlQuery);
             if (dam)
             {
-                msg = "RareSpeciality Added Successfully!";
+                msg = "Doctor Added Successfully!";
                 Response.Redirect("RareSpeciality", true);
             }
         }
         catch (Exception ex)
         {
-            msg = "Failed To Add RareSpeciality!";
+            msg = "Failed To Add Doctor!";
             action.Value = msg;
         }
     }
 
     [WebMethod(EnableSession = true)]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-    public static object GetRares(DataTableAjaxPostModel model)
+    public static object GetDoctors(DataTableAjaxPostModel model)
     {
-        var cols = new List<string>() { "LOWER(TRIM(rm.hospital_name))", "LOWER(TRIM(rm.email_id))", "dm.mobile", "LOWER(TRIM(cm.city_name))" };
+        var cols = new List<string>() { "LOWER(TRIM(dm.doctor_name))", "LOWER(TRIM(dm.degree))", "dm.experience", "dm.mobile", "LOWER(TRIM(sm.speciality_name))", "LOWER(TRIM(cm.city_name))" };
         // Initialization.    
-        DataTableData<RareSpecialityModel> result = new DataTableData<RareSpecialityModel>();
+        DataTableData<DoctorModel> result = new DataTableData<DoctorModel>();
         try
         {
             // Initialization.                
@@ -126,20 +133,20 @@ public partial class RareSpeciality : System.Web.UI.Page
                 }
             }
 
-            var rares = new RareSpecialityManager().GetAllRaresPaginated(startRec, pageSize, c_order, c_search);
+            var docs = new DoctorManager().GetAllDoctorsPaginated(startRec, pageSize, c_order, c_search, "y");
 
-            var rarelist = rares.Data;
-            foreach (var rare in rarelist)
+            var doclist = docs.Data;
+            foreach (var doc in doclist)
             {
-                rare.Link = "<a href='javascript:void(0);' style='margin-right:10px' class='edit-rare' data-id='" + rare.Id + "'>Edit</a><a href='javascript:void(0);' class='add-rare-images' data-id='" + rare.Id + "'>Add Images</a><a href='javascript:void(0);' style='margin-left:10px' class='delete-rare' data-id='" + rare.Id + "'>Delete</a>";
+                doc.Link = "<a href='javascript:void(0);' style='margin-right:10px' class='edit-doc' data-id='" + doc.Id + "'>Edit</a><a href='javascript:void(0);' class='add-doc-images' data-id='" + doc.Id + "'>Add Images</a><a href='javascript:void(0);' style='margin-left:10px' class='delete-doc' data-id='" + doc.Id + "'>Delete</a>";
             }
 
-            int recFilter = rares.Data.Count;
+            int recFilter = docs.Data.Count;
 
             result.draw = Convert.ToInt32(draw);
-            result.recordsTotal = rares.TotalCount;
-            result.recordsFiltered = rares.TotalCount;
-            result.data = rarelist;
+            result.recordsTotal = docs.TotalCount;
+            result.recordsFiltered = docs.TotalCount;
+            result.data = doclist;
         }
         catch (Exception ex)
         {
@@ -152,18 +159,11 @@ public partial class RareSpeciality : System.Web.UI.Page
 
     [WebMethod(EnableSession = true)]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
-    public static object GetRareSpecialityById(string id)
+    public static object GetDoctorById(string id)
     {
-        var rare = new RareSpecialityManager().GetRareSpecialityById(id);
-        return rare;
-    }
-
-    [WebMethod(EnableSession = true)]
-    [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
-    public static object DeleteRareSpecialityById(string id)
-    {
-        var resp = new RareSpecialityManager().DeleteRareSpeciality(id);
-        return resp;
+        var doc = new DoctorManager().GetDoctorById(id);
+        doc.Experience = doc.Experience.Replace("years", "").Replace("Years", "").Replace("year", "").Replace("Year", "").Trim();
+        return doc;
     }
 
     [WebMethod(EnableSession = true)]
@@ -171,13 +171,13 @@ public partial class RareSpeciality : System.Web.UI.Page
     public static object GetImagesById(string id)
     {
         var files = new List<FileInfoModel>();
-        var rareImages = new RareSpecialityManager().GetRareSpecialityImagesById(id);
+        var docImages = new DoctorManager().GetDoctorImagesById(id);
 
         var response = new JsonResponse() { IsSuccess = true, Message = "Files found successfully.", Data = files };
 
-        if (!string.IsNullOrEmpty(rareImages))
+        if (!string.IsNullOrEmpty(docImages))
         {
-            var images = rareImages.Split(' ');
+            var images = docImages.Split(' ');
             try
             {
                 foreach (var item in images)
@@ -208,5 +208,13 @@ public partial class RareSpeciality : System.Web.UI.Page
             }
         }
         return response;
+    }
+
+    [WebMethod(EnableSession = true)]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+    public static object DeleteDoctorById(string id)
+    {
+        var resp = new DoctorManager().DeleteDoctor(id);
+        return resp;
     }
 }

@@ -10,11 +10,11 @@ using System.Web;
 /// </summary>
 public class MasterDataManager
 {
-    public List<OptionModel> GetAvailableSpecialities()
+    public List<OptionModel> GetAvailableSpecialities(string is_rare = "n")
     {
         var options = new List<OptionModel>();
 
-        var query = "select speciality_id, speciality_name from speciality_master where is_active='y' order by speciality_name";
+        var query = "select speciality_id, speciality_name from speciality_master where is_active='y' and is_rare='" + is_rare + "' order by speciality_name";
         var rows = new DataAccessManager().ExecuteSelectQuery(query);
         if (rows != null && rows.Count > 0)
         {
@@ -40,7 +40,7 @@ public class MasterDataManager
         }
         return options;
     }
-    
+
 
     public List<OptionModel> GetAvailableCities()
     {

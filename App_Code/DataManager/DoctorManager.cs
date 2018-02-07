@@ -10,11 +10,11 @@ using System.Web;
 /// </summary>
 public class DoctorManager
 {
-    public List<DoctorModel> GetAllDoctors()
+    public List<DoctorModel> GetAllDoctors(string is_rare = "n")
     {
         var docs = new List<DoctorModel>();
 
-        var query = "select * from doctor_master where is_active='y' order by created_on desc";
+        var query = "select * from doctor_master where is_active='y' and is_rare='" + is_rare + "' order by created_on desc";
         var rows = new DataAccessManager().ExecuteSelectQuery(query);
         if (rows != null && rows.Count > 0)
         {
@@ -121,17 +121,19 @@ public class DoctorManager
 
     public bool DeleteDoctor(string id)
     {
-        var query = string.Format("delete from {0} where {1} = '{2}'",TABLE_NAME, TABLE_ID, id);
+        var query = string.Format("delete from {0} where {1} = '{2}'", TABLE_NAME, TABLE_ID, id);
         var res = new DataAccessManager().ExecuteInsertUpdateQuery(query);
 
         return res;
     }
 
-    public PagedList<DoctorModel> GetAllDoctorsPaginated(int skip, int take, string order, string where)
+    public PagedList<DoctorModel> GetAllDoctorsPaginated(int skip, int take, string order, string where, string is_rare = "n")
     {
         var docs = new List<DoctorModel>();
+
+        var rareFilter = " and dm.is_rare='" + is_rare + "'";
         var orderBy = string.IsNullOrEmpty(order) ? " order by dm.created_on desc " : order;
-        var query = "select dm.*, sm.speciality_name, cm.city_name from doctor_master dm, city_master cm, speciality_master sm where dm.city_id = cm.city_id and sm.speciality_id=dm.speciality_id and  dm.is_active='y' " + where + orderBy + " limit " + take + " offset " + skip;
+        var query = "select dm.*, sm.speciality_name, cm.city_name from doctor_master dm, city_master cm, speciality_master sm where dm.city_id = cm.city_id and sm.speciality_id=dm.speciality_id and dm.is_active='y' " + where + rareFilter + orderBy + " limit " + take + " offset " + skip;
         var rows = new DataAccessManager().ExecuteSelectQuery(query);
         if (rows != null && rows.Count > 0)
         {
@@ -172,7 +174,7 @@ public class DoctorManager
                 docs.Add(doc);
             }
         }
-        query = "select count(*) from doctor_master dm, city_master cm, speciality_master sm where dm.city_id = cm.city_id and sm.speciality_id=dm.speciality_id and  dm.is_active='y' " + where;
+        query = "select count(*) from doctor_master dm, city_master cm, speciality_master sm where dm.city_id = cm.city_id and sm.speciality_id=dm.speciality_id and dm.is_active='y' " + where + rareFilter;
         var totalCount = new DataAccessManager().ExecuteScalar(query);
         var count = totalCount != null ? int.Parse(totalCount.ToString()) : 0;
 
@@ -182,7 +184,7 @@ public class DoctorManager
 
     public DoctorManager()
     {
-        
+
     }
 
     private string TABLE_NAME = "doctor_master";

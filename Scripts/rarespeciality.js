@@ -32,6 +32,8 @@
     };
     addBlankLocation();
     addBlankServices();
+    
+  
 
     $(document).on("click", ".del-loc", function () {
         $(this).parent().parent().parent().remove();
@@ -54,7 +56,7 @@
     Dropzone.autoDiscover = false;
 
 
-    $('#rarelist_table').DataTable({
+    $('#doclist_table').DataTable({
         lengthMenu: [[10, 25, 50], [10, 25, 50]],
         "language":
         {
@@ -63,7 +65,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "RareSpeciality.aspx/GetRares",
+            "url": "RareSpeciality.aspx/GetDoctors",
             "contentType": "application/json",
             "type": "POST",
             "dataType": "JSON",
@@ -82,44 +84,68 @@
         },
         //"order": [[0, "desc"]],
         "columns": [
-            { "data": "Name", "autoWidth": true, "orderable": true, "searchable": true },
-            { "data": "Email", "autoWidth": true, "orderable": true, "searchable": true },
+            { "data": "Name", "autoWidth": true, "orderable": true, "searchable": true },            
+            { "data": "Degree", "autoWidth": true, "orderable": true, "searchable": true },
+            { "data": "Experience", "autoWidth": true, "orderable": true, "searchable": true },
             { "data": "Mobile", "autoWidth": true, "orderable": true, "searchable": true },
+            { "data": "SpecialityName", "autoWidth": true, "orderable": true, "searchable": true },
             { "data": "CityName", "autoWidth": true, "orderable": true, "searchable": true },
             { "data": "Link", "autoWidth": true, "orderable": false, "searchable": false }
         ],
         responsive: true,
         "pagingType": "full_numbers"
     });
-    $('#rarelist_table tfoot th').each(function () {
+    $('#doclist_table tfoot th').each(function () {
         var title = $(this).text();
         if (title !== "") {
             $(this).html('<input type="text" style="width:100%" placeholder="Search ' + title + '" />');
         }
     });
 
-    var table = $('#rarelist_table').DataTable();
+    var table = $('#doclist_table').DataTable();
 
-    $(document).on('click', '.edit-rare', function () {
+    $(document).on('click', '.delete-doc', function () {
+
+        if (confirm('Are you sure, you want to delete this item ?')) {
+            var id = $(this).data('id');
+
+            $.ajax({
+                "url": "RareSpeciality.aspx/DeleteDoctorById?id=" + id,
+                "contentType": "application/json",
+                "type": "GET",
+                "dataType": "JSON",
+                "success": function (data) {
+                    table.ajax.reload();
+                }
+            });
+        }
+    });
+
+    
+
+    $(document).on('click', '.edit-doc', function () {
         var id = $(this).data('id');
 
         $.ajax({
-            "url": "RareSpeciality.aspx/GetRareSpecialityById?id=" + id,
+            "url": "RareSpeciality.aspx/GetDoctorById?id=" + id,
             "contentType": "application/json",
             "type": "GET",
             "dataType": "JSON",
             "success": function (data) {
-                var rare = data.d;
+                var doc = data.d;
 
-                $("#MainContent_rare_speciality_id").val(rare.Id);
-                $("#MainContent_name").val(rare.Name);
-                $("#MainContent_email").val(rare.Email);
-                $("#MainContent_mobile").val(rare.Mobile);
-                $("#MainContent_city").val(rare.City);
+                $("#MainContent_doctor_id").val(doc.Id);
+                $("#MainContent_name").val(doc.Name);                
+                $("#MainContent_degree").val(doc.Degree);
+                $("#MainContent_experience").val(doc.Experience ? doc.Experience.split(' ')[0] : "");
+                $("#MainContent_email").val(doc.Email);
+                $("#MainContent_mobile").val(doc.Mobile);
+                $("#MainContent_speciality").val(doc.Speciality);
+                $("#MainContent_city").val(doc.City);          
 
                 $("label.error").hide();
 
-                var timings = JSON.parse(rare.Address);
+                var timings = JSON.parse(doc.Timing);
                 var t = [];
                 if (timings.length > 0) {
                     $.each(timings, function (i, timing) {
@@ -128,6 +154,9 @@
                             tt = timing.timing.split('-');
                         if (tt.length < 2)
                             tt = timing.timing.split('&');
+                        if (tt.length < 2)
+                            tt = timing.timing.split('to');
+
                         t.push({
                             index: i,
                             hospital: timing.hospital,
@@ -142,7 +171,7 @@
 
                 var s = [];
                 var ser = $("#servicesTemplate");
-                var services = rare.Services ? rare.Services.split('\n') : [];
+                var services = doc.Services ? doc.Services.split('\n') : [];
                 if (services.length > 0) {
                     $.each(services, function (i, service) {
                         s.push({
@@ -155,32 +184,15 @@
             }
         });
 
-        $("#rarelistli").removeClass("active");
-        $("#rarelist").removeClass("active");
-        $("#rareeditli").addClass("active");
-        $("#rareedit").addClass("active");
+        $("#doclistli").removeClass("active");
+        $("#doclist").removeClass("active");
+        $("#doceditli").addClass("active");
+        $("#docedit").addClass("active");
     });
 
-    $(document).on('click', '.delete-rare', function () {
-
-        if (confirm('Are you sure, you want to delete this item ?')) {
-            var id = $(this).data('id');
-
-            $.ajax({
-                "url": "RareSpeciality.aspx/DeleteRareSpecialityById?id=" + id,
-                "contentType": "application/json",
-                "type": "GET",
-                "dataType": "JSON",
-                "success": function (data) {
-                    table.ajax.reload();
-                }
-            });        
-        }         
-    });
-
-    $(document).on('click', '.add-rare-images', function () {
+    $(document).on('click', '.add-doc-images', function () {
         var id = $(this).data('id');
-        $("#rare_id").val(id);
+        $("#doc_id").val(id);
 
         $.ajax({
             "url": "RareSpeciality.aspx/GetImagesById?id=" + id,
@@ -192,7 +204,7 @@
                     var files = data.d.Data;
                     var myDropzone = new Dropzone("#my-dropzone", {
                         autoProcessQueue: false,
-                        url: "Handlers/RareSpecialityImageUploader.ashx",
+                        url: "Handlers/DoctorImageUploader.ashx",
                         addRemoveLinks: true,
                         uploadMultiple: true,
                         maxFiles: 5,
@@ -221,8 +233,8 @@
                         },
                         init: function () {
                             this.on("sending", function (file, xhr, data) {
-                                var rareid = $("#rare_id").val();
-                                data.append("id", rareid);
+                                var docid = $("#doc_id").val();
+                                data.append("id", docid);
                                 var files = this.files;
                                 var rejectedFiles = this.getRejectedFiles();
                                 if (rejectedFiles.length > 0) {
@@ -232,7 +244,7 @@
                                 }
                                 var fcnames = [];
                                 $.each(files, function (i, file) {
-                                    fcnames.push(rareid + "_" + file.name.replace(/\s+/g, ""));
+                                    fcnames.push(docid + "_" + file.name.replace(/\s+/g, ""));
                                 });
 
                                 if (fcnames.length > 0) {
@@ -264,7 +276,7 @@
                     }
 
                     $('#uploadImages').click(function () {
-                        // myDropzone.options.url = "Doctor.aspx/UploadImagesById?id=" + id;
+                        // myDropzone.options.url = "RareSpeciality.aspx/UploadImagesById?id=" + id;
                         if (myDropzone.getQueuedFiles().length > 0) {
                             myDropzone.processQueue();
                         }
@@ -305,11 +317,16 @@
             }
         });
     });
-    $(document).on("click", "#saveRS", function () {
-        var valid = $("#rsform").valid();
+    $(document).on("click", "#saveDoc", function () {
+        var valid = $("#docform").valid();
         if (valid) {
-            $("#MainContent_sendRS").trigger("click");
+            $("#MainContent_sendDoc").trigger("click");
         }
     });
+    function changeSwitchery(element, checked) {
+        if ((element.is(':checked') && checked == false) || (!element.is(':checked') && checked == true)) {
+            element.parent().find('.switchery').trigger('click');
+        }
+    }
 });
 

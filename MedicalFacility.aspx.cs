@@ -36,7 +36,19 @@ public partial class MedicalFacility : System.Web.UI.Page
             medicalFacility.IsActive = true;
             medicalFacility.Mobile = mobile.Value;
             medicalFacility.Name = name.Value;
-            medicalFacility.Created = DateTime.UtcNow.AddHours(5).AddMinutes(30);            
+            medicalFacility.Created = DateTime.UtcNow.AddHours(5).AddMinutes(30);
+            medicalFacility.Description = description.Value;
+            medicalFacility.Doctor = doctor.Value;
+            medicalFacility.Timing = timingFrom.Value + " to " + timingTo.Value;
+
+            var servicesKeys = Request.Form.AllKeys.Where(x => x.Contains("service")).ToList();
+            var services = new List<string>();
+            foreach (var key in servicesKeys)
+            {
+                var i = key.Replace("service", "");
+                services.Add(Request.Form["service" + i]);
+            }
+            medicalFacility.Services = string.Join("\n", services);
 
             var sqlQuery = new Helper().GetInsertQuery<MedicalFacilityModel>(medicalFacility);
             if (!string.IsNullOrWhiteSpace(facility_id.Value))
