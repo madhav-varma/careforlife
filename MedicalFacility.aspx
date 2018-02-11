@@ -78,7 +78,7 @@
                                                    Doctor Name <span class="required">*</span>
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <input type="text" runat="server" required="required" id="doctor" name="doctor" placeholder="Doctor Name" class="form-control col-md-7 col-xs-12">
+                                                    <input type="text" runat="server"  id="doctor" name="doctor" placeholder="Doctor Name" class="form-control col-md-7 col-xs-12">
                                                 </div>
                                             </div>
                                              <div class="row item form-group">
@@ -86,7 +86,7 @@
                                                     Description <span class="required">*</span>
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <textarea runat="server" placeholder="Description" id="description" required="required" name="description" class="form-control col-md-7 col-xs-12"></textarea>
+                                                    <textarea runat="server" placeholder="Description" id="description"  name="description" class="form-control col-md-7 col-xs-12"></textarea>
                                                 </div>
                                             </div>
 
@@ -95,7 +95,7 @@
                                                     Address <span class="required">*</span>
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <textarea runat="server" placeholder="Address" id="address" required="required" name="address" class="form-control col-md-7 col-xs-12"></textarea>
+                                                    <textarea runat="server" placeholder="Address" id="address"  name="address" class="form-control col-md-7 col-xs-12"></textarea>
                                                 </div>
                                             </div>
                                              <div class="row item form-group">
@@ -106,14 +106,14 @@
                                                 <div class="col-md-3 col-sm-3 col-xs-12">
                                                     <div class="form-group">
                                                         <div class='input-group date' style="width: 100%">
-                                                            <input runat="server" required="required" id="timingFrom" name="timingFrom" placeholder="From e.g. 10 AM" type='text' class="form-control" />
+                                                            <input runat="server"  id="timingFrom" name="timingFrom" placeholder="From e.g. 10 AM" type='text' class="form-control" />
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3 col-sm-3 col-xs-12">
                                                     <div class="form-group">
                                                         <div class='input-group date' style="width: 100%">
-                                                            <input runat="server" required="required" id="timingTo" name="timingTo" placeholder="To e.g. 2 PM" type='text' class="form-control" />
+                                                            <input runat="server"  id="timingTo" name="timingTo" placeholder="To e.g. 2 PM" type='text' class="form-control" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -132,7 +132,7 @@
                                                     Mobile Number <span class="required">*</span>
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <input type="tel" runat="server" data-rule-number="true" data-rule-minlength="10" data-rule-maxlength="10" id="mobile" name="mobile" required="required" placeholder="Mobile" class="form-control col-md-7 col-xs-12">
+                                                    <input type="tel" runat="server" data-rule-number="true" data-rule-minlength="10" data-rule-maxlength="10" id="mobile" name="mobile"  placeholder="Mobile" class="form-control col-md-7 col-xs-12">
                                                 </div>
                                             </div>
 
@@ -148,7 +148,7 @@
                                             <div class="item row form-group">
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">City</label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <select id="city" runat="server" required="required" class="select2_group form-control">
+                                                    <select id="city" runat="server" required="required"  class="select2_group form-control">
                                                         <option value="">Select City</option>
                                                     </select>
                                                 </div>
@@ -200,7 +200,7 @@
             <label class="col-sm-3 control-label">Services</label>
             <div class="col-sm-6 ">
                 <div id="Container" class="input-group" style="width: 100%">
-                    <input value="${service}" required="required" placeholder="Services" type="text" class="form-control" id="service${index}" name="service${index}">
+                    <input value="${service}"  placeholder="Services" type="text" class="form-control" id="service${index}" name="service${index}">
                     {{if index > 0}}
                 <span class="input-group-btn">
                     <button type="button" value="Clone it" class="del-services btn btn-danger"><i class="fa fa-minus"></i></button>
