@@ -58,7 +58,7 @@
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="x_panel" style="border-top: 0">
                                     <div class="x_content">
-                                        <form runat="server" id="pathlabform" method="post">
+                                        <form runat="server" id="pathlabform" method="post" enctype="multipart/form-data">
                                             <input type="hidden" runat="server" id="path_lab_id">
                                             <div class="row item form-group">
                                                 <span class="section" style="padding-bottom: 10px">Basic Info

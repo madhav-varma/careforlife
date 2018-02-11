@@ -79,6 +79,7 @@
                                 <li><a href="PatientEducation.aspx"><i class="fa fa-laptop"></i>Patient Education Videos</a></li>
                                 <li><a href="User.aspx"><i class="fa fa-laptop"></i>Users </a></li>
                                 <li><a href="City.aspx"><i class="fa fa-laptop"></i>Cities </a></li>
+                                <li><a href="Speciality.aspx"><i class="fa fa-laptop"></i>Specialities </a></li>
                             </ul>
                         </div>
 
