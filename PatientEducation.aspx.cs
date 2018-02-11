@@ -18,7 +18,7 @@ public partial class PatientEducation : System.Web.UI.Page
         this.Master.UsernameHead = user.FullName;
         this.Master.UsernameDD = user.FullName;
 
-        var specialities = new MasterDataManager().GetAvailableEducationSpecialities();
+        var specialities = new MasterDataManager().GetAvailableSpecialities();
         foreach (var s in specialities)
         {
             speciality.Items.Add(new ListItem(s.Value, s.Id));

@@ -128,7 +128,7 @@ public class PatientEduManager
     {
         var patientEdus = new List<PatientEducationModel>();
         var orderBy = string.IsNullOrEmpty(order) ? " order by pe.created_on desc " : order;
-        var query = "select pe.*, sm.speciality_name from  " + TABLE_NAME + "  pe, edu_speciality_master sm where pe.speciality_id = sm.speciality_id and  pe.is_active='y' " + where + orderBy + " limit " + take + " offset " + skip;
+        var query = "select pe.*, sm.speciality_name from  " + TABLE_NAME + "  pe, speciality_master sm where pe.speciality_id = sm.speciality_id and  pe.is_active='y' " + where + orderBy + " limit " + take + " offset " + skip;
         var rows = new DataAccessManager().ExecuteSelectQuery(query);
         if (rows != null && rows.Count > 0)
         {
@@ -169,7 +169,7 @@ public class PatientEduManager
                 patientEdus.Add(patientEdu);
             }
         }
-        query = "select count(*) from  " + TABLE_NAME + "  pe, edu_speciality_master sm where sm.speciality_id = pe.speciality_id and  pe.is_active='y' " + where;
+        query = "select count(*) from  " + TABLE_NAME + "  pe, speciality_master sm where sm.speciality_id = pe.speciality_id and  pe.is_active='y' " + where;
         var totalCount = new DataAccessManager().ExecuteScalar(query);
         var count = totalCount != null ? int.Parse(totalCount.ToString()) : 0;
 
