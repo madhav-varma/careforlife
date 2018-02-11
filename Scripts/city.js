@@ -1,8 +1,5 @@
 ﻿$(document).ready(function () {
-    $(document).on("click", "#cancel", function () {
-        location.reload();
-    });
-    $('#patientlist_table').DataTable({
+    $('#citylist_table').DataTable({
         lengthMenu: [[10, 25, 50], [10, 25, 50]],
         "language":
         {
@@ -11,7 +8,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "PatientEducation.aspx/GetVideos",
+            "url": "City.aspx/GetCities",
             "contentType": "application/json",
             "type": "POST",
             "dataType": "JSON",
@@ -31,62 +28,67 @@
         //"order": [[0, "desc"]],
         "columns": [
             { "data": "Name", "autoWidth": true, "orderable": true, "searchable": true },
-            { "data": "Url", "autoWidth": true, "orderable": true, "searchable": true },
-            { "data": "SpecialityName", "autoWidth": true, "orderable": true, "searchable": true },
-           
+            { "data": "StateName", "autoWidth": true, "orderable": true, "searchable": true },
+            { "data": "DoctorCount", "autoWidth": true, "orderable": true, "searchable": true },
+
             { "data": "Link", "autoWidth": true, "orderable": false, "searchable": false }
         ],
         responsive: true,
         "pagingType": "full_numbers"
     });
-    $('#patientlist_table tfoot th').each(function () {
+    $('#citylist_table tfoot th').each(function () {
         var title = $(this).text();
         if (title !== "") {
             $(this).html('<input type="text" style="width:100%" placeholder="Search ' + title + '" />');
         }
     });
 
-    var table = $('#patientlist_table').DataTable();
+    var table = $('#citylist_table').DataTable();
 
-    $(document).on('click', '.delete-pe', function () {
+    $(document).on('click', '.delete-city', function () {
 
         if (confirm('Are you sure, you want to delete this item ?')) {
             var id = $(this).data('id');
 
             $.ajax({
-                "url": "PatientEducation.aspx/DeleteVideoById?id=" + id,
+                "url": "City.aspx/DeleteCityById?id=" + id,
                 "contentType": "application/json",
                 "type": "GET",
                 "dataType": "JSON",
                 "success": function (data) {
-                    table.ajax.reload();
+                    if (data.d.IsSuccess) {
+                        table.ajax.reload();
+                    }
+                    else {
+                        alert(data.d.Message);
+                    }
                 }
             });
         }
     });
-    $(document).on('click', '.edit-pe', function () {
+    $(document).on('click', '.edit-city', function () {
         var id = $(this).data('id');
 
         $.ajax({
-            "url": "PatientEducation.aspx/GetVideoById?id=" + id,
+            "url": "City.aspx/GetCityById?id=" + id,
             "contentType": "application/json",
             "type": "GET",
             "dataType": "JSON",
             "success": function (data) {
-                var video = data.d;
-                $("#MainContent_video_id").val(video.Id);
-                $("#MainContent_video_name").val(video.Name);
-                $("#MainContent_video_url").val(video.Url);                
-                $("#MainContent_speciality").val(video.Speciality);                
+                var city = data.d;
+                $("#MainContent_city_id").val(city.Id);
+                $("#MainContent_city_name").val(city.Name);
+                $("#MainContent_state").val(city.StateId);
+                $("#MainContent_doc_count").val(city.DoctorCount);
 
                 $("label.error").hide();
             }
         });
 
-        $("#patientlistli").removeClass("active");
-        $("#patientlist").removeClass("active");
-        $("#patienteditli").addClass("active");
-        $("#patientedit").addClass("active");
+        $("#citylistli").removeClass("active");
+        $("#citylist").removeClass("active");
+        $("#cityeditli").addClass("active");
+        $("#cityedit").addClass("active");
     });
 
     table.columns().every(function () {
@@ -99,13 +101,15 @@
             }
         });
     });
-    $(document).on("click", "#savePE", function () {
-        var valid = $("#patientform").valid();
+    $(document).on("click", "#saveCity", function () {
+        var valid = $("#cityform").valid();
         if (valid) {
-            $("#MainContent_sendPE").trigger("click");
+            $("#MainContent_sendCity").trigger("click");
         }
     });
 
-
+    $(document).on("click", "#cancel", function () {
+        location.reload();
+    });
 
 });

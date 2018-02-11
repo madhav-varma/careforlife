@@ -53,7 +53,7 @@
         "columns": [
             { "data": "Name", "autoWidth": true, "orderable": true, "searchable": true },
             { "data": "Description", "autoWidth": true, "orderable": true, "searchable": true },
-            { "data": "Address", "autoWidth": true, "orderable": true, "searchable": true },            
+            { "data": "Address", "autoWidth": true, "orderable": true, "searchable": true },
             { "data": "Timing", "autoWidth": true, "orderable": true, "searchable": true },
             { "data": "CityName", "autoWidth": true, "orderable": true, "searchable": true },
 
@@ -166,7 +166,7 @@
                                 this.defaultOptions.error(file, response.Message);
                             }
                         },
-                        error: function (file, error) {                            
+                        error: function (file, error) {
                             var msg = file.accepted ? "File not uploaded" : error;
                             var msgEl = $(file.previewElement).find('.dz-error-message');
                             msgEl.text(msg);
