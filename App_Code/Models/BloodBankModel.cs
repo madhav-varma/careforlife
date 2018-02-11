@@ -15,10 +15,10 @@ public class BloodBankModel
     public int Id { get; set; }
     [DisplayName("blood_bank_name")]
     public string Name { get; set; }
-    [IgnoreInsert]
+    [IgnoreSelect]
     [IgnoreUpdate]
     [DisplayName("img_url")]
-    public string ImgUrl { get; set; }
+    public string Images { get; set; }
     [DisplayName("city_id")]
     public int City { get; set; }
     [DisplayName("email_id")]

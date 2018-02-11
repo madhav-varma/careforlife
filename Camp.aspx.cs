@@ -40,7 +40,23 @@ public partial class Camp : System.Web.UI.Page
             camp.Description1 = description1.Value;
             camp.Description2 = description2.Value;
 
-           
+            if (Request.Files.Count > 0)
+            {
+                var files = new List<string>();
+                for (var i = 0; i < Request.Files.Count; i++)
+                {
+                    HttpPostedFile f = Request.Files[i];
+                    var extension = Path.GetExtension(f.FileName);
+                    var fileName = Guid.NewGuid().ToString() + "." + extension;
+                    files.Add(fileName);
+
+                    string pathToSave_100 = HttpContext.Current.Server.MapPath("~/photo/" + fileName);
+                    f.SaveAs(pathToSave_100);
+                }
+                camp.Images = string.Join(" ", files);
+            }
+
+
             camp.IsActive = true;
             camp.Created = DateTime.UtcNow.AddHours(5).AddMinutes(30);
 

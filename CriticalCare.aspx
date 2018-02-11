@@ -61,6 +61,7 @@
                                             <div class="row item form-group">
                                                 <span class="section" style="padding-bottom: 10px">Basic Info
                                                     <button runat="server" id="sendCC" type="submit" onserverclick="SubmitCriticalCare" class="hidden pull-right btn btn-success">Save</button>
+                                                    <input id="cancel" type="button" class="pull-right btn btn-danger" value="Cancel" />
                                                     <input id="saveCC" type="button" class="pull-right btn btn-success" value="Save" />
                                                 </span>
 
@@ -97,6 +98,15 @@
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                     <input type="tel" data-rule-number="true" data-rule-minlength="10" data-rule-maxlength="10" runat="server" id="mobile" name="mobile" required="required" placeholder="Mobile" class="form-control col-md-7 col-xs-12">
+                                                </div>
+                                            </div>
+
+                                            <div class="row item ">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="number">
+                                                    Images 
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12" id="image-container">
+                                                    <input type="file" id="images" multiple="multiple" class="file" name="images[]"/>
                                                 </div>
                                             </div>
 

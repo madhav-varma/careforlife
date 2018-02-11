@@ -1,7 +1,27 @@
 ﻿$(document).ready(function () {
 
 
-    
+    $(document).on("click", "#cancel", function () {
+        location.reload();
+    });
+
+    $("#images").fileinput({
+        showUpload: false,
+        showPreview: false,
+        showRemove: false,
+        browseOnZoneClick: true,
+        allowedFileTypes: ["image"],
+        maxFileSize: 2048,
+        maxFileCount: 5,
+        msgSizeTooLarge: "File larger than 2MB not allowed.",
+        msgFilesTooMany: "Maximum 5 files are allowed.",
+        msgValidationError: "<span class='text-danger'><i class='glyphicon glyphicon-exclamation-sign'></i> File Upload Error</span>",
+        hiddenThumbnailContent: true
+    });
+
+    $('#images').on('fileerror', function (event, data, msg) {
+        alert(msg);
+    });
 
     Dropzone.autoDiscover = false;
 
@@ -99,6 +119,8 @@
                 $("#MainContent_email").val(pathLab.Email);
                 $("#MainContent_mobile").val(pathLab.Mobile);
                 $("#MainContent_city").val(pathLab.City);
+
+                $("#image-container").empty().append("<a class='add-pathlab-images form-group btn btn-primary' data-id='" + pathLab.Id + "'>Update Images</a>");
 
                 $("label.error").hide();
 

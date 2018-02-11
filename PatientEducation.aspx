@@ -57,7 +57,9 @@
                                             <input type="hidden" runat="server" id="video_id">
                                             <div class="row item form-group">
                                                 <span class="section" style="padding-bottom: 10px">Basic Info
-                                                    <button runat="server" id="sendPE" type="submit" onserverclick="SubmitPatientVideo" class="hidden pull-right btn btn-success">Save</button><input type="button" id="savePE" class="pull-right btn btn-success" value="Save" />
+                                                    <button runat="server" id="sendPE" type="submit" onserverclick="SubmitPatientVideo" class="hidden pull-right btn btn-success">Save</button>
+                                                    <input id="cancel" type="button" class="pull-right btn btn-danger" value="Cancel" />
+                                                    <input type="button" id="savePE" class="pull-right btn btn-success" value="Save" />
 
                                                 </span>
 

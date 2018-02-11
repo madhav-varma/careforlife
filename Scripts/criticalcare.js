@@ -1,4 +1,27 @@
 ﻿$(document).ready(function () {
+    $(document).on("click", "#cancel", function () {
+        location.reload();
+    });
+
+    $("#images").fileinput({
+        showUpload: false,
+        showPreview: false,
+        showRemove: false,
+        browseOnZoneClick: true,
+        allowedFileTypes: ["image"],
+        maxFileSize: 2048,
+        maxFileCount: 5,
+        msgSizeTooLarge: "File larger than 2MB not allowed.",
+        msgFilesTooMany: "Maximum 5 files are allowed.",
+        msgValidationError: "<span class='text-danger'><i class='glyphicon glyphicon-exclamation-sign'></i> File Upload Error</span>",
+        hiddenThumbnailContent: true
+    });
+
+    $('#images').on('fileerror', function (event, data, msg) {
+        alert(msg);
+    });
+
+
     function addBlankCCServices() {
         var index = $("div.services-div").length;
 
@@ -105,7 +128,9 @@
                 $("#MainContent_email").val(cc.Email);
                 $("#MainContent_mobile").val(cc.Mobile);
                 $("#MainContent_city").val(cc.City);
-                $("#MainContent_speciality").val(cc.Specialities);                
+                $("#MainContent_speciality").val(cc.Specialities);  
+
+                $("#image-container").empty().append("<a class='add-cc-images form-group btn btn-primary' data-id='" + cc.Id + "'>Update Images</a>");
 
                 $("label.error").hide();
 

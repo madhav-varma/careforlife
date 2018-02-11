@@ -59,11 +59,12 @@
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="x_panel" style="border-top: 0">
                                     <div class="x_content">
-                                        <form runat="server" id="docform" method="post">
+                                        <form runat="server" id="docform" method="post" enctype="multipart/form-data">    
                                             <input type="hidden" runat="server" id="doctor_id">
                                             <div class="row item form-group">
                                                 <span class="section" style="padding-bottom: 10px">Basic Info
-                                                    <button runat="server" id="sendDoc" type="submit" onserverclick="SubmitDoctor" class="hidden pull-right btn btn-success">Save</button>
+                                                    <button runat="server" id="sendDoc" type="submit" onserverclick="SubmitDoctor" class="hidden pull-right btn btn-success">Save</button>                                                   
+                                                    <input id="cancel" type="button" class="pull-right btn btn-danger" value="Cancel" />
                                                     <input id="saveDoc" type="button" class="pull-right btn btn-success" value="Save" />
                                                 </span>
 
@@ -124,6 +125,14 @@
                                                 </div>
                                             </div>
 
+                                            <div class="row item ">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="number">
+                                                    Images 
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12" id="image-container">
+                                                    <input type="file" id="images" multiple="multiple" class="file" name="images[]"/>
+                                                </div>
+                                            </div>
 
                                             <div class="row item form-group">
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Speciality</label>
@@ -144,14 +153,14 @@
                                                 </div>
                                             </div>
 
-                                            <input type="checkbox" runat="server" id="chk_special" class="hidden"/>
+                                            <input type="checkbox" runat="server" id="chk_special" class="hidden" />
                                             <div class="row form-group">
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Advertise</label>
                                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                                     <div class="">
                                                         <label>
                                                             <input type="checkbox" class="js-switch" id="is_special" checked />
-                                                            
+
                                                         </label>
                                                     </div>
                                                 </div>

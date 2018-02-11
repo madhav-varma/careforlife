@@ -45,6 +45,22 @@ public partial class Doctor : System.Web.UI.Page
             doc.Email = email.Value;
             doc.IsRare = true;
 
+            if (Request.Files.Count > 0)
+            {
+                var files = new List<string>();
+                for(var i = 0; i < Request.Files.Count; i++)
+                {
+                    HttpPostedFile f = Request.Files[i];
+                    var extension = Path.GetExtension(f.FileName);
+                    var fileName = Guid.NewGuid().ToString() + "." + extension;
+                    files.Add(fileName);
+
+                    string pathToSave_100 = HttpContext.Current.Server.MapPath("~/photo/" + fileName);
+                    f.SaveAs(pathToSave_100);
+                }
+                doc.Images = string.Join(" ", files);
+            }
+
             var servicesKeys = Request.Form.AllKeys.Where(x => x.Contains("service")).ToList();
             var services = new List<string>();
             foreach (var key in servicesKeys)
@@ -72,11 +88,9 @@ public partial class Doctor : System.Web.UI.Page
             doc.Speciality = int.Parse(speciality.Value);
             doc.Tagline = tagline.Value;
             doc.Name = name.Value;
+            doc.IsRare = false;
 
             doc.Created = DateTime.UtcNow.AddHours(5).AddMinutes(30);
-
-
-
             var sqlQuery = new Helper().GetInsertQuery<DoctorModel>(doc);
             if (!string.IsNullOrWhiteSpace(doctor_id.Value))
             {

@@ -17,10 +17,14 @@ public class DoctorModel
     public string Name { get; set; }
     [DisplayName("tagline")]
     public string Tagline { get; set; }
+    [IgnoreUpdate]
+    [IgnoreSelect]
+    [DisplayName("img_url")]
+    public string Images { get; set; }
     [DisplayName("degree")]
     public string Degree { get; set; }
     [DisplayName("experience")]
-    public string Experience { get; set; }    
+    public string Experience { get; set; }
     [DisplayName("email")]
     public string Email { get; set; }
     [DisplayName("contact_no")]
@@ -28,7 +32,7 @@ public class DoctorModel
     [DisplayName("speciality_id")]
     public int Speciality { get; set; }
     [DisplayName("city_id")]
-    public int City { get; set; }    
+    public int City { get; set; }
     [IgnoreInsert]
     [IgnoreUpdate]
     [DisplayName("speciality_name")]

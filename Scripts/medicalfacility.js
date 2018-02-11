@@ -1,4 +1,25 @@
-﻿$(document).ready(function () {   
+﻿$(document).ready(function () {  
+    $(document).on("click", "#cancel", function () {
+        location.reload();
+    });
+
+    $("#images").fileinput({
+        showUpload: false,
+        showPreview: false,
+        showRemove: false,
+        browseOnZoneClick: true,
+        allowedFileTypes: ["image"],
+        maxFileSize: 2048,
+        maxFileCount: 5,
+        msgSizeTooLarge: "File larger than 2MB not allowed.",
+        msgFilesTooMany: "Maximum 5 files are allowed.",
+        msgValidationError: "<span class='text-danger'><i class='glyphicon glyphicon-exclamation-sign'></i> File Upload Error</span>",
+        hiddenThumbnailContent: true
+    });
+
+    $('#images').on('fileerror', function (event, data, msg) {
+        alert(msg);
+    });
 
     Dropzone.autoDiscover = false;
 
@@ -109,6 +130,8 @@
                 $("#MainContent_city").val(mf.City);    
                 $("#MainContent_doctor").val(mf.Doctor);    
                 $("#MainContent_description").val(mf.Description);    
+
+                $("#image-container").empty().append("<a class='add-mf-images form-group btn btn-primary' data-id='" + mf.Id + "'>Update Images</a>");
 
                 if (mf.Timing) {
                     var tt = [];

@@ -60,7 +60,9 @@
                                             <input type="hidden" runat="server" id="camp_id">
                                             <div class="row item form-group">
                                                 <span class="section" style="padding-bottom: 10px">Basic Info
-                                                    <button runat="server" id="sendCP" type="submit" onserverclick="SubmitCamp" class="hidden pull-right btn btn-success">Save</button><input type="button" id="saveCP" class="pull-right btn btn-success" value="Save"/>                                                    
+                                                    <button runat="server" id="sendCP" type="submit" onserverclick="SubmitCamp" class="hidden pull-right btn btn-success">Save</button>
+                                                    <input id="cancel" type="button" class="pull-right btn btn-danger" value="Cancel" />
+                                                    <input type="button" id="saveCP" class="pull-right btn btn-success" value="Save"/>                                                    
                                                 </span>
 
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="camp_title">
@@ -133,6 +135,15 @@
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                     <input type="text" runat="server" id="organizer" name="organizer" placeholder="Organizer" class="form-control col-md-7 col-xs-12">
+                                                </div>
+                                            </div>
+
+                                            <div class="row item ">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="number">
+                                                    Images 
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12" id="image-container">
+                                                    <input type="file" id="images" multiple="multiple" class="file" name="images[]"/>
                                                 </div>
                                             </div>
 

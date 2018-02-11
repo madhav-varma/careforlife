@@ -63,6 +63,7 @@
                                             <div class="row item form-group">
                                                 <span class="section" style="padding-bottom: 10px">Basic Info
                                                     <button runat="server" id="sendPL" type="submit" onserverclick="SubmitPathLab" class="hidden pull-right btn btn-success">Save</button>    
+                                                    <input id="cancel" type="button" class="pull-right btn btn-danger" value="Cancel" />
                                                      <input id="savePL" type="button" class="pull-right btn btn-success" value="Save" />    
                                                 </span>
 
@@ -118,7 +119,7 @@
                                                     Email <span class="required">*</span>
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <input type="email" runat="server" id="email" name="email" placeholder="Email" required="required" class="form-control col-md-7 col-xs-12">
+                                                    <input type="email" runat="server" id="email" name="email" placeholder="Email" class="form-control col-md-7 col-xs-12">
                                                 </div>
                                             </div>
 
@@ -128,6 +129,15 @@
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                     <input data-rule-number="true" data-rule-minlength="10" data-rule-maxlength="10" type="tel" runat="server" id="mobile" name="mobile" required="required" placeholder="Mobile" class="form-control col-md-7 col-xs-12">
+                                                </div>
+                                            </div>
+
+                                            <div class="row item ">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="number">
+                                                    Images 
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12" id="image-container">
+                                                    <input type="file" id="images" multiple="multiple" class="file" name="images[]"/>
                                                 </div>
                                             </div>
 

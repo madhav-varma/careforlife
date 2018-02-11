@@ -44,6 +44,22 @@ public partial class RareSpeciality : System.Web.UI.Page
             doc.Email = email.Value;
             doc.IsRare = true;
 
+            if (Request.Files.Count > 0)
+            {
+                var files = new List<string>();
+                for (var i = 0; i < Request.Files.Count; i++)
+                {
+                    HttpPostedFile f = Request.Files[i];
+                    var extension = Path.GetExtension(f.FileName);
+                    var fileName = Guid.NewGuid().ToString() + "." + extension;
+                    files.Add(fileName);
+
+                    string pathToSave_100 = HttpContext.Current.Server.MapPath("~/photo/" + fileName);
+                    f.SaveAs(pathToSave_100);
+                }
+                doc.Images = string.Join(" ", files);
+            }
+
             var servicesKeys = Request.Form.AllKeys.Where(x => x.Contains("service")).ToList();
             var services = new List<string>();
             foreach (var key in servicesKeys)
@@ -162,7 +178,7 @@ public partial class RareSpeciality : System.Web.UI.Page
     public static object GetDoctorById(string id)
     {
         var doc = new DoctorManager().GetDoctorById(id);
-        doc.Experience = doc.Experience.Replace("years", "").Replace("Years", "").Replace("year", "").Replace("Year", "").Trim();
+        doc.Experience = string.IsNullOrEmpty(doc.Experience) ? "" :  doc.Experience.Replace("years", "").Replace("Years", "").Replace("year", "").Replace("Year", "").Trim();
         return doc;
     }
 

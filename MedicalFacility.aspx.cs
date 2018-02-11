@@ -41,6 +41,22 @@ public partial class MedicalFacility : System.Web.UI.Page
             medicalFacility.Doctor = doctor.Value;
             medicalFacility.Timing = timingFrom.Value + " to " + timingTo.Value;
 
+            if (Request.Files.Count > 0)
+            {
+                var files = new List<string>();
+                for (var i = 0; i < Request.Files.Count; i++)
+                {
+                    HttpPostedFile f = Request.Files[i];
+                    var extension = Path.GetExtension(f.FileName);
+                    var fileName = Guid.NewGuid().ToString() + "." + extension;
+                    files.Add(fileName);
+
+                    string pathToSave_100 = HttpContext.Current.Server.MapPath("~/photo/" + fileName);
+                    f.SaveAs(pathToSave_100);
+                }
+                medicalFacility.Images = string.Join(" ", files);
+            }
+
             var servicesKeys = Request.Form.AllKeys.Where(x => x.Contains("service")).ToList();
             var services = new List<string>();
             foreach (var key in servicesKeys)

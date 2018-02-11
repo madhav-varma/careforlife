@@ -16,6 +16,10 @@ public class RareSpecialityModel
     public int Id { get; set; }
     [DisplayName("hospital_name")]
     public string Name { get; set; }
+    [IgnoreUpdate]
+    [IgnoreSelect]
+    [DisplayName("img_url")]
+    public string Images { get; set; }
     [IgnoreInsert]
     [IgnoreUpdate]
     [DisplayName("img_url")]
