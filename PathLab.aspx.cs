@@ -154,7 +154,7 @@ public partial class PathLab : System.Web.UI.Page
         var files = new List<FileInfoModel>();
         var pathLab = new PathLabManager().GetPathLabImagesById(id);
 
-        var response = new JsonResponse() { IsSuccess = false, Message = "Error while getting images." };
+        var response = new JsonResponse() { IsSuccess = true, Message = "Files found successfully.", Data = files };
 
         if (!string.IsNullOrEmpty(pathLab))
         {
@@ -179,13 +179,12 @@ public partial class PathLab : System.Web.UI.Page
                             });
                         }
                     }
-                }
-                response.IsSuccess = true;
-                response.Message = "Files found successfully";
+                }               
                 response.Data = files;
             }
             catch (Exception e)
             {
+                response.IsSuccess = false;
                 response.Message = e.Message;
             }
         }
