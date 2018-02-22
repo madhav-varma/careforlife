@@ -2,6 +2,17 @@
     $(document).on("click", "#cancel", function () {
         location.reload();
     });
+    $(document).on("change", "#MainContent_hrs24", function () {
+        if ($(this).prop("checked")) {
+            $("#MainContent_timingFrom").prop("disabled", true);
+            $("#MainContent_timingTo").prop("disabled", true);
+        }
+        else {
+            $("#MainContent_timingFrom").prop("disabled", false);
+            $("#MainContent_timingTo").prop("disabled", false);
+        }
+
+    });
 
     $("#images").fileinput({
         showUpload: false,
@@ -110,21 +121,30 @@
 
                 $("#image-container").empty().append("<a class='add-cp-images form-group btn btn-primary' data-id='" + camp.Id + "'>Update Images</a>");
 
-                var timings = camp.Timing;
-                var t = [];
-                if (timings.length > 0) {
+                if (camp.Timing) {
+                    if (camp.Timing === "24 hrs") {
+                        $("#MainContent_hrs24").prop("checked", true);
+                    }
+                    else {
+                        $("#MainContent_hrs24").prop("checked", false);
+                        var timings = camp.Timing;
+                        var t = [];
+                        if (timings.length > 0) {
 
-                    var tt = [];
-                    if (timings)
-                        tt = timings.split('-');
-                    if (tt.length < 2)
-                        tt = timings.split('&');
-                    if (tt.length < 2)
-                        tt = timings.split('to');
+                            var tt = [];
+                            if (timings)
+                                tt = timings.split('-');
+                            if (tt.length < 2)
+                                tt = timings.split('&');
+                            if (tt.length < 2)
+                                tt = timings.split('to');
 
-                    $("#MainContent_timingFrom").val(tt[0]);
-                    $("#MainContent_timingTo").val(tt[1]);
+                            $("#MainContent_timingFrom").val(tt[0]);
+                            $("#MainContent_timingTo").val(tt[1]);
+                        }
+                    }
                 }
+                $("#MainContent_hrs24").trigger("change");
 
                 $("label.error").hide();
 

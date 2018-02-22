@@ -35,7 +35,10 @@ public partial class Camp : System.Web.UI.Page
             camp.Organizer = organizer.Value;
             camp.Name = camp_title.Value;
             camp.Address = address.Value;
-            camp.Timing = timingFrom.Value + " - " + timingTo.Value;
+            if (hrs24.Checked)
+                camp.Timing = "24 hrs";
+            else
+                camp.Timing = timingFrom.Value + " - " + timingTo.Value;
             camp.Description = description.Value;
             camp.Description1 = description1.Value;
             camp.Description2 = description2.Value;

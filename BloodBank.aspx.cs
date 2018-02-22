@@ -36,7 +36,12 @@ public partial class BloodBank : System.Web.UI.Page
             bloodBank.Email = email.Value;
             bloodBank.Mobile = mobile.Value;
             bloodBank.Address = address.Value;
-            bloodBank.Timing = timingFrom.Value + " to " + timingTo.Value;
+
+            if (hrs24.Checked)
+                bloodBank.Timing = "24 hrs";
+            else
+                bloodBank.Timing = timingFrom.Value + " to " + timingTo.Value;
+
             bloodBank.OpeningYear = opening_year.Value;
 
             bloodBank.Name = blood_bank_name.Value;

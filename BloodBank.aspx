@@ -105,6 +105,15 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                  <div class="col-md-3 col-sm-3 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='checkbox' style="width: 100%">
+                                                            <label>
+                                                                <input runat="server" id="hrs24" name="hrs24" type='checkbox' />  24 Hrs
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <div class="row item form-group">

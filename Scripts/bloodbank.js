@@ -3,6 +3,18 @@
         location.reload();
     });
 
+    $(document).on("change", "#MainContent_hrs24", function () {
+        if ($(this).prop("checked")) {
+            $("#MainContent_timingFrom").prop("disabled", true);
+            $("#MainContent_timingTo").prop("disabled", true);
+        }
+        else {
+            $("#MainContent_timingFrom").prop("disabled", false);
+            $("#MainContent_timingTo").prop("disabled", false);
+        }
+
+    });
+
     $("#images").fileinput({
         showUpload: false,
         showPreview: false,
@@ -103,17 +115,24 @@
                 $("#MainContent_blood_bank_name").val(bloodBank.Name);
                 $("#MainContent_address").val(bloodBank.Address);
                 if (bloodBank.Timing) {
-                    var tt = [];
-                    if (bloodBank.Timing)
-                        tt = bloodBank.Timing.split('-');
-                    if (tt.length < 2)
-                        tt = bloodBank.Timing.split('&');
-                    if (tt.length < 2)
-                        tt = bloodBank.Timing.split('to');
+                    if (bloodBank.Timing === "24 hrs") {
+                        $("#MainContent_hrs24").prop("checked", true);
+                    }
+                    else {
+                        $("#MainContent_hrs24").prop("checked", false);
+                        var tt = [];
+                        if (bloodBank.Timing)
+                            tt = bloodBank.Timing.split('-');
+                        if (tt.length < 2)
+                            tt = bloodBank.Timing.split('&');
+                        if (tt.length < 2)
+                            tt = bloodBank.Timing.split('to');
 
-                    $("#MainContent_timingFrom").val(tt[0].trim());
-                    $("#MainContent_timingTo").val(tt[1].trim());
+                        $("#MainContent_timingFrom").val(tt[0].trim());
+                        $("#MainContent_timingTo").val(tt[1].trim());
+                    }
                 }
+                $("#MainContent_hrs24").trigger("change");
                 $("#MainContent_opening_year").val(bloodBank.OpeningYear);
                 $("#MainContent_email").val(bloodBank.Email);
                 $("#MainContent_mobile").val(bloodBank.Mobile);

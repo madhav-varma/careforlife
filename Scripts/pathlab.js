@@ -4,6 +4,17 @@
     $(document).on("click", "#cancel", function () {
         location.reload();
     });
+    $(document).on("change", "#MainContent_hrs24", function () {
+        if ($(this).prop("checked")) {
+            $("#MainContent_timingFrom").prop("disabled", true);
+            $("#MainContent_timingTo").prop("disabled", true);
+        }
+        else {
+            $("#MainContent_timingFrom").prop("disabled", false);
+            $("#MainContent_timingTo").prop("disabled", false);
+        }
+
+    });
 
     $("#images").fileinput({
         showUpload: false,
@@ -101,20 +112,28 @@
             "dataType": "JSON",
             "success": function (data) {
                 var pathLab = data.d;
-                
+
                 $("#MainContent_path_lab_id").val(pathLab.Id);
                 $("#MainContent_lab_name").val(pathLab.Name);
                 $("#MainContent_address").val(pathLab.Address);
                 if (pathLab.Timing) {
-                    var t = pathLab.Timing.split('-');
-                    if (t.length < 2)
-                        t = pathLab.Timing.split('to');
-                    if (t.length < 2)
-                        t = pathLab.Timing.split('&');
+                    if (pathLab.Timing === "24 hrs") {
+                        $("#MainContent_hrs24").prop("checked", true);
+                    }
+                    else {
+                        $("#MainContent_hrs24").prop("checked", false);
+                        var t = pathLab.Timing.split('-');
+                        if (t.length < 2)
+                            t = pathLab.Timing.split('to');
+                        if (t.length < 2)
+                            t = pathLab.Timing.split('&');
 
-                    $("#MainContent_timingFrom").val(t[0].trim());
-                    $("#MainContent_timingTo").val(t[1].trim());
+                        $("#MainContent_timingFrom").val(t[0].trim());
+                        $("#MainContent_timingTo").val(t[1].trim());
+                    }
                 }
+                $("#MainContent_hrs24").trigger("change");
+
                 $("#MainContent_opening_year").val(pathLab.OpeningYear);
                 $("#MainContent_email").val(pathLab.Email);
                 $("#MainContent_mobile").val(pathLab.Mobile);
@@ -158,7 +177,7 @@
                             var response = JSON.parse(data);
                             if (!response.IsSuccess) {
                                 alert(response.Message);
-                                this.defaultOptions.error(file, response.Message);                              
+                                this.defaultOptions.error(file, response.Message);
                             }
                         },
                         error: function (file, error) {

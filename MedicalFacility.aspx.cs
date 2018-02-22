@@ -38,7 +38,11 @@ public partial class MedicalFacility : System.Web.UI.Page
             medicalFacility.Name = name.Value;
             medicalFacility.Created = DateTime.UtcNow.AddHours(5).AddMinutes(30);
             medicalFacility.Description = description.Value;            
-            medicalFacility.Timing = timingFrom.Value + " to " + timingTo.Value;
+            
+            if(hrs24.Checked)
+                medicalFacility.Timing = "24 hrs";
+            else
+                medicalFacility.Timing = timingFrom.Value + " to " + timingTo.Value;
 
             var doctors = new List<string>();
             var doctorKeys = Request.Form.AllKeys.Where(x => x.Contains("doctor")).ToList();

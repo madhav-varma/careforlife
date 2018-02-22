@@ -48,6 +48,18 @@
         alert(msg);
     });
 
+    $(document).on("change", "#MainContent_hrs24", function () {
+        if ($(this).prop("checked")) {
+            $("#MainContent_timingFrom").prop("disabled", true);
+            $("#MainContent_timingTo").prop("disabled", true);
+        }
+        else {
+            $("#MainContent_timingFrom").prop("disabled", false);
+            $("#MainContent_timingTo").prop("disabled", false);
+        }
+
+    });
+
     Dropzone.autoDiscover = false;
 
     function addBlankServices() {
@@ -187,17 +199,24 @@
                 }
 
                 if (mf.Timing) {
-                    var tt = [];
-                    if (mf.Timing)
-                        tt = mf.Timing.split('-');
-                    if (tt.length < 2)
-                        tt = mf.Timing.split('&');
-                    if (tt.length < 2)
-                        tt = mf.Timing.split('to');
+                    if (mf.Timing === "24 hrs") {
+                        $("#MainContent_hrs24").prop("checked", true);
+                    }
+                    else {
+                        $("#MainContent_hrs24").prop("checked", false);
+                        var tt = [];
+                        if (mf.Timing)
+                            tt = mf.Timing.split('-');
+                        if (tt.length < 2)
+                            tt = mf.Timing.split('&');
+                        if (tt.length < 2)
+                            tt = mf.Timing.split('to');
 
-                    $("#MainContent_timingFrom").val(tt[0].trim());
-                    $("#MainContent_timingTo").val(tt[1].trim());
+                        $("#MainContent_timingFrom").val(tt[0].trim());
+                        $("#MainContent_timingTo").val(tt[1].trim());
+                    }
                 }
+                $("#MainContent_hrs24").trigger("change");
 
                 var s = [];
                 var ser = $("#servicesTemplate");

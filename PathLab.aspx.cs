@@ -35,7 +35,12 @@ public partial class PathLab : System.Web.UI.Page
             pathLab.Email = email.Value;
             pathLab.Mobile = mobile.Value;
             pathLab.Address = address.Value;
-            pathLab.Timing = timingFrom.Value + " to " + timingTo.Value;
+           
+            if (hrs24.Checked)
+                pathLab.Timing = "24 hrs";
+            else
+                pathLab.Timing = timingFrom.Value + " to " + timingTo.Value;
+
             pathLab.OpeningYear = opening_year.Value;
 
             pathLab.Name = lab_name.Value;

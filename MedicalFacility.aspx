@@ -73,7 +73,7 @@
                                                     <input runat="server" id="name" class="form-control col-md-7 col-xs-12" name="name" placeholder="Name" required="required" type="text">
                                                 </div>
 
-                                            </div>                                          
+                                            </div>
                                             <div class="row item form-group">
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">
                                                     Description <span class="required">*</span>
@@ -107,6 +107,15 @@
                                                     <div class="form-group">
                                                         <div class='input-group date' style="width: 100%">
                                                             <input runat="server" id="timingTo" name="timingTo" placeholder="To e.g. 2 PM" type='text' class="form-control" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 col-sm-3 col-xs-12">
+                                                    <div class="form-group">
+                                                        <div class='checkbox' style="width: 100%">
+                                                            <label>
+                                                                <input runat="server" id="hrs24" name="hrs24" type='checkbox' />  24 Hrs
+                                                            </label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -146,7 +155,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                             <div class="row">
+                                            <div class="row">
                                                 <span class="section">Doctors                                                    
                                                     <button type="button" id="addloc" style="margin: 10px 0" class="btn btn-primary"><i class="fa fa-plus"></i></button>
                                                 </span>
