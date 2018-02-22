@@ -50,8 +50,9 @@ public partial class MedicalFacility : System.Web.UI.Page
                 var from = Request.Form["timingFrom" + i];
                 var to = Request.Form["timingTo" + i];
                 var docmobile = Request.Form["docmobile" + i];
+                var docservice = Request.Form["docservice" + i];
 
-                var doc = "{" + string.Format("\"docname\":\"{0}\", \"degree\":\"{1}\",\"docmobile\":\"{2}\", \"timing\":\"{3} - {4}\"", docname, degree, docmobile, from, to) + "}";
+                var doc = "{" + string.Format("\"docname\":\"{0}\", \"degree\":\"{1}\",\"docmobile\":\"{2}\", \"docservice\":\"{3}\", \"timing\":\"{4} - {5}\"", docname, degree, docmobile, docservice, from, to) + "}";
                 doctors.Add(doc);
             }
             medicalFacility.Doctor = "[" + string.Join(",", doctors) + "]";
@@ -72,12 +73,12 @@ public partial class MedicalFacility : System.Web.UI.Page
                 medicalFacility.Images = string.Join(" ", files);
             }
 
-            var servicesKeys = Request.Form.AllKeys.Where(x => x.Contains("service")).ToList();
+            var servicesKeys = Request.Form.AllKeys.Where(x => x.Contains("clinicservice")).ToList();
             var services = new List<string>();
             foreach (var key in servicesKeys)
             {
-                var i = key.Replace("service", "");
-                services.Add(Request.Form["service" + i]);
+                var i = key.Replace("clinicservice", "");
+                services.Add(Request.Form["clinicservice" + i]);
             }
             medicalFacility.Services = string.Join("\n", services);
 

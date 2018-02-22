@@ -199,7 +199,7 @@
             <label class="col-sm-3 control-label">Services</label>
             <div class="col-sm-6 ">
                 <div id="Container" class="input-group" style="width: 100%">
-                    <input value="${service}" placeholder="Services" type="text" class="form-control" id="service${index}" name="service${index}">
+                    <input value="${service}" placeholder="Services" type="text" class="form-control" id="clinicservice${index}" name="clinicservice${index}">
                     {{if index > 0}}
                 <span class="input-group-btn">
                     <button type="button" value="Clone it" class="del-services btn btn-danger"><i class="fa fa-minus"></i></button>
@@ -243,7 +243,14 @@
                     <textarea placeholder="Degree" id="degree${index}" required="required" name="degree${index}" class="form-control col-md-7 col-xs-12">${degree}</textarea>
                 </div>
             </div>
-
+            <div class="row item form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                    Services <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <textarea placeholder="Service" id="docservice${index}" required="required" name="docservice${index}" class="form-control col-md-7 col-xs-12">${docservice}</textarea>
+                </div>
+            </div>
 
             <div class="row item form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">

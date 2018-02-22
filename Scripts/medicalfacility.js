@@ -16,7 +16,8 @@
             docname: "",
             docmobile: "",
             timingTo: "",
-            timingFrom: ""
+            timingFrom: "",
+            docservice: ""
         }
         $("#timings_rep").append($(doctmpl).tmpl(doctor));
     }
@@ -176,6 +177,7 @@
                             docname: doc.docname,
                             degree: doc.degree,
                             docmobile: doc.docmobile,
+                            docservice: doc.docservice,
                             timingTo: tt[1].trim(),
                             timingFrom: tt[0].trim(),
                         });
