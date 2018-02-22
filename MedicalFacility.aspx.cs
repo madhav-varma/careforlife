@@ -37,9 +37,24 @@ public partial class MedicalFacility : System.Web.UI.Page
             medicalFacility.Mobile = mobile.Value;
             medicalFacility.Name = name.Value;
             medicalFacility.Created = DateTime.UtcNow.AddHours(5).AddMinutes(30);
-            medicalFacility.Description = description.Value;
-            medicalFacility.Doctor = doctor.Value;
+            medicalFacility.Description = description.Value;            
             medicalFacility.Timing = timingFrom.Value + " to " + timingTo.Value;
+
+            var doctors = new List<string>();
+            var doctorKeys = Request.Form.AllKeys.Where(x => x.Contains("doctor")).ToList();
+            foreach (var key in doctorKeys)
+            {
+                var i = key.Replace("doctor", "");
+                var docname = Request.Form["doctor" + i];
+                var degree = Request.Form["degree" + i];
+                var from = Request.Form["timingFrom" + i];
+                var to = Request.Form["timingTo" + i];
+                var docmobile = Request.Form["docmobile" + i];
+
+                var doc = "{" + string.Format("\"docname\":\"{0}\", \"degree\":\"{1}\",\"docmobile\":\"{2}\", \"timing\":\"{3} - {4}\"", docname, degree, docmobile, from, to) + "}";
+                doctors.Add(doc);
+            }
+            medicalFacility.Doctor = "[" + string.Join(",", doctors) + "]";
 
             if (Request.Files.Count > 0)
             {

@@ -3,6 +3,32 @@
         location.reload();
     });
 
+    function addBlankLocation() {
+        var index = $("div.doctors-div").length;
+
+        if (index > 0)
+            index = parseInt($($("div.doctors-div")[index - 1]).data("index")) + 1;
+
+        var doctmpl = $("#doctorsTemplate");
+        var doctor = {
+            index: index,
+            degree: "",
+            docname: "",
+            docmobile: "",
+            timingTo: "",
+            timingFrom: ""
+        }
+        $("#timings_rep").append($(doctmpl).tmpl(doctor));
+    }
+    $(document).on("click", ".del-loc", function () {
+        $(this).parent().parent().parent().remove();
+    });
+    $(document).on("click", "#addloc", function () {
+        addBlankLocation();
+    });
+
+    addBlankLocation();
+
     $("#images").fileinput({
         showUpload: false,
         showPreview: false,
@@ -127,11 +153,36 @@
                 $("#MainContent_address").val(mf.Address);          
                 $("#MainContent_email").val(mf.Email);
                 $("#MainContent_mobile").val(mf.Mobile);               
-                $("#MainContent_city").val(mf.City);    
-                $("#MainContent_doctor").val(mf.Doctor);    
+                $("#MainContent_city").val(mf.City);                    
                 $("#MainContent_description").val(mf.Description);    
 
                 $("#image-container").empty().append("<a class='add-mf-images form-group btn btn-primary' data-id='" + mf.Id + "'>Update Images</a>");
+
+
+                var doctors = JSON.parse(mf.Doctor);
+                var d = [];
+                if (doctors.length > 0) {
+                    $.each(doctors, function (i, doc) {
+                        var tt = [];
+                        if (doc.timing)
+                            tt = doc.timing.split('-');
+                        if (tt.length < 2)
+                            tt = doc.timing.split('&');
+                        if (tt.length < 2)
+                            tt = doc.timing.split('to');
+
+                        d.push({
+                            index: i,
+                            docname: doc.docname,
+                            degree: doc.degree,
+                            docmobile: doc.docmobile,
+                            timingTo: tt[1].trim(),
+                            timingFrom: tt[0].trim(),
+                        });
+                    });
+                    var doctmpl = $("#doctorsTemplate");
+                    $("#timings_rep").empty().append($(doctmpl).tmpl(d));
+                }
 
                 if (mf.Timing) {
                     var tt = [];

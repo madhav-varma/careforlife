@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Care4LifeMaster.master" CodeFile="MedicalFacility.aspx.cs" Inherits="MedicalFacility" %>
+
 <%@ MasterType VirtualPath="~/Care4LifeMaster.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="cphPageJs" runat="server">
@@ -72,21 +73,13 @@
                                                     <input runat="server" id="name" class="form-control col-md-7 col-xs-12" name="name" placeholder="Name" required="required" type="text">
                                                 </div>
 
-                                            </div>
+                                            </div>                                          
                                             <div class="row item form-group">
-                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="doctor">
-                                                   Doctor Name <span class="required">*</span>
-                                                </label>
-                                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <input type="text" runat="server"  id="doctor" name="doctor" placeholder="Doctor Name" class="form-control col-md-7 col-xs-12">
-                                                </div>
-                                            </div>
-                                             <div class="row item form-group">
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">
                                                     Description <span class="required">*</span>
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <textarea runat="server" placeholder="Description" id="description"  name="description" class="form-control col-md-7 col-xs-12"></textarea>
+                                                    <textarea runat="server" placeholder="Description" id="description" name="description" class="form-control col-md-7 col-xs-12"></textarea>
                                                 </div>
                                             </div>
 
@@ -95,10 +88,10 @@
                                                     Address <span class="required">*</span>
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <textarea runat="server" placeholder="Address" id="address"  name="address" class="form-control col-md-7 col-xs-12"></textarea>
+                                                    <textarea runat="server" placeholder="Address" id="address" name="address" class="form-control col-md-7 col-xs-12"></textarea>
                                                 </div>
                                             </div>
-                                             <div class="row item form-group">
+                                            <div class="row item form-group">
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">
                                                     Timing <span class="required">*</span>
                                                 </label>
@@ -106,14 +99,14 @@
                                                 <div class="col-md-3 col-sm-3 col-xs-12">
                                                     <div class="form-group">
                                                         <div class='input-group date' style="width: 100%">
-                                                            <input runat="server"  id="timingFrom" name="timingFrom" placeholder="From e.g. 10 AM" type='text' class="form-control" />
+                                                            <input runat="server" id="timingFrom" name="timingFrom" placeholder="From e.g. 10 AM" type='text' class="form-control" />
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3 col-sm-3 col-xs-12">
                                                     <div class="form-group">
                                                         <div class='input-group date' style="width: 100%">
-                                                            <input runat="server"  id="timingTo" name="timingTo" placeholder="To e.g. 2 PM" type='text' class="form-control" />
+                                                            <input runat="server" id="timingTo" name="timingTo" placeholder="To e.g. 2 PM" type='text' class="form-control" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -132,7 +125,7 @@
                                                     Mobile Number <span class="required">*</span>
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <input type="tel" runat="server" data-rule-number="true" data-rule-minlength="10" data-rule-maxlength="10" id="mobile" name="mobile"  placeholder="Mobile" class="form-control col-md-7 col-xs-12">
+                                                    <input type="tel" runat="server" data-rule-number="true" data-rule-minlength="10" data-rule-maxlength="12" id="mobile" name="mobile" placeholder="Mobile" class="form-control col-md-7 col-xs-12">
                                                 </div>
                                             </div>
 
@@ -141,19 +134,25 @@
                                                     Images 
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12" id="image-container">
-                                                    <input type="file" id="images" multiple="multiple" class="file" name="images[]"/>
+                                                    <input type="file" id="images" multiple="multiple" class="file" name="images[]" />
                                                 </div>
                                             </div>
 
                                             <div class="item row form-group">
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">City</label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <select id="city" runat="server" required="required"  class="select2_group form-control">
+                                                    <select id="city" runat="server" required="required" class="select2_group form-control">
                                                         <option value="">Select City</option>
                                                     </select>
                                                 </div>
                                             </div>
-                                             <div class=" row item form-group">
+                                             <div class="row">
+                                                <span class="section">Doctors                                                    
+                                                    <button type="button" id="addloc" style="margin: 10px 0" class="btn btn-primary"><i class="fa fa-plus"></i></button>
+                                                </span>
+                                                <div id="timings_rep"></div>
+                                            </div>
+                                            <div class=" row item form-group">
                                                 <span class="section">Available Services                                                    
                                                     <button type="button" id="addservices" style="margin: 10px 0" class="btn btn-primary"><i class="fa fa-plus"></i></button>
                                                 </span>
@@ -195,12 +194,12 @@
         </div>
     </div>
 
-     <script id="servicesTemplate" type="text/html">
+    <script id="servicesTemplate" type="text/html">
         <div class="row services-div" data-index="${index}">
             <label class="col-sm-3 control-label">Services</label>
             <div class="col-sm-6 ">
                 <div id="Container" class="input-group" style="width: 100%">
-                    <input value="${service}"  placeholder="Services" type="text" class="form-control" id="service${index}" name="service${index}">
+                    <input value="${service}" placeholder="Services" type="text" class="form-control" id="service${index}" name="service${index}">
                     {{if index > 0}}
                 <span class="input-group-btn">
                     <button type="button" value="Clone it" class="del-services btn btn-danger"><i class="fa fa-minus"></i></button>
@@ -209,6 +208,65 @@
                 </div>
             </div>
         </div>
+    </script>
+    <script id="doctorsTemplate" type="text/html">
+        <div class="doctors-div" data-index="${index}">
+
+            <div class="row item form-group">
+
+
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="docname">
+                    Doctor Name <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <input type="text" value="${docname}" id="doctor${index}" name="doctor${index}" required="required" placeholder="Doctor Name" class="form-control col-md-7 col-xs-12">
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    {{if index > 0}}
+                    <button type="button" class="btn btn-danger del-loc"><i class="fa fa-minus"></i></button>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="row item form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="number">
+                    Mobile Number <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <input type="tel" value="${docmobile}" data-rule-number="true" data-rule-minlength="10" data-rule-maxlength="12" id="docmobile${index}" name="docmobile${index}" placeholder="Mobile" class="form-control col-md-7 col-xs-12">
+                </div>
+            </div>
+            <div class="row item form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                    Degree <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <textarea placeholder="Degree" id="degree${index}" required="required" name="degree${index}" class="form-control col-md-7 col-xs-12">${degree}</textarea>
+                </div>
+            </div>
+
+
+            <div class="row item form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                    Time <span class="required">*</span>
+                </label>
+
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <div class="form-group">
+                        <div class='input-group date' style="width: 100%">
+                            <input id="timingFrom${index}" value="${timingFrom}" required="required" name="timingFrom${index}" placeholder="From e.g. 10 AM" type='text' class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <div class="form-group">
+                        <div class='input-group date' style="width: 100%">
+                            <input id="timingTo${index}" value="${timingTo}" required="required" name="timingTo${index}" placeholder="To e.g. 2 PM" type='text' class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </script>
 
 
