@@ -46,14 +46,18 @@ public partial class CriticalCare : System.Web.UI.Page
                 for (var i = 0; i < Request.Files.Count; i++)
                 {
                     HttpPostedFile f = Request.Files[i];
-                    var extension = Path.GetExtension(f.FileName);
-                    var fileName = Guid.NewGuid().ToString() + "." + extension;
-                    files.Add(fileName);
+                    if (f.ContentLength > 0)
+                    {
+                        var extension = Path.GetExtension(f.FileName);
+                        var fileName = Guid.NewGuid().ToString() + "." + extension;
+                        files.Add(fileName);
 
-                    string pathToSave_100 = HttpContext.Current.Server.MapPath("~/photo/" + fileName);
-                    f.SaveAs(pathToSave_100);
+                        string pathToSave_100 = HttpContext.Current.Server.MapPath("~/photo/" + fileName);
+                        f.SaveAs(pathToSave_100);
+                    }
                 }
-                criticalCare.Images = string.Join(" ", files);
+                if (files.Count > 0)
+                    criticalCare.Images = string.Join(" ", files);
             }
 
             var servicesKeys = Request.Form.AllKeys.Where(x => x.Contains("service")).ToList();
@@ -185,7 +189,7 @@ public partial class CriticalCare : System.Web.UI.Page
                         }
 
                     }
-                }                
+                }
                 response.Data = files;
             }
             catch (Exception e)

@@ -35,7 +35,7 @@ public partial class PathLab : System.Web.UI.Page
             pathLab.Email = email.Value;
             pathLab.Mobile = mobile.Value;
             pathLab.Address = address.Value;
-           
+
             if (hrs24.Checked)
                 pathLab.Timing = "24 hrs";
             else
@@ -53,14 +53,18 @@ public partial class PathLab : System.Web.UI.Page
                 for (var i = 0; i < Request.Files.Count; i++)
                 {
                     HttpPostedFile f = Request.Files[i];
-                    var extension = Path.GetExtension(f.FileName);
-                    var fileName = Guid.NewGuid().ToString() + "." + extension;
-                    files.Add(fileName);
+                    if (f.ContentLength > 0)
+                    {
+                        var extension = Path.GetExtension(f.FileName);
+                        var fileName = Guid.NewGuid().ToString() + "." + extension;
+                        files.Add(fileName);
 
-                    string pathToSave_100 = HttpContext.Current.Server.MapPath("~/photo/" + fileName);
-                    f.SaveAs(pathToSave_100);
+                        string pathToSave_100 = HttpContext.Current.Server.MapPath("~/photo/" + fileName);
+                        f.SaveAs(pathToSave_100);
+                    }
                 }
-                pathLab.Images = string.Join(" ", files);
+                if (files.Count > 0)
+                    pathLab.Images = string.Join(" ", files);
             }
 
             var sqlQuery = new Helper().GetInsertQuery<PathLabModel>(pathLab);
@@ -184,7 +188,7 @@ public partial class PathLab : System.Web.UI.Page
                             });
                         }
                     }
-                }               
+                }
                 response.Data = files;
             }
             catch (Exception e)

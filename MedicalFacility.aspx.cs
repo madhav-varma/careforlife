@@ -37,9 +37,9 @@ public partial class MedicalFacility : System.Web.UI.Page
             medicalFacility.Mobile = mobile.Value;
             medicalFacility.Name = name.Value;
             medicalFacility.Created = DateTime.UtcNow.AddHours(5).AddMinutes(30);
-            medicalFacility.Description = description.Value;            
-            
-            if(hrs24.Checked)
+            medicalFacility.Description = description.Value;
+
+            if (hrs24.Checked)
                 medicalFacility.Timing = "24 hrs";
             else
                 medicalFacility.Timing = timingFrom.Value + " to " + timingTo.Value;
@@ -67,14 +67,18 @@ public partial class MedicalFacility : System.Web.UI.Page
                 for (var i = 0; i < Request.Files.Count; i++)
                 {
                     HttpPostedFile f = Request.Files[i];
-                    var extension = Path.GetExtension(f.FileName);
-                    var fileName = Guid.NewGuid().ToString() + "." + extension;
-                    files.Add(fileName);
+                    if (f.ContentLength > 0)
+                    {
+                        var extension = Path.GetExtension(f.FileName);
+                        var fileName = Guid.NewGuid().ToString() + "." + extension;
+                        files.Add(fileName);
 
-                    string pathToSave_100 = HttpContext.Current.Server.MapPath("~/photo/" + fileName);
-                    f.SaveAs(pathToSave_100);
+                        string pathToSave_100 = HttpContext.Current.Server.MapPath("~/photo/" + fileName);
+                        f.SaveAs(pathToSave_100);
+                    }
                 }
-                medicalFacility.Images = string.Join(" ", files);
+                if (files.Count > 0)
+                    medicalFacility.Images = string.Join(" ", files);
             }
 
             var servicesKeys = Request.Form.AllKeys.Where(x => x.Contains("clinicservice")).ToList();
@@ -181,7 +185,7 @@ public partial class MedicalFacility : System.Web.UI.Page
         var files = new List<FileInfoModel>();
         var medicalFacilityImages = new MedicalFacilityManager().GetMedicalFacilityImagesById(id);
 
-        var response = new JsonResponse() { IsSuccess = true, Message = "Files found successfully.", Data= files };
+        var response = new JsonResponse() { IsSuccess = true, Message = "Files found successfully.", Data = files };
 
         if (!string.IsNullOrEmpty(medicalFacilityImages))
         {
@@ -206,7 +210,7 @@ public partial class MedicalFacility : System.Web.UI.Page
                         }
 
                     }
-                }               
+                }
                 response.Data = files;
             }
             catch (Exception e)

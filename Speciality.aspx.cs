@@ -34,14 +34,18 @@ public partial class Speciality : System.Web.UI.Page
                 for (var i = 0; i < Request.Files.Count; i++)
                 {
                     HttpPostedFile f = Request.Files[i];
-                    var extension = Path.GetExtension(f.FileName);
-                    var fileName = Guid.NewGuid().ToString() + "." + extension;
-                    files.Add(fileName);
+                    if (f.ContentLength > 0)
+                    {
+                        var extension = Path.GetExtension(f.FileName);
+                        var fileName = Guid.NewGuid().ToString() + "." + extension;
+                        files.Add(fileName);
 
-                    string pathToSave_100 = HttpContext.Current.Server.MapPath("~/photo/" + fileName);
-                    f.SaveAs(pathToSave_100);
+                        string pathToSave_100 = HttpContext.Current.Server.MapPath("~/photo/" + fileName);
+                        f.SaveAs(pathToSave_100);
+                    }
                 }
-                speciality.Image = string.Join(" ", files);
+                if (files.Count > 0)
+                    speciality.Image = string.Join(" ", files);
             }
 
             speciality.Created = DateTime.UtcNow.AddHours(5).AddMinutes(30);
@@ -129,7 +133,7 @@ public partial class Speciality : System.Web.UI.Page
     [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
     public static object GetSpecialityById(string id)
     {
-        var speciality = new SpecialityManager().GetSpecialityById(id);        
+        var speciality = new SpecialityManager().GetSpecialityById(id);
         return speciality;
     }
 

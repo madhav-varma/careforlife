@@ -48,17 +48,21 @@ public partial class Doctor : System.Web.UI.Page
             if (Request.Files.Count > 0)
             {
                 var files = new List<string>();
-                for(var i = 0; i < Request.Files.Count; i++)
+                for (var i = 0; i < Request.Files.Count; i++)
                 {
                     HttpPostedFile f = Request.Files[i];
-                    var extension = Path.GetExtension(f.FileName);
-                    var fileName = Guid.NewGuid().ToString() + "." + extension;
-                    files.Add(fileName);
+                    if (f.ContentLength > 0)
+                    {
+                        var extension = Path.GetExtension(f.FileName);
+                        var fileName = Guid.NewGuid().ToString() + "." + extension;
+                        files.Add(fileName);
 
-                    string pathToSave_100 = HttpContext.Current.Server.MapPath("~/photo/" + fileName);
-                    f.SaveAs(pathToSave_100);
+                        string pathToSave_100 = HttpContext.Current.Server.MapPath("~/photo/" + fileName);
+                        f.SaveAs(pathToSave_100);
+                    }
                 }
-                doc.Images = string.Join(" ", files);
+                if (files.Count > 0)
+                    doc.Images = string.Join(" ", files);
             }
 
             var servicesKeys = Request.Form.AllKeys.Where(x => x.Contains("service")).ToList();

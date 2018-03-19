@@ -49,14 +49,18 @@ public partial class Camp : System.Web.UI.Page
                 for (var i = 0; i < Request.Files.Count; i++)
                 {
                     HttpPostedFile f = Request.Files[i];
-                    var extension = Path.GetExtension(f.FileName);
-                    var fileName = Guid.NewGuid().ToString() + "." + extension;
-                    files.Add(fileName);
+                    if (f.ContentLength > 0)
+                    {
+                        var extension = Path.GetExtension(f.FileName);
+                        var fileName = Guid.NewGuid().ToString() + "." + extension;
+                        files.Add(fileName);
 
-                    string pathToSave_100 = HttpContext.Current.Server.MapPath("~/photo/" + fileName);
-                    f.SaveAs(pathToSave_100);
+                        string pathToSave_100 = HttpContext.Current.Server.MapPath("~/photo/" + fileName);
+                        f.SaveAs(pathToSave_100);
+                    }
                 }
-                camp.Images = string.Join(" ", files);
+                if (files.Count > 0)
+                    camp.Images = string.Join(" ", files);
             }
 
 
@@ -72,12 +76,12 @@ public partial class Camp : System.Web.UI.Page
 
             var dam = new DataAccessManager().ExecuteInsertUpdateQuery(sqlQuery);
             if (dam)
-            {                
+            {
                 Response.Redirect("Camp", true);
             }
         }
         catch (Exception ex)
-        {            
+        {
             action.Value = "Failed To Add Camp!";
         }
     }
@@ -192,7 +196,7 @@ public partial class Camp : System.Web.UI.Page
             }
         }
         return response;
-    }    
+    }
 
     [WebMethod(EnableSession = true)]
     [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]

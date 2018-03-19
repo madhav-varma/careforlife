@@ -39,7 +39,7 @@ public partial class RareSpeciality : System.Web.UI.Page
 
             doc.City = int.Parse(city.Value);
             doc.Degree = degree.Value;
-            doc.Experience = experience.Value + " Year(s)";           
+            doc.Experience = experience.Value + " Year(s)";
             doc.Mobile = mobile.Value;
             doc.Email = email.Value;
             doc.IsRare = true;
@@ -50,14 +50,18 @@ public partial class RareSpeciality : System.Web.UI.Page
                 for (var i = 0; i < Request.Files.Count; i++)
                 {
                     HttpPostedFile f = Request.Files[i];
-                    var extension = Path.GetExtension(f.FileName);
-                    var fileName = Guid.NewGuid().ToString() + "." + extension;
-                    files.Add(fileName);
+                    if (f.ContentLength > 0)
+                    {
+                        var extension = Path.GetExtension(f.FileName);
+                        var fileName = Guid.NewGuid().ToString() + "." + extension;
+                        files.Add(fileName);
 
-                    string pathToSave_100 = HttpContext.Current.Server.MapPath("~/photo/" + fileName);
-                    f.SaveAs(pathToSave_100);
+                        string pathToSave_100 = HttpContext.Current.Server.MapPath("~/photo/" + fileName);
+                        f.SaveAs(pathToSave_100);
+                    }
                 }
-                doc.Images = string.Join(" ", files);
+                if (files.Count > 0)
+                    doc.Images = string.Join(" ", files);
             }
 
             var servicesKeys = Request.Form.AllKeys.Where(x => x.Contains("service")).ToList();
@@ -84,7 +88,7 @@ public partial class RareSpeciality : System.Web.UI.Page
             }
             doc.Timing = "[" + string.Join(",", locations) + "]";
 
-            doc.Speciality = int.Parse(speciality.Value);            
+            doc.Speciality = int.Parse(speciality.Value);
             doc.Name = name.Value;
 
             doc.Created = DateTime.UtcNow.AddHours(5).AddMinutes(30);
@@ -178,7 +182,7 @@ public partial class RareSpeciality : System.Web.UI.Page
     public static object GetDoctorById(string id)
     {
         var doc = new DoctorManager().GetDoctorById(id);
-        doc.Experience = string.IsNullOrEmpty(doc.Experience) ? "" :  doc.Experience.Replace("years", "").Replace("Years", "").Replace("year", "").Replace("Year", "").Trim();
+        doc.Experience = string.IsNullOrEmpty(doc.Experience) ? "" : doc.Experience.Replace("years", "").Replace("Years", "").Replace("year", "").Replace("Year", "").Trim();
         return doc;
     }
 
